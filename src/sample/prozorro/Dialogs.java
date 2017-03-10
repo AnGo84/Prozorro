@@ -1,0 +1,83 @@
+package sample.prozorro;
+
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Optional;
+
+/**
+ * Created by AnGo on 07.03.2017.
+ */
+public class Dialogs {
+    public static void showMessage(Alert.AlertType alertType, String titleText, String headerText, String contentText) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(titleText);
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
+
+        alert.showAndWait();
+    }
+
+    public static Boolean showConfirmDialog(String titleText, String headerText, String contentText) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(titleText);
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static void showErrorDialog(Exception ex, String titleText, String headerText, String contentText) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(titleText);
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
+
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        ex.printStackTrace(pw);
+        String exceptionText = sw.toString();
+
+        Label label = new Label("The exception stacktrace was:");
+
+        TextArea textArea = new TextArea(exceptionText);
+        textArea.setEditable(false);
+        textArea.setWrapText(true);
+
+        textArea.setMaxWidth(Double.MAX_VALUE);
+        textArea.setMaxHeight(Double.MAX_VALUE);
+        GridPane.setVgrow(textArea, Priority.ALWAYS);
+        GridPane.setHgrow(textArea, Priority.ALWAYS);
+
+        GridPane expContent = new GridPane();
+        expContent.setMaxWidth(Double.MAX_VALUE);
+        expContent.add(label, 0, 0);
+        expContent.add(textArea, 0, 1);
+
+        alert.getDialogPane().setExpandableContent(expContent);
+
+        alert.showAndWait();
+    }
+
+    public static String showInputDialog(String titleText, String headerText, String contentText) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle(titleText);
+        dialog.setHeaderText(headerText);
+        dialog.setContentText(contentText);
+
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            return result.get();
+        } else {
+            return "";
+        }
+    }
+}
