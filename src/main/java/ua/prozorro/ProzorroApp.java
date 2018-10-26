@@ -1,35 +1,132 @@
 package ua.prozorro;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import ua.prozorro.controller.MainController;
+import ua.prozorro.fx.DialogText;
+import ua.prozorro.fx.Dialogs;
+import ua.prozorro.sql.DBConnection;
+import ua.prozorro.sql.HibernateUtils;
 import ua.prozorro.utils.FileUtils;
+import ua.prozorro.utils.PropertiesUtils;
 
 import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Properties;
 
 public class ProzorroApp extends Application {
 
-    private static final String APP_NAME = "Prozorro App";
-    private static final String CONFIG_FILE_NAME = "Prozorro.properties";
-    private static final Logger logger = LogManager.getRootLogger();
+	private static final String APP_NAME = "Prozorro App";
+	private static final String CONFIG_FILE_NAME = "Prozorro.properties";
+	private static final Logger logger = LogManager.getRootLogger();
 
-    @Override
-    public void start(Stage primaryStage) throws Exception{
-        /*FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(MainApp.class.getResource("/views/LoginForm.fxml"));*/
+	/*private Properties properties = null;
+	private Connection connection = null;*/
+	private Session session;
 
-        Parent root = FXMLLoader.load(getClass().getResource("/views/mainForm.fxml"));
-        primaryStage.setTitle("Данные из портала Prozorro.gov.ua");
-        primaryStage.setScene(new Scene(root));
-        primaryStage.show();
-    }
+	private Stage primaryStage;
+	private BorderPane root;
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		//TODO
+		SessionFactory factory = HibernateUtils.getSessionFactory();
+		session = factory.getCurrentSession();
+
+		this.primaryStage = primaryStage;
+
+		File propertiesFile = FileUtils.getFileWithName(this.getClass(), CONFIG_FILE_NAME);
+		/*properties = PropertiesUtils.getPropertiesFromFile(propertiesFile);
+		logger.info(PropertiesUtils.getDBPropertyText(properties));*/
+
+		/*try {
+			connection = DBConnection.getDBConnection(properties);
+		} catch (SQLException e) {
+			Dialogs.showErrorDialog(e, new DialogText("Application start error", "Error with Database connection",
+					                                         "Can't connect to DataBase '" +
+							                                         properties.getProperty("db.type") + "'. Check properties file " + propertiesFile.getPath()), logger);
+		}*/
+
+		initMainView();
 
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(WindowEvent we) {
+				if (isConfirmShutDown()) {
+					Platform.exit();
+					System.exit(0);
+				} else {
+					we.consume();
+				}
+			}
+		});
+	}
+
+	private void initMainView() throws IOException {
+		/*FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(MainApp.class.getResource("/views/LoginForm.fxml"));*/
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("/views/mainForm.fxml"));
+		root = loader.load();
+		//Parent root = loader.load();
+
+		primaryStage.setTitle("Данные из портала Prozorro.gov.ua");
+		primaryStage.setScene(new Scene(root));
+
+		MainController controller = loader.getController();
+
+		controller.setProzorroApp(this);
+
+		primaryStage.show();
+
+	}
+
+	public boolean shutDown() {
+		if (isConfirmShutDown()) {
+
+			Platform.exit();
+
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isConfirmShutDown() {
+		if (Dialogs.showConfirmDialog(new DialogText("Припинення роботи", "Додаток буде закритий", "Підтвердити?"))) {
+			return true;
+		}
+		return false;
+	}
+
+
+	public static void main(String[] args) {
+		logger.info("Start");
+		launch(args);
+		logger.info("Close");
+	}
+
+	public static String getAppName() {
+		return APP_NAME;
+	}
+
+	public Stage getPrimaryStage() {
+		return primaryStage;
+	}
+
+	public Session getSession() {
+		return session;
+	}
 }

@@ -7,7 +7,7 @@ import java.util.Properties;
 /**
  * Created by AnGo on 23.05.2017.
  */
-public class PropertyUtils {
+public class PropertiesUtils {
 
     public static Properties getPropertiesFromFile(File file) throws IOException {
         if (file == null) {
@@ -24,6 +24,19 @@ public class PropertyUtils {
             }
         }
         return properties;
+    }
+
+    public static Properties getPropertiesFromFile(String filename) throws IOException {
+        Properties property = new Properties();
+        try (FileInputStream fileInputStream = new FileInputStream(filename);) {
+            property.load(fileInputStream);
+        }
+        return property;
+    }
+
+    public static String getDBPropertyText(Properties properties) {
+        return String.format("Server: %s. Host: %s. Scheme name: %s. User name: %s",
+                properties.getProperty("db.type"), properties.getProperty("db.host"), properties.getProperty("db.name"), properties.getProperty("db.login"));
     }
 
     private static void checkProperties(Properties properties) {
@@ -45,7 +58,9 @@ public class PropertyUtils {
     }
 
     public static String toString(Properties properties) {
-
+        if (properties==null){
+            return null;
+        }
         final StringBuilder sb = new StringBuilder("Properties{").append("\n");
         for (final String name : properties.stringPropertyNames()) {
             sb.append(name).append(" : ").append(properties.getProperty(name)).append("\n");

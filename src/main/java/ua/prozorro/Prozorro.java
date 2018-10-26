@@ -169,6 +169,10 @@ public class Prozorro {
 
     public static PageContent getPageContent(URL pageURL) throws IOException, ParseException {
         String res = parseUrl(pageURL);
+        return getPageContent(pageURL, res);
+    }
+
+    public static PageContent getPageContent(URL pageURL, String res) throws ParseException {
         JSONObject jsonObj = (JSONObject) JSONValue.parseWithException(res);
         JSONObject joPageItem = (JSONObject) jsonObj.get("next_page");
         Page nextPage = new Page(joPageItem.get("path").toString(), joPageItem.get("uri").toString(), joPageItem.get("offset").toString());

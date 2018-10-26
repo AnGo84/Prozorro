@@ -20,7 +20,7 @@ import ua.prozorro.model.pages.PageElement;
 import ua.prozorro.sql.SQLConnection;
 import ua.prozorro.model.tenders.Tender;
 import ua.prozorro.utils.FileUtils;
-import ua.prozorro.utils.PropertyUtils;
+import ua.prozorro.utils.PropertiesUtils;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -86,8 +86,8 @@ public class Controller {
             //properties = Prozorro.getConnectionProperties("resources/Prozorro.properties");
 
 
-            properties = PropertyUtils.getPropertiesFromFile(propertiesFile);
-            logger.info(PropertyUtils.toString(properties));
+            properties = PropertiesUtils.getPropertiesFromFile(propertiesFile);
+            logger.info(PropertiesUtils.toString(properties));
 
             textArea.appendText("Открыт файл настроек: " + Prozorro.getPropertyText(properties) + "\n");
         } catch (IOException e) {

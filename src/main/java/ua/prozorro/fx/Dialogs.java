@@ -38,6 +38,9 @@ public class Dialogs {
             return false;
         }
     }
+    public static Boolean showConfirmDialog(DialogText dialogText) {
+        return showConfirmDialog(dialogText.getTitleText(),dialogText.getHeaderText(),dialogText.getContentText());
+    }
 
     public static void showErrorDialog(Exception ex, String titleText, String headerText, String contentText) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

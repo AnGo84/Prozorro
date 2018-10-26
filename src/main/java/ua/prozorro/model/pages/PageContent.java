@@ -47,9 +47,9 @@ public class PageContent {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("PageContent{");
-        sb.append("url=").append(url);
-        sb.append(", nextPage=").append(nextPage);
-        sb.append(", pageElementList=").append(pageElementList);
+        sb.append("url=").append(url).append('\n');
+        sb.append(", nextPage=").append(nextPage).append('\n');
+        sb.append(", pageElementList=").append(pageElementList).append('\n');
         sb.append('}');
         return sb.toString();
     }

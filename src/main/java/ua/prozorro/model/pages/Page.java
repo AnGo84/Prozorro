@@ -27,6 +27,9 @@ public class Page {
         this.url = url;
     }
 
+    public Page() {
+    }
+
     @Override
     public java.lang.String toString() {
         final StringBuilder sb = new StringBuilder("pages.Page{");
