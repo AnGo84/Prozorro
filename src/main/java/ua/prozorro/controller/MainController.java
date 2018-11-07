@@ -66,7 +66,7 @@ public class MainController {
 	@FXML
 	private void initialize() {
 		buttonGetPages.setTooltip(new Tooltip("Выбрать страницы за указанный период"));
-		buttonGetData.setTooltip(new Tooltip("Выбрать тендеры с отбранных страниц"));
+		buttonGetData.setTooltip(new Tooltip("Выбрать тендеры с отобранных страниц"));
 		textArea.appendText("Start" + "\n");
 		datePickerFrom.setValue(LocalDate.now());
 		datePickerTill.setValue(LocalDate.now());
@@ -228,14 +228,14 @@ public class MainController {
 								PageElement oldPage = (PageElement) sessionObj.get(PageElement.class, pageElement.getId());
 								if (oldPage==null){
 									sessionObj.save(pageElement);
-									textArea.appendText("Save pageElement" + pageElement + "\n");
+									//textArea.appendText("Save pageElement" + pageElement + "\n");
 									logger.info("Save pageElement" + pageElement + "\n");
 								}else if (!oldPage.equals(pageElement)) {
 									sessionObj.update(pageElement);
-									textArea.appendText("Update pageElement" + pageElement + "\n");
+									//textArea.appendText("Update pageElement" + pageElement + "\n");
 									logger.info("Update pageElement" + pageElement + "\n");
 								}else {
-									textArea.appendText("Ignore pageElement" + pageElement + "\n");
+									//textArea.appendText("Ignore pageElement" + pageElement + "\n");
 									logger.info("Ignore pageElement" + pageElement + "\n");
 								}
 
@@ -243,9 +243,9 @@ public class MainController {
 							} catch (Exception sqlException) {
 								if (null != sessionObj.getTransaction()) {
 
-									System.out.println("\n.......Transaction Is Being Rolled Back.......");
-									textArea.appendText("SQL exception: " + sqlException.getMessage() + "\n");
-									textArea.appendText(".......Transaction Is Being Rolled Back......." + "\n");
+									//System.out.println("\n.......Transaction Is Being Rolled Back.......");
+									//textArea.appendText("SQL exception: " + sqlException.getMessage() + "\n");
+									//textArea.appendText(".......Transaction Is Being Rolled Back......." + "\n");
 									logger.info("SQL exception: " + sqlException.getMessage() + "\n");
 									logger.info(".......Transaction Is Being Rolled Back......." + "\n");
 									sessionObj.getTransaction().rollback();
