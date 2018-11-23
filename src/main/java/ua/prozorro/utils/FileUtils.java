@@ -1,8 +1,6 @@
 package ua.prozorro.utils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -152,4 +150,19 @@ public class FileUtils {
         return directoryName + File.separator + fileName;
     }
 
+    public static String parseUrl(URL url) throws IOException {
+        if (url == null) {
+            return "";
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        // открываем соедиение к указанному URL
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()))) {
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                stringBuilder.append(inputLine);
+//                System.out.println(inputLine);
+            }
+        }
+        return stringBuilder.toString();
+    }
 }
