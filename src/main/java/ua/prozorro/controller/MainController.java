@@ -16,7 +16,9 @@ import ua.prozorro.fx.Dialogs;
 import ua.prozorro.model.pages.PageContent;
 import ua.prozorro.model.pages.PageElement;
 import ua.prozorro.model.tenders.Tender;
+import ua.prozorro.service.PageElementService;
 import ua.prozorro.utils.Common;
+import ua.prozorro.utils.DateUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,7 +69,9 @@ public class MainController {
 	private void initialize() {
 		buttonGetPages.setTooltip(new Tooltip("Выбрать страницы за указанный период"));
 		buttonGetData.setTooltip(new Tooltip("Выбрать тендеры с отобранных страниц"));
+
 		textArea.appendText("Start" + "\n");
+
 		datePickerFrom.setValue(LocalDate.now());
 		datePickerTill.setValue(LocalDate.now());
 
@@ -98,7 +102,10 @@ public class MainController {
 */
 
 	public void onChoosePages(ActionEvent actionEvent) {
-		if (checkInputDate()) {
+		String checkDate = DateUtil.checkDatesForPeriod(datePickerFrom.getValue(),datePickerTill.getValue());
+
+		if ( checkDate==null)
+		{
 			buttonGetData.setDisable(true);
 			dateFrom = Date.from(datePickerFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 			dateTill = Date.from(datePickerTill.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
@@ -109,12 +116,15 @@ public class MainController {
 				@Override
 				protected Integer call() throws Exception {
 //                    System.out.println(buttonGetPages.getScene().getClass().toString());
+
 					buttonGetPages.getParent().getParent().setDisable(true);
 					buttonGetPages.getParent().getScene().setCursor(Cursor.WAIT); //Change cursor to wait style
 					try {
 						pageContentList = Prozorro.getPagesList(dateFrom, dateTill);
-						textArea.appendText("Найдено страниц с тендерами: " + pageContentList.size() + "\n");
+
 						approximatelyTime = Prozorro.getTextTime(Prozorro.getAvgParsingSize(pageContentList.get(0), dateTill) * pageContentList.size());
+
+						textArea.appendText("Найдено страниц с тендерами: " + pageContentList.size() + "\n");
 						//buttonGetData.setDisable(false);
 						if (pageContentList != null && !pageContentList.isEmpty() && prozorroApp.getSession() != null) {
 							buttonGetData.setDisable(false);
@@ -133,6 +143,10 @@ public class MainController {
 //            th.setDaemon(true);
 			th.start();
 		}
+		else {
+			Dialogs.showMessage(Alert.AlertType.WARNING, "Предупреждение", "Даты установлены не верно!", checkDate);
+			datePickerFrom.requestFocus();
+		}
 		/*else {
 			textArea.appendText("Нет подключения к БД. Зачем работать?");
 			Dialogs.showMessage(Alert.AlertType.WARNING, "Предупреждение", "Нет подключения к БД!", "Нет подключения к БД. Зачем работать!");
@@ -140,7 +154,7 @@ public class MainController {
 
 	}
 
-	private Boolean checkInputDate() {
+/*	private Boolean checkInputDate() {
 		if (datePickerFrom.getValue() == null) {
 			Dialogs.showMessage(Alert.AlertType.WARNING, "Предупреждение", "Дата \"С\" не установлена!", "Дата \"С\" не может быть пустой!");
 			datePickerFrom.requestFocus();
@@ -157,7 +171,7 @@ public class MainController {
 			return false;
 		}
 		return true;
-	}
+	}*/
 
 
 	public void onGetData(ActionEvent actionEvent) {
@@ -221,38 +235,8 @@ public class MainController {
 							textArea.appendText(e.getMessage() + "\n");
 						}
 					}*/
-						for (PageElement pageElement : pageContent.getPageElementList()) {
-							try {
-								sessionObj.beginTransaction();
-								//sessionObj.saveOrUpdate(pageElement);
-								PageElement oldPage = (PageElement) sessionObj.get(PageElement.class, pageElement.getId());
-								if (oldPage==null){
-									sessionObj.save(pageElement);
-									//textArea.appendText("Save pageElement" + pageElement + "\n");
-									logger.info("Save pageElement" + pageElement + "\n");
-								}else if (!oldPage.equals(pageElement)) {
-									sessionObj.update(pageElement);
-									//textArea.appendText("Update pageElement" + pageElement + "\n");
-									logger.info("Update pageElement" + pageElement + "\n");
-								}else {
-									//textArea.appendText("Ignore pageElement" + pageElement + "\n");
-									logger.info("Ignore pageElement" + pageElement + "\n");
-								}
-
-								sessionObj.getTransaction().commit();
-							} catch (Exception sqlException) {
-								if (null != sessionObj.getTransaction()) {
-
-									//System.out.println("\n.......Transaction Is Being Rolled Back.......");
-									//textArea.appendText("SQL exception: " + sqlException.getMessage() + "\n");
-									//textArea.appendText(".......Transaction Is Being Rolled Back......." + "\n");
-									logger.info("SQL exception: " + sqlException.getMessage() + "\n");
-									logger.info(".......Transaction Is Being Rolled Back......." + "\n");
-									sessionObj.getTransaction().rollback();
-
-								}
-							}
-						}
+						PageElementService pageElementService = new PageElementService(sessionObj);
+						pageElementService.savePageElementList(pageContent.getPageElementList());
 
 
 						progressBar.setProgress(Double.valueOf(pageCount) / pageContents.size());
@@ -289,6 +273,8 @@ public class MainController {
 		};
 		return task;
 	}
+
+
 
 	public void onParsePage(ActionEvent actionEvent) {
 		if (urlConnection) {

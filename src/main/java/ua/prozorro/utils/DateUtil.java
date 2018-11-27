@@ -222,4 +222,32 @@ public class DateUtil {
 		return simpleDateFormat.parse(simpleDateFormat.format(date));
 	}
 
+
+	public static String checkDatesForPeriod(Date dateFrom, Date dateTill) {
+		if (dateFrom == null) {
+			return "Дата \"С\" не может быть пустой!";
+		}
+		if (dateTill == null) {
+			return "Дата \"ПО\" не может быть пустой!";
+
+		}
+		if (dateFrom.compareTo(dateTill) > 0) {
+			return "Дата \"С\" не может быть больше даты \"ПО\"!";
+		}
+		return null;
+	}
+
+	public static String checkDatesForPeriod(LocalDate dateFrom, LocalDate dateTill) {
+		if (dateFrom == null) {
+			return "Дата \"С\" не может быть пустой!";
+		}
+		if (dateTill == null) {
+			return "Дата \"ПО\" не может быть пустой!";
+
+		}
+		if (dateFrom.compareTo(dateTill) > 0) {
+			return "Дата \"С\" не может быть больше даты \"ПО\"!";
+		}
+		return null;
+	}
 }
