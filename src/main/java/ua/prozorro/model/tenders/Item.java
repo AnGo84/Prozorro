@@ -1,105 +1,97 @@
 package ua.prozorro.model.tenders;
 
-/**
- * Created by AnGo on 30.10.2016.
- */
+import com.google.gson.annotations.SerializedName;
+
 public class Item {
-    private String id;
-    private String description;
-    private String scheme;
-    private String schemeDescription;
-    private String schemeId;
-    private String unitCode;
-    private String unitName;
-    private String quantity;
-    private String additionalClassifications;
+	@SerializedName("description")
+	//@Expose
+	private String description;
+	@SerializedName("classification")
+	//@Expose
+	private Classification classification;
+	@SerializedName("deliveryAddress")
+	//@Expose
+	private Address deliveryAddress;
+	@SerializedName("deliveryDate")
+	//@Expose
+	private Period deliveryDate;
+	@SerializedName("id")
+	//@Expose
+	private String id;
+	@SerializedName("unit")
+	//@Expose
+	private Unit unit;
+	@SerializedName("quantity")
+	//@Expose
+	private int quantity;
 
+	public String getDescription() {
+		return description;
+	}
 
-    public String getId() {
-        return id;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public Classification getClassification() {
+		return classification;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public void setClassification(Classification classification) {
+		this.classification = classification;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public Address getDeliveryAddress() {
+		return deliveryAddress;
+	}
 
-    public String getScheme() {
-        return scheme;
-    }
+	public void setDeliveryAddress(Address deliveryAddress) {
+		this.deliveryAddress = deliveryAddress;
+	}
 
-    public void setScheme(String scheme) {
-        this.scheme = scheme;
-    }
+	public Period getDeliveryDate() {
+		return deliveryDate;
+	}
 
-    public String getSchemeDescription() {
-        return schemeDescription;
-    }
+	public void setDeliveryDate(Period deliveryDate) {
+		this.deliveryDate = deliveryDate;
+	}
 
-    public void setSchemeDescription(String schemeDescription) {
-        this.schemeDescription = schemeDescription;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public String getSchemeId() {
-        return schemeId;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setSchemeId(String schemeId) {
-        this.schemeId = schemeId;
-    }
+	public Unit getUnit() {
+		return unit;
+	}
 
-    public String getUnitCode() {
-        return unitCode;
-    }
+	public void setUnit(Unit unit) {
+		this.unit = unit;
+	}
 
-    public void setUnitCode(String unitCode) {
-        this.unitCode = unitCode;
-    }
+	public int getQuantity() {
+		return quantity;
+	}
 
-    public String getUnitName() {
-        return unitName;
-    }
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
 
-    public void setUnitName(String unitName) {
-        this.unitName = unitName;
-    }
-
-    public String getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(String quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getAdditionalClassifications() {
-        return additionalClassifications;
-    }
-
-    public void setAdditionalClassifications(String additionalClassifications) {
-        this.additionalClassifications = additionalClassifications;
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("tenders.Item{");
-        sb.append("id='").append(id).append('\'');
-        sb.append(", description='").append(description).append('\'');
-        sb.append(", scheme='").append(scheme).append('\'');
-        sb.append(", schemeDescription='").append(schemeDescription).append('\'');
-        sb.append(", schemeId='").append(schemeId).append('\'');
-        sb.append(", unitCode='").append(unitCode).append('\'');
-        sb.append(", unitName='").append(unitName).append('\'');
-        sb.append(", quantity='").append(quantity).append('\'');
-        sb.append(", additionalClassifications='").append(additionalClassifications).append('\'');
-        sb.append('}');
-        return sb.toString();
-    }
+	@Override
+	public String toString() {
+		final StringBuffer sb = new StringBuffer("Item{");
+		sb.append("description='").append(description).append('\'');
+		sb.append(", classification=").append(classification);
+		sb.append(", deliveryAddress=").append(deliveryAddress);
+		sb.append(", deliveryDate=").append(deliveryDate);
+		sb.append(", id='").append(id).append('\'');
+		sb.append(", unit=").append(unit);
+		sb.append(", quantity=").append(quantity);
+		sb.append('}');
+		return sb.toString();
+	}
 }

@@ -12,13 +12,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ua.prozorro.ProzorroApp;
 import ua.prozorro.fx.DialogText;
-import ua.prozorro.utils.Common;
+import ua.prozorro.model.pages.PageContentURL;
+import ua.prozorro.model.tenders.TenderOld;
 import ua.prozorro.fx.Dialogs;
 import ua.prozorro.Prozorro;
-import ua.prozorro.model.pages.PageContent;
 import ua.prozorro.model.pages.PageElement;
 import ua.prozorro.sql.SQLConnection;
-import ua.prozorro.model.tenders.Tender;
 import ua.prozorro.utils.FileUtils;
 import ua.prozorro.utils.PropertiesUtils;
 
@@ -48,7 +47,7 @@ public class Controller {
 
     int allTenders;
 
-    private List<PageContent> pageContentList = null;
+    private List<PageContentURL> pageContentList = null;
     @FXML
     private Button buttonGetPages;
     @FXML
@@ -217,7 +216,7 @@ public class Controller {
         }
     }
 
-    private Task getTendersTask(List<PageContent> pageContents) {
+    private Task getTendersTask(List<PageContentURL> pageContents) {
         progressBar.setProgress(0);
         progressIndicator.setProgress(0);
         Task task = new Task() {
@@ -228,8 +227,8 @@ public class Controller {
                 int findTenders = 0;
                 buttonGetTenders.getParent().getParent().setDisable(true);
                 buttonGetTenders.getParent().getScene().setCursor(Cursor.WAIT); //Change cursor to wait style
-                for (PageContent pageContent : pageContents) {
-                    List<Tender> tenderList = null;
+                for (PageContentURL pageContent : pageContents) {
+                    List<TenderOld> tenderList = null;
                     try {
                         tenderList = Prozorro.getTendersFromPage(pageContent, dateTill);
                     } catch (IOException e) {
@@ -280,7 +279,7 @@ public class Controller {
                     @Override
                     public void run() {
                         try {
-                            PageContent pageContent = Prozorro.getPageContent(new URL(inputText));
+                            PageContentURL pageContent = Prozorro.getPageContent(new URL(inputText));
                             for (PageElement pageElement : pageContent.getPageElementList()) {
                                 textArea.appendText(pageElement.toString() + "\n");
                             }
@@ -297,7 +296,7 @@ public class Controller {
                 });
 
 //                try {
-//                    PageContent pageContent = getPageContent(new URL(inputText));
+//                    PageContentURL pageContent = getPageContentFromStringJSON(new URL(inputText));
 //                    for (PageElement pageElement : pageContent.getPageElementList()) {
 //                        textArea.appendText(pageElement.toString() + "\n");
 //                    }
@@ -335,7 +334,7 @@ public class Controller {
                     @Override
                     public void run() {
                         try {
-                            Tender tender = Prozorro.getTender(inputText);
+                            TenderOld tender = Prozorro.getTender(inputText);
                             textArea.appendText(tender.toString() + "\n");
                         } catch (IOException e) {
                             textArea.appendText(e.getMessage() + "\n");
@@ -347,7 +346,7 @@ public class Controller {
             }
 
 //            try {
-//                Tender tender = getTender(inputText);
+//                TenderOld tender = getTender(inputText);
 //                textArea.appendText(tender.toString() + "\n");
 //            } catch (IOException e) {
 //                textArea.appendText(e.getMessage() + "\n");
@@ -367,7 +366,7 @@ public class Controller {
         if (file != null) {
             textArea.appendText("Выбран  файл для сохранения журнала: " + file.getAbsoluteFile() + "\n");
             try {
-                Common.SaveToFile(textArea.getText(), file);
+                FileUtils.SaveToFile(textArea.getText(), file);
             } catch (IOException e) {
                 Dialogs.showMessage(Alert.AlertType.WARNING, "Ошибка сохранения", "Ошибка при попытке сохранить файл " + file.getAbsoluteFile(), e.getMessage());
             }

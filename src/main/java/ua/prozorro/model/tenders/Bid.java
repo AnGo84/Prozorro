@@ -12,7 +12,10 @@ public class Bid {
     private String date;
     private String participationUrl;
     private Value value;
-    private List<Organization> tenderers = new ArrayList<>();
+    private boolean selfEligible;
+    private boolean selfQualified;
+    private List<Document> documents = null;
+    private List<Organization> tenderers = null;
 
     public String getId() {
         return id;
@@ -54,6 +57,30 @@ public class Bid {
         this.value = value;
     }
 
+    public boolean isSelfEligible() {
+        return selfEligible;
+    }
+
+    public void setSelfEligible(boolean selfEligible) {
+        this.selfEligible = selfEligible;
+    }
+
+    public boolean isSelfQualified() {
+        return selfQualified;
+    }
+
+    public void setSelfQualified(boolean selfQualified) {
+        this.selfQualified = selfQualified;
+    }
+
+    public List<Document> getDocuments() {
+        return documents;
+    }
+
+    public void setDocuments(List<Document> documents) {
+        this.documents = documents;
+    }
+
     public List<Organization> getTenderers() {
         return tenderers;
     }
@@ -64,12 +91,15 @@ public class Bid {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("tenders.Bid{");
+        final StringBuffer sb = new StringBuffer("Bid{");
         sb.append("id='").append(id).append('\'');
         sb.append(", status='").append(status).append('\'');
         sb.append(", date='").append(date).append('\'');
         sb.append(", participationUrl='").append(participationUrl).append('\'');
         sb.append(", value=").append(value);
+        sb.append(", selfEligible=").append(selfEligible);
+        sb.append(", selfQualified=").append(selfQualified);
+        sb.append(", documents=").append(documents);
         sb.append(", tenderers=").append(tenderers);
         sb.append('}');
         return sb.toString();

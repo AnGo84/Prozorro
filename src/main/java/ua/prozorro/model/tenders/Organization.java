@@ -1,13 +1,24 @@
 package ua.prozorro.model.tenders;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by AnGo on 28.11.2016.
  */
 public class Organization {
+    @SerializedName("name")
+    //@Expose
     private String name;
+    @SerializedName("contactPoint")
+    //@Expose
     private ContactPoint contactPoint;
+    @SerializedName("identifier")
+    //@Expose
     private Identifier identifier;
+    @SerializedName("address")
+    //@Expose
     private Address address;
+
 
     public String getName() {
         return name;

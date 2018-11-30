@@ -15,15 +15,12 @@ import org.hibernate.SessionFactory;
 import ua.prozorro.controller.MainController;
 import ua.prozorro.fx.DialogText;
 import ua.prozorro.fx.Dialogs;
-import ua.prozorro.sql.DBConnection;
 import ua.prozorro.sql.HibernateUtils;
 import ua.prozorro.utils.FileUtils;
 import ua.prozorro.utils.PropertiesUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Properties;
 
 public class ProzorroApp extends Application {
@@ -32,12 +29,22 @@ public class ProzorroApp extends Application {
 	private static final String CONFIG_FILE_NAME = "Prozorro.properties";
 	private static final Logger logger = LogManager.getRootLogger();
 
-	/*private Properties properties = null;
-	private Connection connection = null;*/
 	private Session session;
 
 	private Stage primaryStage;
 	private BorderPane root;
+
+	private Properties properties = new Properties();
+
+	public static void main(String[] args) {
+		logger.info("Start");
+		launch(args);
+		logger.info("Close");
+	}
+
+	public static String getAppName() {
+		return APP_NAME;
+	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -48,16 +55,20 @@ public class ProzorroApp extends Application {
 		this.primaryStage = primaryStage;
 
 		File propertiesFile = FileUtils.getFileWithName(this.getClass(), CONFIG_FILE_NAME);
-		/*properties = PropertiesUtils.getPropertiesFromFile(propertiesFile);
-		logger.info(PropertiesUtils.getDBPropertyText(properties));*/
+		logger.info("property File: " + propertiesFile);
 
-		/*try {
-			connection = DBConnection.getDBConnection(properties);
-		} catch (SQLException e) {
-			Dialogs.showErrorDialog(e, new DialogText("Application start error", "Error with Database connection",
-					                                         "Can't connect to DataBase '" +
-							                                         properties.getProperty("db.type") + "'. Check properties file " + propertiesFile.getPath()), logger);
-		}*/
+		try {
+			properties = PropertiesUtils.getPropertiesFromFile(propertiesFile);
+
+			for (String prop : properties.stringPropertyNames()) {
+				logger.info("Prop: " + prop + " | value: " + properties.getProperty(prop));
+			}
+
+		} catch (IOException e) {
+//            e.printStackTrace();
+			Dialogs.showErrorDialog(e,
+					new DialogText("Application start error", "Error with resource's file", "Can't find resource's file '" + CONFIG_FILE_NAME + "'"), logger);
+		}
 
 		initMainView();
 
@@ -111,19 +122,12 @@ public class ProzorroApp extends Application {
 		return false;
 	}
 
-
-	public static void main(String[] args) {
-		logger.info("Start");
-		launch(args);
-		logger.info("Close");
-	}
-
-	public static String getAppName() {
-		return APP_NAME;
-	}
-
 	public Stage getPrimaryStage() {
 		return primaryStage;
+	}
+
+	public BorderPane getRoot() {
+		return root;
 	}
 
 	public Session getSession() {

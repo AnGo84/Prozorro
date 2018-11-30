@@ -1,15 +1,15 @@
-package ua.prozorro.prozorro;
+package ua.prozorro.prozorro.JSONPareser;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.ParseException;
-import ua.prozorro.model.pages.PageContent;
+import ua.prozorro.model.pages.PageContentURL;
 import ua.prozorro.model.pages.PageElement;
 import ua.prozorro.model.tenders.*;
-import ua.prozorro.utils.DateUtil;
+import ua.prozorro.utils.DateUtils;
 import ua.prozorro.utils.FileUtils;
-import ua.prozorro.utils.ParseUtil;
+import ua.prozorro.utils.ParseUtils;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -22,22 +22,22 @@ public class TenderService {
 
 	private static final String TENDER_START_PATH = "https://public.api.openprocurement.org/api/0/tenders/";
 
-	public static List<Tender> getTendersFromPage(PageContent pageContent, Date dateTill) throws IOException, java.text.ParseException {
+	public static List<TenderOld> getTendersFromPage(PageContentURL pageContent, Date dateTill) throws IOException, java.text.ParseException {
 		if (dateTill == null) {
-			dateTill = DateUtil.addDaysToDate(DateUtil.parseDateToFormate(new Date(), DateUtil.DATE_PROZORRO_SHORT_FORMAT),1);
+			dateTill = DateUtils.addDaysToDate(DateUtils.parseDateToFormate(new Date(), DateUtils.DATE_PROZORRO_SHORT_FORMAT),1);
 		}
-		List<Tender> tenderList = new ArrayList<>();
+		List<TenderOld> tenderList = new ArrayList<>();
 		for (PageElement pageElement : pageContent.getPageElementList()) {
-			Tender tender = getTender(pageElement.getId());
-			if (dateTill.compareTo(DateUtil.parseDateFromString(tender.getDateModified(), DateUtil.DATE_PROZORRO_SHORT_FORMAT)) >= 0) {
+			TenderOld tender = getTender(pageElement.getId());
+			if (dateTill.compareTo(DateUtils.parseDateFromString(tender.getDateModified(), DateUtils.DATE_PROZORRO_SHORT_FORMAT)) >= 0) {
 				tenderList.add(tender);
 			} else break;
 		}
 		return tenderList;
 	}
 
-	public static Tender getTender(String tenderId) throws IOException {
-		Tender tender = new Tender(tenderId);
+	public static TenderOld getTender(String tenderId) throws IOException {
+		TenderOld tender = new TenderOld(tenderId);
 		URL currentURL;
 		try {
 			currentURL = new URL(TENDER_START_PATH.concat(tenderId));
@@ -45,31 +45,31 @@ public class TenderService {
 			JSONObject jsonObj = (JSONObject) JSONValue.parseWithException(res);
 			JSONObject joPageItem = (JSONObject) jsonObj.get("data");
 
-			tender.setProcurementMethod(ParseUtil.returnString(joPageItem.get("procurementMethod")));
-			tender.setStatus(ParseUtil.returnString(joPageItem.get("status")));
-			tender.setTenderID(ParseUtil.returnString(joPageItem.get("tenderID")));
+			tender.setProcurementMethod(ParseUtils.returnString(joPageItem.get("procurementMethod")));
+			tender.setStatus(ParseUtils.returnString(joPageItem.get("status")));
+			tender.setTenderID(ParseUtils.returnString(joPageItem.get("tenderID")));
 
 			tender.setTenderPeriod(getPeriod((JSONObject) joPageItem.get("tenderPeriod")));
 			tender.setAwardPeriod(getPeriod((JSONObject) joPageItem.get("awardPeriod")));
 			tender.setAuctionPeriod(getPeriod((JSONObject) joPageItem.get("auctionPeriod")));
 			tender.setEnquiryPeriod(getPeriod((JSONObject) joPageItem.get("enquiryPeriod")));
 
-			tender.setNumberOfBids(ParseUtil.returnString(joPageItem.get("numberOfBids")));
-			tender.setAuctionUrl(ParseUtil.returnString(joPageItem.get("auctionUrl")));
+			tender.setNumberOfBids(ParseUtils.returnString(joPageItem.get("numberOfBids")));
+			tender.setAuctionUrl(ParseUtils.returnString(joPageItem.get("auctionUrl")));
 
-			tender.setDescription(ParseUtil.returnString(joPageItem.get("description")));
-			tender.setTitle(ParseUtil.returnString(joPageItem.get("title")));
-			tender.setDateModified(ParseUtil.returnString(joPageItem.get("dateModified")));
+			tender.setDescription(ParseUtils.returnString(joPageItem.get("description")));
+			tender.setTitle(ParseUtils.returnString(joPageItem.get("title")));
+			tender.setDateModified(ParseUtils.returnString(joPageItem.get("dateModified")));
 
 			tender.setItemList(getItemsList((JSONArray) joPageItem.get("items")));
 
-			tender.setProcurementMethod(ParseUtil.returnString(joPageItem.get("procurementMethodType")));
+			tender.setProcurementMethod(ParseUtils.returnString(joPageItem.get("procurementMethodType")));
 
 			tender.setValue(getValue((JSONObject) joPageItem.get("value")));
 			tender.setMinimalStep(getValue((JSONObject) joPageItem.get("minimalStep")));
 
-			tender.setOwner(ParseUtil.returnString(joPageItem.get("owner")));
-			tender.setAwardCriteria(ParseUtil.returnString(joPageItem.get("awardCriteria")));
+			tender.setOwner(ParseUtils.returnString(joPageItem.get("owner")));
+			tender.setAwardCriteria(ParseUtils.returnString(joPageItem.get("awardCriteria")));
 
 			tender.setProcuringEntity(getOrganization((JSONObject) joPageItem.get("procuringEntity")));
 
@@ -88,8 +88,8 @@ public class TenderService {
 	private static Period getPeriod(JSONObject jsonObject) {
 		Period period = new Period();
 		if (jsonObject != null) {
-			period.setStartDate(ParseUtil.returnString(jsonObject.get("startDate")));
-			period.setEndDate(ParseUtil.returnString(jsonObject.get("endDate")));
+			period.setStartDate(ParseUtils.returnString(jsonObject.get("startDate")));
+			period.setEndDate(ParseUtils.returnString(jsonObject.get("endDate")));
 		} else {
 			period.setStartDate("");
 			period.setEndDate("");
@@ -97,28 +97,28 @@ public class TenderService {
 		return period;
 	}
 
-	private static List<Item> getItemsList(JSONArray itemsList) {
-		List<Item> itemList = new ArrayList<>();
+	private static List<ItemOld> getItemsList(JSONArray itemsList) {
+		List<ItemOld> itemList = new ArrayList<>();
 		if (itemsList != null) {
 			for (Object jsObj : itemsList) {
 				JSONObject joItem = (JSONObject) jsObj;
-				Item item = new Item();
-				item.setId(ParseUtil.returnString(joItem.get("id")));
-				item.setDescription(ParseUtil.returnString(joItem.get("description")));
+				ItemOld item = new ItemOld();
+				item.setId(ParseUtils.returnString(joItem.get("id")));
+				item.setDescription(ParseUtils.returnString(joItem.get("description")));
 
 				JSONObject joPageItemTemp = (JSONObject) joItem.get("classification");
 				if (joPageItemTemp != null) {
-					item.setScheme(ParseUtil.returnString(joPageItemTemp.get("scheme")));
-					item.setSchemeDescription(ParseUtil.returnString(joPageItemTemp.get("description")));
-					item.setSchemeId(ParseUtil.returnString(joPageItemTemp.get("id")));
+					item.setScheme(ParseUtils.returnString(joPageItemTemp.get("scheme")));
+					item.setSchemeDescription(ParseUtils.returnString(joPageItemTemp.get("description")));
+					item.setSchemeId(ParseUtils.returnString(joPageItemTemp.get("id")));
 				}
-				item.setAdditionalClassifications(ParseUtil.returnString(joItem.get("additionalClassifications")));
+				item.setAdditionalClassifications(ParseUtils.returnString(joItem.get("additionalClassifications")));
 				joPageItemTemp = (JSONObject) joItem.get("unit");
 				if (joPageItemTemp != null) {
-					item.setUnitCode(ParseUtil.returnString(joPageItemTemp.get("code")));
-					item.setUnitName(ParseUtil.returnString(joPageItemTemp.get("name")));
+					item.setUnitCode(ParseUtils.returnString(joPageItemTemp.get("code")));
+					item.setUnitName(ParseUtils.returnString(joPageItemTemp.get("name")));
 				}
-				item.setQuantity(ParseUtil.returnString(joItem.get("quantity")));
+				item.setQuantity(ParseUtils.returnString(joItem.get("quantity")));
 				itemList.add(item);
 			}
 		}
@@ -128,9 +128,9 @@ public class TenderService {
 	private static Value getValue(JSONObject jsonObject) {
 		Value value = new Value();
 		if (jsonObject != null) {
-			value.setCurrency(ParseUtil.returnString(jsonObject.get("currency")));
-			value.setAmount(ParseUtil.returnString(jsonObject.get("amount")));
-			value.setValueAddedTaxIncluded(ParseUtil.returnString(jsonObject.get("valueAddedTaxIncluded")));
+			value.setCurrency(ParseUtils.returnString(jsonObject.get("currency")));
+			value.setAmount(ParseUtils.returnString(jsonObject.get("amount")));
+			value.setValueAddedTaxIncluded(ParseUtils.returnString(jsonObject.get("valueAddedTaxIncluded")));
 		}
 		return value;
 	}
@@ -138,7 +138,7 @@ public class TenderService {
 	private static Organization getOrganization(JSONObject jsonObject) {
 		Organization organization = new Organization();
 		if (jsonObject != null) {
-			organization.setName(ParseUtil.returnString(jsonObject.get("name")));
+			organization.setName(ParseUtils.returnString(jsonObject.get("name")));
 			organization.setAddress(getAddress((JSONObject) jsonObject.get("address")));
 			organization.setContactPoint(getContactPoint((JSONObject) jsonObject.get("contactPoint")));
 			organization.setIdentifier(getIdentifier((JSONObject) jsonObject.get("identifier")));
@@ -149,11 +149,11 @@ public class TenderService {
 	private static Address getAddress(JSONObject jsonObject) {
 		Address address = new Address();
 		if (jsonObject != null) {
-			address.setPostalCode(ParseUtil.returnString(jsonObject.get("postalCode")));
-			address.setCountryName(ParseUtil.returnString(jsonObject.get("countryName")));
-			address.setLocality(ParseUtil.returnString(jsonObject.get("locality")));
-			address.setRegion(ParseUtil.returnString(jsonObject.get("region")));
-			address.setStreetAddress(ParseUtil.returnString(jsonObject.get("streetAddress")));
+			address.setPostalCode(ParseUtils.returnString(jsonObject.get("postalCode")));
+			address.setCountryName(ParseUtils.returnString(jsonObject.get("countryName")));
+			address.setLocality(ParseUtils.returnString(jsonObject.get("locality")));
+			address.setRegion(ParseUtils.returnString(jsonObject.get("region")));
+			address.setStreetAddress(ParseUtils.returnString(jsonObject.get("streetAddress")));
 		}
 		return address;
 	}
@@ -161,10 +161,10 @@ public class TenderService {
 	private static Identifier getIdentifier(JSONObject jsonObject) {
 		Identifier identifier = new Identifier();
 		if (jsonObject != null) {
-			identifier.setScheme(ParseUtil.returnString(jsonObject.get("scheme")));
-			identifier.setId(ParseUtil.returnString(jsonObject.get("id")));
-			identifier.setUri(ParseUtil.returnString(jsonObject.get("uri")));
-			identifier.setLegalName(ParseUtil.returnString(jsonObject.get("legalName")));
+			identifier.setScheme(ParseUtils.returnString(jsonObject.get("scheme")));
+			identifier.setId(ParseUtils.returnString(jsonObject.get("id")));
+			identifier.setUri(ParseUtils.returnString(jsonObject.get("uri")));
+			identifier.setLegalName(ParseUtils.returnString(jsonObject.get("legalName")));
 		}
 		return identifier;
 	}
@@ -172,10 +172,10 @@ public class TenderService {
 	private static ContactPoint getContactPoint(JSONObject jsonObject) {
 		ContactPoint contactPoint = new ContactPoint();
 		if (jsonObject != null) {
-			contactPoint.setTelephone(ParseUtil.returnString(jsonObject.get("telephone")));
-			contactPoint.setUrl(ParseUtil.returnString(jsonObject.get("url")));
-			contactPoint.setName(ParseUtil.returnString(jsonObject.get("name")));
-			contactPoint.setEmail(ParseUtil.returnString(jsonObject.get("email")));
+			contactPoint.setTelephone(ParseUtils.returnString(jsonObject.get("telephone")));
+			contactPoint.setUrl(ParseUtils.returnString(jsonObject.get("url")));
+			contactPoint.setName(ParseUtils.returnString(jsonObject.get("name")));
+			contactPoint.setEmail(ParseUtils.returnString(jsonObject.get("email")));
 		}
 		return contactPoint;
 	}
@@ -186,10 +186,10 @@ public class TenderService {
 			for (Object jsObj : itemsList) {
 				JSONObject joItem = (JSONObject) jsObj;
 				Bid bid = new Bid();
-				bid.setId(ParseUtil.returnString(joItem.get("id")));
-				bid.setStatus(ParseUtil.returnString(joItem.get("status")));
-				bid.setDate(ParseUtil.returnString(joItem.get("date")));
-				bid.setParticipationUrl(ParseUtil.returnString(joItem.get("participationUrl")));
+				bid.setId(ParseUtils.returnString(joItem.get("id")));
+				bid.setStatus(ParseUtils.returnString(joItem.get("status")));
+				bid.setDate(ParseUtils.returnString(joItem.get("date")));
+				bid.setParticipationUrl(ParseUtils.returnString(joItem.get("participationUrl")));
 				bid.setValue(getValue((JSONObject) joItem.get("value")));
 				bid.setTenderers(getOrganizationsList((JSONArray) joItem.get("tenderers")));
 
@@ -205,10 +205,10 @@ public class TenderService {
 			for (Object jsObj : itemsList) {
 				JSONObject joItem = (JSONObject) jsObj;
 				Award award = new Award();
-				award.setId(ParseUtil.returnString(joItem.get("id")));
-				award.setStatus(ParseUtil.returnString(joItem.get("status")));
-				award.setDate(ParseUtil.returnString(joItem.get("date")));
-				award.setBidId(ParseUtil.returnString(joItem.get("bid_id")));
+				award.setId(ParseUtils.returnString(joItem.get("id")));
+				award.setStatus(ParseUtils.returnString(joItem.get("status")));
+				award.setDate(ParseUtils.returnString(joItem.get("date")));
+				award.setBidId(ParseUtils.returnString(joItem.get("bid_id")));
 				award.setValue(getValue((JSONObject) joItem.get("value")));
 				award.setSuppliers(getOrganizationsList((JSONArray) joItem.get("suppliers")));
 				award.setComplaintPeriod(getPeriod((JSONObject) joItem.get("complaintPeriod")));
@@ -224,9 +224,9 @@ public class TenderService {
 			for (Object jsObj : itemsList) {
 				JSONObject joItem = (JSONObject) jsObj;
 				Contract contract = new Contract();
-				contract.setId(ParseUtil.returnString(joItem.get("id")));
-				contract.setAwardId(ParseUtil.returnString(joItem.get("awardID")));
-				contract.setStatus(ParseUtil.returnString(joItem.get("status")));
+				contract.setId(ParseUtils.returnString(joItem.get("id")));
+				contract.setAwardID(ParseUtils.returnString(joItem.get("awardID")));
+				contract.setStatus(ParseUtils.returnString(joItem.get("status")));
 
 				contractList.add(contract);
 			}
@@ -244,4 +244,5 @@ public class TenderService {
 		}
 		return list;
 	}
+
 }

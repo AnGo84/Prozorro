@@ -47,10 +47,10 @@ public class SQLConnection {
 	}
 
 
-	public static void insertTenders(Connection connection, List<Tender> tenderList) throws SQLException {
+	public static void insertTenders(Connection connection, List<TenderOld> tenderList) throws SQLException {
 		try (Statement statement = connection.createStatement()) {
 			// выполнить SQL запрос
-			for (Tender tender : tenderList) {
+			for (TenderOld tender : tenderList) {
 				String insertTableSQL = "INSERT INTO TENDERS(" +
 						                        "ID, TENDERID, status" +
 						                        ",procurementMethod,procurementMethodType" +
@@ -123,10 +123,10 @@ public class SQLConnection {
 	}
 
 
-	private static void insertItems(Connection connection, List<Item> itemList, String tenderID) throws SQLException {
+	private static void insertItems(Connection connection, List<ItemOld> itemList, String tenderID) throws SQLException {
 		try (Statement statement = connection.createStatement()) {
 			// выполнить SQL запрос
-			for (Item item : itemList) {
+			for (ItemOld item : itemList) {
 				String insertTableSQL = "INSERT INTO ITEMS(" +
 						                        "TENDERID, ID, description " +
 						                        ",scheme, schemeDescription, schemeId" +
@@ -251,7 +251,7 @@ public class SQLConnection {
 				String insertTableSQL = "INSERT INTO CONTRACTS(" +
 						                        "tenderid, ID, awardid, status " +
 						                        ")" +
-						                        " VALUES('" + tenderId + "','" + contract.getId() + "','" + contract.getAwardId() + "','" + contract.getStatus() +
+						                        " VALUES('" + tenderId + "','" + contract.getId() + "','" + contract.getAwardID() + "','" + contract.getStatus() +
 						                        "')";
 //                System.out.println(insertTableSQL);
 				statement.execute(insertTableSQL);

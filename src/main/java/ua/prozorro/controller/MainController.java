@@ -13,12 +13,12 @@ import org.hibernate.Session;
 import ua.prozorro.Prozorro;
 import ua.prozorro.ProzorroApp;
 import ua.prozorro.fx.Dialogs;
-import ua.prozorro.model.pages.PageContent;
+import ua.prozorro.model.pages.PageContentURL;
 import ua.prozorro.model.pages.PageElement;
-import ua.prozorro.model.tenders.Tender;
+import ua.prozorro.model.tenders.TenderOld;
 import ua.prozorro.service.PageElementService;
-import ua.prozorro.utils.Common;
-import ua.prozorro.utils.DateUtil;
+import ua.prozorro.utils.DateUtils;
+import ua.prozorro.utils.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,7 +43,7 @@ public class MainController {
 
 	int allTenders;
 
-	private List<PageContent> pageContentList = null;
+	private List<PageContentURL> pageContentList = null;
 
 	@FXML
 	private Button buttonGetPages;
@@ -102,7 +102,7 @@ public class MainController {
 */
 
 	public void onChoosePages(ActionEvent actionEvent) {
-		String checkDate = DateUtil.checkDatesForPeriod(datePickerFrom.getValue(),datePickerTill.getValue());
+		String checkDate = DateUtils.checkDatesForPeriod(datePickerFrom.getValue(),datePickerTill.getValue());
 
 		if ( checkDate==null)
 		{
@@ -117,6 +117,8 @@ public class MainController {
 				protected Integer call() throws Exception {
 //                    System.out.println(buttonGetPages.getScene().getClass().toString());
 
+					prozorroApp.getRoot().setDisable(true);
+
 					buttonGetPages.getParent().getParent().setDisable(true);
 					buttonGetPages.getParent().getScene().setCursor(Cursor.WAIT); //Change cursor to wait style
 					try {
@@ -125,7 +127,7 @@ public class MainController {
 						approximatelyTime = Prozorro.getTextTime(Prozorro.getAvgParsingSize(pageContentList.get(0), dateTill) * pageContentList.size());
 
 						textArea.appendText("Найдено страниц с тендерами: " + pageContentList.size() + "\n");
-						//buttonGetData.setDisable(false);
+
 						if (pageContentList != null && !pageContentList.isEmpty() && prozorroApp.getSession() != null) {
 							buttonGetData.setDisable(false);
 						}
@@ -136,12 +138,14 @@ public class MainController {
 					buttonGetPages.getParent().getScene().setCursor(Cursor.DEFAULT); //Change cursor to default style
 					buttonGetPages.getParent().getParent().setDisable(false);
 
+					prozorroApp.getRoot().setDisable(false);
 					return pageContentList.size();
 				}
 			};
 			Thread th = new Thread(task);
 //            th.setDaemon(true);
 			th.start();
+
 		}
 		else {
 			Dialogs.showMessage(Alert.AlertType.WARNING, "Предупреждение", "Даты установлены не верно!", checkDate);
@@ -197,7 +201,7 @@ public class MainController {
 		}
 	}
 
-	private Task getTendersTask(List<PageContent> pageContents) {
+	private Task getTendersTask(List<PageContentURL> pageContents) {
 		progressBar.setProgress(0);
 		progressIndicator.setProgress(0);
 		Task task = new Task() {
@@ -215,8 +219,8 @@ public class MainController {
 
 
 					//-------------------------------------------
-					for (PageContent pageContent : pageContents) {
-						List<Tender> tenderList = null;
+					for (PageContentURL pageContent : pageContents) {
+						List<TenderOld> tenderList = null;
 						try {
 							tenderList = Prozorro.getTendersFromPage(pageContent, dateTill);
 						} catch (IOException e) {
@@ -287,7 +291,7 @@ public class MainController {
 					@Override
 					public void run() {
 						try {
-							PageContent pageContent = Prozorro.getPageContent(new URL(inputText));
+							PageContentURL pageContent = Prozorro.getPageContent(new URL(inputText));
 							for (PageElement pageElement : pageContent.getPageElementList()) {
 								textArea.appendText(pageElement.toString() + "\n");
 							}
@@ -335,7 +339,7 @@ public class MainController {
 					@Override
 					public void run() {
 						try {
-							Tender tender = Prozorro.getTender(inputText);
+							TenderOld tender = Prozorro.getTender(inputText);
 							textArea.appendText(tender.toString() + "\n");
 						} catch (IOException e) {
 							textArea.appendText(e.getMessage() + "\n");
@@ -347,7 +351,7 @@ public class MainController {
 			}
 
 //            try {
-//                Tender tender = getTender(inputText);
+//                TenderOld tender = getTender(inputText);
 //                textArea.appendText(tender.toString() + "\n");
 //            } catch (IOException e) {
 //                textArea.appendText(e.getMessage() + "\n");
@@ -367,7 +371,7 @@ public class MainController {
 		if (file != null) {
 			textArea.appendText("Выбран  файл для сохранения журнала: " + file.getAbsoluteFile() + "\n");
 			try {
-				Common.SaveToFile(textArea.getText(), file);
+				FileUtils.SaveToFile(textArea.getText(), file);
 			} catch (IOException e) {
 				Dialogs.showMessage(Alert.AlertType.WARNING, "Ошибка сохранения", "Ошибка при попытке сохранить файл " + file.getAbsoluteFile(), e.getMessage());
 			}

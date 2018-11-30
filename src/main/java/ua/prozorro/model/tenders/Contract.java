@@ -1,28 +1,36 @@
 package ua.prozorro.model.tenders;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 /**
  * Created by AnGo on 09.02.2017.
  */
 public class Contract {
-    private String id;
-    private String awardId;
+    @SerializedName("status")
+    //@Expose
     private String status;
+    @SerializedName("items")
+    //@Expose
+    private List<ItemOld> items = null;
+    @SerializedName("suppliers")
+    //@Expose
+    public List<Supplier> suppliers = null;
+    @SerializedName("value")
+    //@Expose
+    public Value value;
 
-    public String getId() {
-        return id;
-    }
+    @SerializedName("awardID")
+    //@Expose
+    public String awardID;
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getAwardId() {
-        return awardId;
-    }
-
-    public void setAwardId(String awardId) {
-        this.awardId = awardId;
-    }
+    @SerializedName("id")
+    //@Expose
+    public String id;
+    @SerializedName("contractID")
+    //@Expose
+    public String contractID;
 
     public String getStatus() {
         return status;
@@ -32,12 +40,64 @@ public class Contract {
         this.status = status;
     }
 
+    public List<ItemOld> getItems() {
+        return items;
+    }
+
+    public void setItems(List<ItemOld> items) {
+        this.items = items;
+    }
+
+    public List<Supplier> getSuppliers() {
+        return suppliers;
+    }
+
+    public void setSuppliers(List<Supplier> suppliers) {
+        this.suppliers = suppliers;
+    }
+
+    public Value getValue() {
+        return value;
+    }
+
+    public void setValue(Value value) {
+        this.value = value;
+    }
+
+    public String getAwardID() {
+        return awardID;
+    }
+
+    public void setAwardID(String awardID) {
+        this.awardID = awardID;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getContractID() {
+        return contractID;
+    }
+
+    public void setContractID(String contractID) {
+        this.contractID = contractID;
+    }
+
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("tenders.Contract{");
-        sb.append("id='").append(id).append('\'');
-        sb.append(", awardId='").append(awardId).append('\'');
-        sb.append(", status='").append(status).append('\'');
+        final StringBuffer sb = new StringBuffer("Contract{");
+        sb.append("status='").append(status).append('\'');
+        sb.append(", items=").append(items);
+        sb.append(", suppliers=").append(suppliers);
+        sb.append(", value=").append(value);
+        sb.append(", awardID='").append(awardID).append('\'');
+        sb.append(", id='").append(id).append('\'');
+        sb.append(", contractID='").append(contractID).append('\'');
         sb.append('}');
         return sb.toString();
     }

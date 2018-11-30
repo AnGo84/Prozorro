@@ -16,7 +16,7 @@ import java.util.Date;
 /**
  * Created by AnGo on 08.06.2017.
  */
-public class DateUtil {
+public class DateUtils {
 	//    private static final String DATE_PATTERN = "dd.MM.yyyy hh:mm:ss";
 	//"(0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])[/](19|20)\d\d ([0-9]|1[0-1]):[0-5][0-9](:[0-5][0-9])? ?[APap][mM]$"
 	private static final String DATE_PATTERN = "dd.MM.yyyy";
@@ -33,7 +33,7 @@ public class DateUtil {
 
 	/**
 	 * Возвращает полученную дату в виде хорошо отформатированной строки.
-	 * Используется определённый выше {@link DateUtil#DATE_PATTERN}.
+	 * Используется определённый выше {@link DateUtils#DATE_PATTERN}.
 	 *
 	 * @param date - дата, которая будет возвращена в виде строки
 	 * @return отформатированную строку
@@ -47,7 +47,7 @@ public class DateUtil {
 
 	/**
 	 * Возвращает полученную дату в виде хорошо отформатированной строки.
-	 * Используется определённый выше {@link DateUtil#DATE_PATTERN}.
+	 * Используется определённый выше {@link DateUtils#DATE_PATTERN}.
 	 *
 	 * @param date         - дата, которая будет возвращена в виде строки ,
 	 * @param defaultValue - значение, которое вернуть,
@@ -64,7 +64,7 @@ public class DateUtil {
 
 	/**
 	 * Возвращает полученную дату в виде хорошо отформатированной строки.
-	 * Используется определённый выше {@link DateUtil#DATE_PATTERN}.
+	 * Используется определённый выше {@link DateUtils#DATE_PATTERN}.
 	 *
 	 * @param date - дата, которая будет возвращена в виде строки
 	 * @return отформатированную строку
@@ -78,7 +78,7 @@ public class DateUtil {
 
 	/**
 	 * Преобразует строку, которая отформатирована по правилам
-	 * шаблона {@link DateUtil#DATE_PATTERN} в объект {@link LocalDate}.
+	 * шаблона {@link DateUtils#DATE_PATTERN} в объект {@link LocalDate}.
 	 * <p>
 	 * Возвращает null, если строка не может быть преобразована.
 	 *
@@ -96,7 +96,7 @@ public class DateUtil {
 
 	/**
 	 * Преобразует строку, которая отформатирована по правилам
-	 * шаблона {@link DateUtil#DATE_PATTERN} в объект {@link LocalDateTime}.
+	 * шаблона {@link DateUtils#DATE_PATTERN} в объект {@link LocalDateTime}.
 	 * <p>
 	 * Возвращает null, если строка не может быть преобразована.
 	 *
@@ -119,7 +119,7 @@ public class DateUtil {
 	 */
 	public static boolean validDate(String dateString) {
 		// Пытаемся разобрать строку.
-		return DateUtil.parseToLocalDate(dateString) != null;
+		return DateUtils.parseToLocalDate(dateString) != null;
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class DateUtil {
 	 * @return true, если строка является корректной датой
 	 */
 	public static String getValidStringDate(String dateString, String defaultValue) {
-		return (DateUtil.parseToLocalDate(dateString) != null ? dateString : defaultValue);
+		return (DateUtils.parseToLocalDate(dateString) != null ? dateString : defaultValue);
 	}
 
 	public static LocalDateTime getLocalDateTime(Date date) {

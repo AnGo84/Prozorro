@@ -1,9 +1,12 @@
 package ua.prozorro.utils;
 
+import org.apache.commons.io.IOUtils;
+
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.Charset;
 
 /**
  * Created by AnGo on 30.05.2017.
@@ -164,5 +167,16 @@ public class FileUtils {
             }
         }
         return stringBuilder.toString();
+    }
+
+    public static void SaveToFile(String content, File file) throws IOException {
+        FileWriter fileWriter = new FileWriter(file);
+        fileWriter.write(content);
+        fileWriter.close();
+
+    }
+
+    public static String getStringFromURL(String url) throws IOException {
+        return IOUtils.toString(new URL(url), Charset.forName("UTF-8"));
     }
 }

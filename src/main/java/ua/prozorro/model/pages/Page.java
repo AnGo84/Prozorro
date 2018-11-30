@@ -1,5 +1,8 @@
 package ua.prozorro.model.pages;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -8,56 +11,49 @@ import java.net.URL;
  * Created by AnGo on 22.10.2016.
  */
 public class Page {
+
+    @SerializedName("path")
+    //@Expose
     private String path;
-    private URL url;
+    @SerializedName("uri")
+    //@Expose
+    private String uri;
+    @SerializedName("offset")
+    //@Expose
     private String offset;
-
-    public Page(String path, String url, String offset) {
-        this.path = path;
-        this.url = null;
-        try {
-            this.url = new URL(url);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        this.offset = offset;
-    }
-
-    public Page(URL url) {
-        this.url = url;
-    }
-
-    public Page() {
-    }
-
-    @Override
-    public java.lang.String toString() {
-        final StringBuilder sb = new StringBuilder("pages.Page{");
-        sb.append("path= ").append(path);
-        sb.append(", url= ").append(url);
-        sb.append(", offset= ").append(offset);
-        sb.append('}');
-        return sb.toString();
-    }
 
 
     public String getPath() {
         return path;
     }
 
-    public URL getUrl() {
-        return url;
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 
     public String getOffset() {
         return offset;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setOffset(String offset) {
+        this.offset = offset;
     }
 
-    public void setUrl(URL url) {
-        this.url = url;
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Page{");
+        sb.append("path='").append(path).append('\'');
+        sb.append(", uri='").append(uri).append('\'');
+        sb.append(", offset='").append(offset).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

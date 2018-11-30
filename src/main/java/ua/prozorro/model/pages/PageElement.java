@@ -1,5 +1,7 @@
 package ua.prozorro.model.pages;
 
+import com.google.gson.annotations.SerializedName;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -11,10 +13,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "ALL_tenders_IMPORT")
 public class PageElement {
+
+    @SerializedName("id")
     @Id
     @Column(name = "contracts_ID")
     private String id;
 
+    @SerializedName("dateModified")
     @Column(name = "dateModified")
     private String dateModified;
 
