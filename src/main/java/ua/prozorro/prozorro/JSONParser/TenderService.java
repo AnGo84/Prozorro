@@ -1,4 +1,4 @@
-package ua.prozorro.prozorro.JSONPareser;
+package ua.prozorro.prozorro.JSONParser;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

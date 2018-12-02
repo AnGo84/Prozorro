@@ -13,6 +13,7 @@ import org.hibernate.Session;
 import ua.prozorro.Prozorro;
 import ua.prozorro.ProzorroApp;
 import ua.prozorro.fx.Dialogs;
+import ua.prozorro.model.DataType;
 import ua.prozorro.model.pages.PageContentURL;
 import ua.prozorro.model.pages.PageElement;
 import ua.prozorro.model.tenders.TenderOld;
@@ -52,6 +53,10 @@ public class MainController {
 
 	@FXML
 	private TextArea textArea;
+
+	@FXML
+	private ComboBox<DataType> comboBoxDataType;
+
 	@FXML
 	private DatePicker datePickerFrom;
 	@FXML
@@ -75,7 +80,11 @@ public class MainController {
 		datePickerFrom.setValue(LocalDate.now());
 		datePickerTill.setValue(LocalDate.now());
 
+		comboBoxDataType.getItems().setAll(DataType.values());
+		comboBoxDataType.setValue(DataType.TENDERS);
+		/*
 		try {
+
 			Prozorro.parseUrl(new URL(Prozorro.START_PAGE));
 			urlConnection = true;
 
@@ -83,25 +92,10 @@ public class MainController {
 			textArea.appendText(e.getMessage() + "\n");
 			Dialogs.showErrorDialog(e, "Exception Dialog", "Ошибка подключения по URL", e.getMessage());
 		}
-
+		*/
 	}
 
-/*
-	public void onChooseXMLFolder(ActionEvent actionEvent) {
-		DirectoryChooser directoryChooser = new DirectoryChooser();
-		File selectedDirectory =
-				directoryChooser.showDialog(tFieldXMLFolder.getScene().getWindow());
-
-		if (selectedDirectory != null) {
-			tFieldXMLFolder.setText(selectedDirectory.getAbsolutePath());
-			textArea.appendText("Установлен каталог для выгрузки XML-файлов: " + tFieldXMLFolder.getText() + "\n");
-		} else {
-			// tFieldXMLFolder.setText("No Directory selected");
-		}
-	}
-*/
-
-	public void onChoosePages(ActionEvent actionEvent) {
+	public void onCheckData(ActionEvent actionEvent) {
 		String checkDate = DateUtils.checkDatesForPeriod(datePickerFrom.getValue(),datePickerTill.getValue());
 
 		if ( checkDate==null)
@@ -157,26 +151,6 @@ public class MainController {
 		}*/
 
 	}
-
-/*	private Boolean checkInputDate() {
-		if (datePickerFrom.getValue() == null) {
-			Dialogs.showMessage(Alert.AlertType.WARNING, "Предупреждение", "Дата \"С\" не установлена!", "Дата \"С\" не может быть пустой!");
-			datePickerFrom.requestFocus();
-			return false;
-		}
-		if (datePickerTill.getValue() == null) {
-			Dialogs.showMessage(Alert.AlertType.WARNING, "Предупреждение", "Дата \"ПО\" не установлена!", "Дата \"ПО\" не может быть пустой!");
-			datePickerTill.requestFocus();
-			return false;
-		}
-		if (datePickerFrom.getValue().compareTo(datePickerTill.getValue()) > 0) {
-			Dialogs.showMessage(Alert.AlertType.WARNING, "Предупреждение", "Дата \"С\" больше даты \"ПО\"!", "Дата \"С\" не может быть больше даты \"ПО\"!");
-			datePickerTill.requestFocus();
-			return false;
-		}
-		return true;
-	}*/
-
 
 	public void onGetData(ActionEvent actionEvent) {
 		if (pageContentList.size() > 0) {
@@ -310,11 +284,13 @@ public class MainController {
 			}
 
 		} else
-			Dialogs.showMessage(Alert.AlertType.WARNING, "Ошибка ", "Ошибка подключенияпо ссылке", "Ошибка доступа или ошибка данных с сайта Прозоро");
+			Dialogs.showMessage(Alert.AlertType.WARNING, "Ошибка ", "Ошибка подключенияпо ссылке",
+								"Ошибка доступа или ошибка данных с сайта Прозоро");
 	}
 
 	public void onClean(ActionEvent actionEvent) {
-		if (Dialogs.showConfirmDialog("Очистить логи", "Высобираетесь очистить текст с логими", "Весь текст будет утерян. Продолжить?")) {
+		if (Dialogs.showConfirmDialog("Очистить логи", "Вы собираетесь очистить текст с логими",
+									  "Весь текст будет утерян. Продолжить?")) {
 			textArea.clear();
 		}
 	}
@@ -324,9 +300,6 @@ public class MainController {
 			Platform.exit();
 			System.exit(0);
 		}
-		/*
-		if (Dialogs.showConfirmDialog("Закрытие приложения", "Приложение будет закрыто", "Вы точно хотите закрыть приложение?"))
-			Platform.exit();*/
 	}
 
 	public void onParseTender(ActionEvent actionEvent) {

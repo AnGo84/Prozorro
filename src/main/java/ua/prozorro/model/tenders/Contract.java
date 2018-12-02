@@ -13,7 +13,7 @@ public class Contract {
     private String status;
     @SerializedName("items")
     //@Expose
-    private List<ItemOld> items = null;
+    private List<Item> items = null;
     @SerializedName("suppliers")
     //@Expose
     public List<Supplier> suppliers = null;
@@ -40,11 +40,11 @@ public class Contract {
         this.status = status;
     }
 
-    public List<ItemOld> getItems() {
+    public List<Item> getItems() {
         return items;
     }
 
-    public void setItems(List<ItemOld> items) {
+    public void setItems(List<Item> items) {
         this.items = items;
     }
 

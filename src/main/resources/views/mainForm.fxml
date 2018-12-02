@@ -3,39 +3,51 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
-<BorderPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.prozorro.controller.MainController">
+<?import javafx.scene.text.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="500.0" prefWidth="893.0"
+            xmlns="http://javafx.com/javafx/8.0.141" fx:controller="ua.prozorro.controller.MainController">
     <center>
-        <BorderPane prefHeight="200.0" prefWidth="200.0">
+        <BorderPane>
             <top>
                 <AnchorPane BorderPane.alignment="CENTER">
                     <children>
 
-                        <Label layoutX="14.0" layoutY="5.0" text="Дата От">
+                        <Label layoutX="14.0" layoutY="5.0" text="Выбрать" AnchorPane.leftAnchor="10.0">
                             <font>
                                 <Font name="SansSerif Bold" size="12.0"/>
                             </font>
                         </Label>
-                        <DatePicker fx:id="datePickerFrom" layoutX="85.0" layoutY="1.0" prefHeight="26.0"
-                                    prefWidth="120.0" promptText="date from"/>
 
-
-                        <Label layoutX="205.0" layoutY="5.0" text="До">
+                        <Label layoutX="14.0" layoutY="5.0" text="Дата выборки От" AnchorPane.leftAnchor="280.0">
                             <font>
                                 <Font name="SansSerif Bold" size="12.0"/>
                             </font>
                         </Label>
-                        <DatePicker fx:id="datePickerTill" layoutX="243.0" layoutY="1.0" prefHeight="25.0"
-                                    prefWidth="120.0" promptText="date till"/>
+                        <DatePicker fx:id="datePickerFrom" layoutX="390.0" layoutY="1.0" prefHeight="25.0"
+                                    prefWidth="120.0" promptText="date from" AnchorPane.bottomAnchor="1.0"
+                                    AnchorPane.leftAnchor="390.0" AnchorPane.topAnchor="1.0"/>
+
+
+                        <Label layoutX="520.0" layoutY="5.0" text="До" AnchorPane.leftAnchor="520.0">
+                            <font>
+                                <Font name="SansSerif Bold" size="12.0"/>
+                            </font>
+                        </Label>
+                        <DatePicker fx:id="datePickerTill" layoutX="540.0" layoutY="1.0" prefHeight="25.0"
+                                    prefWidth="120.0" promptText="date till" AnchorPane.bottomAnchor="1.0"
+                                    AnchorPane.leftAnchor="540.0" AnchorPane.topAnchor="1.0"/>
 
                         <Button fx:id="buttonGetPages" defaultButton="true" layoutX="400.0" layoutY="1.0"
-                                mnemonicParsing="false" onAction="#onChoosePages" prefHeight="26.0" prefWidth="142.0"
-                                text="Проверить данные">
+                                mnemonicParsing="false" onAction="#onCheckData" prefHeight="25.0" prefWidth="140.0"
+                                text="Проверить данные" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="700.0"
+                                AnchorPane.topAnchor="1.0">
                             <font>
                                 <Font name="SansSerif Regular" size="12.0"/>
                             </font>
                         </Button>
+                        <ComboBox fx:id="comboBoxDataType" prefHeight="25.0" prefWidth="180.0"
+                                  AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="75.0"
+                                  AnchorPane.topAnchor="1.0"/>
                     </children>
                 </AnchorPane>
             </top>
@@ -68,7 +80,7 @@
                 </AnchorPane>
             </bottom>
             <center>
-                <TextArea fx:id="textArea" editable="false" prefHeight="400.0" prefWidth="1003.0"
+                <TextArea fx:id="textArea" editable="false" prefHeight="409.0" prefWidth="901.0"
                           BorderPane.alignment="CENTER"/>
             </center>
 

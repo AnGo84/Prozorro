@@ -114,6 +114,13 @@ public class Tender implements Serializable {
 	//@Expose
 	private List<Feature> features = null;
 
+	@SerializedName("questions")
+	//@Expose
+	private List<Question> questions = null;
+
+	@SerializedName("complaints")
+	//@Expose
+	private List<Complaint> complaints = null;
 
 	public Tender() {
 	}
