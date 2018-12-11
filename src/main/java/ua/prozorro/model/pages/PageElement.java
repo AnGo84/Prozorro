@@ -13,7 +13,7 @@ public class PageElement {
 
     @SerializedName("id")
     @Id
-    @Column(name = "contracts_ID")
+    @Column(name = "tender_id")
     private String id;
 
     @SerializedName("dateModified")

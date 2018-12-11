@@ -2,15 +2,23 @@ package ua.prozorro.model.tenders;
 
 import com.google.gson.annotations.SerializedName;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * Created by AnGo on 28.11.2016.
  */
+@Entity
+@Table(name = "organizations")
 public class Organization {
     @SerializedName("name")
     //@Expose
+    @Column
     private String name;
     @SerializedName("contactPoint")
     //@Expose
+    @Column
     private ContactPoint contactPoint;
     @SerializedName("identifier")
     //@Expose
