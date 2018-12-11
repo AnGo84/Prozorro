@@ -7,9 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/**
- * Created by AnGo on 29.10.2016.
- */
 @Entity
 @Table(name = "ALL_tenders_IMPORT")
 public class PageElement {

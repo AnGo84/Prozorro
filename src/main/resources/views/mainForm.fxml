@@ -38,7 +38,7 @@
                                     AnchorPane.leftAnchor="540.0" AnchorPane.topAnchor="1.0"/>
 
                         <Button fx:id="buttonGetPages" defaultButton="true" layoutX="400.0" layoutY="1.0"
-                                mnemonicParsing="false" onAction="#onCheckData" prefHeight="25.0" prefWidth="140.0"
+                                mnemonicParsing="false" onAction="#onCheckDataForPeriod" prefHeight="25.0" prefWidth="140.0"
                                 text="Проверить данные" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="700.0"
                                 AnchorPane.topAnchor="1.0">
                             <font>

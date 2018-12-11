@@ -10,7 +10,7 @@ import java.util.List;
 public class PageElementService {
 	private static final Logger logger = LogManager.getRootLogger();
 
-	private Session session = null;
+	private Session session ;
 
 
 	public PageElementService(Session session) {
@@ -24,7 +24,7 @@ public class PageElementService {
 		for (PageElement pageElement : pageElementList) {
 			try {
 				session.beginTransaction();
-				PageElement oldPage = (PageElement) session.get(PageElement.class, pageElement.getId());
+				PageElement oldPage = session.get(PageElement.class, pageElement.getId());
 				if (oldPage==null){
 					session.save(pageElement);
 					logger.info("Save pageElement" + pageElement + "\n");

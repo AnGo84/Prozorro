@@ -250,4 +250,14 @@ public class DateUtils {
 		}
 		return null;
 	}
+
+	public static String getTextTime(long milliseconds) {
+		long timeDifference = milliseconds / 1000;
+		long millisec = milliseconds % 1000;
+		long hour = (int) (timeDifference / (3600));
+		long minute = (int) ((timeDifference - (hour * 3600)) / 60);
+		long second = (int) (timeDifference - (hour * 3600) - minute * 60);
+
+		return String.format("%02dh:%02dm:%02ds:%dms", hour, minute, second, millisec);
+	}
 }

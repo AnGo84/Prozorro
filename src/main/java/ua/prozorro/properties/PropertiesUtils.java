@@ -1,4 +1,4 @@
-package ua.prozorro.utils;
+package ua.prozorro.properties;
 
 
 import java.io.*;

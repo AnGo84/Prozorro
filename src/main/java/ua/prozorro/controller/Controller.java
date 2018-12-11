@@ -18,8 +18,9 @@ import ua.prozorro.fx.Dialogs;
 import ua.prozorro.Prozorro;
 import ua.prozorro.model.pages.PageElement;
 import ua.prozorro.sql.SQLConnection;
+import ua.prozorro.utils.DateUtils;
 import ua.prozorro.utils.FileUtils;
-import ua.prozorro.utils.PropertiesUtils;
+import ua.prozorro.properties.PropertiesUtils;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -148,7 +149,7 @@ public class Controller {
                         try {
                             pageContentList = Prozorro.getPagesList(dateFrom, dateTill);
                             textArea.appendText("Найдено страниц с тендерами: " + pageContentList.size() + "\n");
-                            approximatelyTime = Prozorro.getTextTime(Prozorro.getAvgParsingSize(pageContentList.get(0), dateTill) * pageContentList.size());
+                            approximatelyTime = DateUtils.getTextTime(Prozorro.getAvgParsingSize(pageContentList.get(0), dateTill) * pageContentList.size());
                             buttonGetTenders.setDisable(false);
                         } catch (java.text.ParseException e) {
                             textArea.appendText(e.getMessage() + "\n");

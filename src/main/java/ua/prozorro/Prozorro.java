@@ -9,6 +9,7 @@ import ua.prozorro.model.pages.PageURL;
 import ua.prozorro.model.pages.PageElement;
 import ua.prozorro.model.tenders.*;
 import ua.prozorro.sql.SQLConnection;
+import ua.prozorro.utils.DateUtils;
 
 import java.beans.XMLEncoder;
 import java.io.*;
@@ -71,7 +72,7 @@ public class Prozorro {
             System.out.println("Find pages: " + pageContentList.size());
             System.out.println("Count the approximate time...");
             try {
-                System.out.println("Count time: " + getTextTime(getAvgParsingSize(pageContentList.get(0), simpleDateShotFormat.parse(DateEnd)) * pageContentList.size()));
+                System.out.println("Count time: " + DateUtils.getTextTime(getAvgParsingSize(pageContentList.get(0), simpleDateShotFormat.parse(DateEnd)) * pageContentList.size()));
             } catch (java.text.ParseException e) {
                 e.printStackTrace();
             }
@@ -444,15 +445,6 @@ public class Prozorro {
         return (System.currentTimeMillis() - start);
     }
 
-    public static String getTextTime(long milliseconds) {
-        long timeDifference = milliseconds / 1000;
-        long millisec = milliseconds % 1000;
-        long hour = (int) (timeDifference / (3600));
-        long minute = (int) ((timeDifference - (hour * 3600)) / 60);
-        long second = (int) (timeDifference - (hour * 3600) - minute * 60);
-
-        return String.format("%02dh:%02dm:%02ds:%dms", hour, minute, second, millisec);
-    }
 
     public static Properties getConnectionProperties(String filename) throws IOException {
         Properties property = new Properties();

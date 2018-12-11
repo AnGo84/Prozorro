@@ -15,9 +15,10 @@ import org.hibernate.SessionFactory;
 import ua.prozorro.controller.MainController;
 import ua.prozorro.fx.DialogText;
 import ua.prozorro.fx.Dialogs;
-import ua.prozorro.sql.HibernateUtils;
+import ua.prozorro.properties.PropertiesUtils;
+import ua.prozorro.sql.HibernateDataBaseType;
+import ua.prozorro.sql.HibernateFactory;
 import ua.prozorro.utils.FileUtils;
-import ua.prozorro.utils.PropertiesUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,10 +49,6 @@ public class ProzorroApp extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		//TODO
-		SessionFactory factory = HibernateUtils.getSessionFactory();
-		session = factory.getCurrentSession();
-
 		this.primaryStage = primaryStage;
 
 		File propertiesFile = FileUtils.getFileWithName(this.getClass(), CONFIG_FILE_NAME);
@@ -60,9 +57,13 @@ public class ProzorroApp extends Application {
 		try {
 			properties = PropertiesUtils.getPropertiesFromFile(propertiesFile);
 
-			for (String prop : properties.stringPropertyNames()) {
+			/*for (String prop : properties.stringPropertyNames()) {
 				logger.info("Prop: " + prop + " | value: " + properties.getProperty(prop));
-			}
+			}*/
+
+			String dbName = PropertiesUtils.getPropertyString(properties, "db.type");
+			session = getSessionByDBName(dbName);
+
 
 		} catch (IOException e) {
 //            e.printStackTrace();
@@ -77,6 +78,9 @@ public class ProzorroApp extends Application {
 			@Override
 			public void handle(WindowEvent we) {
 				if (isConfirmShutDown()) {
+					if (session.isConnected()) {
+						session.close();
+					}
 					Platform.exit();
 					System.exit(0);
 				} else {
@@ -84,6 +88,17 @@ public class ProzorroApp extends Application {
 				}
 			}
 		});
+	}
+
+	private Session getSessionByDBName(String dbName) {
+		//logger.info("DBName = " + dbName);
+		if (dbName == null || dbName.equals("")) {
+			return null;
+		}
+		HibernateDataBaseType baseType = HibernateDataBaseType.valueOf(dbName.toUpperCase());
+		logger.info("HibernateDataBaseType = " + baseType);
+		SessionFactory factory = HibernateFactory.getHibernateSession(baseType);
+		return factory.getCurrentSession();
 	}
 
 	private void initMainView() throws IOException {
@@ -132,5 +147,9 @@ public class ProzorroApp extends Application {
 
 	public Session getSession() {
 		return session;
+	}
+
+	public Properties getProperties() {
+		return properties;
 	}
 }
