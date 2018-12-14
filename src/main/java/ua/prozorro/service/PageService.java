@@ -3,7 +3,7 @@ package ua.prozorro.service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
-import ua.prozorro.model.pages.PageElement;
+import ua.prozorro.entity.pages.PageDTO;
 
 import java.util.List;
 
@@ -17,22 +17,22 @@ public class PageService {
 		this.session = session;
 	}
 
-	public void savePageElementList(List<PageElement> pageElementList) throws Exception {
+	public void savePageList(List<PageDTO> pageList) throws Exception {
 		if (session == null) {
 			throw new Exception("Session did not set");
 		}
-		for (PageElement pageElement : pageElementList) {
+		for (PageDTO page : pageList) {
 			try {
 				session.beginTransaction();
-				PageElement oldPage = session.get(PageElement.class, pageElement.getId());
+				PageDTO oldPage = session.get(PageDTO.class, page.getId());
 				if (oldPage == null) {
-					session.save(pageElement);
-					logger.info("Save pageElement" + pageElement + "\n");
-				} else if (!oldPage.equals(pageElement)) {
-					session.update(pageElement);
-					logger.info("Update pageElement" + pageElement + "\n");
+					session.save(page);
+					logger.info("Save page" + page + "\n");
+				} else if (!oldPage.equals(page)) {
+					session.update(page);
+					logger.info("Update page" + page + "\n");
 				} else {
-					logger.info("Ignore pageElement" + pageElement + "\n");
+					logger.info("Ignore page" + page + "\n");
 				}
 
 				session.getTransaction().commit();
@@ -48,34 +48,41 @@ public class PageService {
 		}
 	}
 
-	public void savePageElement(PageElement pageElement) throws Exception {
-		if (session == null) {
+	public void savePage(PageDTO page) throws Exception {
+		if (session == null || !session.isOpen()) {
 			throw new Exception("Session did not set");
 		}
-		try {
-			//session.beginTransaction();
-			PageElement oldPage = session.get(PageElement.class, pageElement.getId());
-			if (oldPage == null) {
-				session.save(pageElement);
-				logger.info("Save pageElement" + pageElement + "\n");
-			} else if (!oldPage.equals(pageElement)) {
-				session.update(pageElement);
-				logger.info("Update pageElement" + pageElement + "\n");
-			} else {
-				logger.info("Ignore pageElement" + pageElement + "\n");
-			}
 
-			//session.getTransaction().commit();
-		} catch (Exception sqlException) {
-			logger.info("SQL exception: " + sqlException.getMessage() + "\n");
-			/*if (null != session.getTransaction()) {
-
-				logger.info("SQL exception: " + sqlException.getMessage() + "\n");
-				logger.info(".......Transaction Is Being Rolled Back......." + "\n");
-				session.getTransaction().rollback();
-			}*/
-
+		PageDTO oldPage = session.get(PageDTO.class, page.getId());
+		if (oldPage == null) {
+			session.save(page);
+			logger.info("Save page: " + page + "\n");
+		} else if (!oldPage.equals(page)) {
+			session.update(page);
+			logger.info("Update page: " + page + "\n");
+		} else {
+			logger.info("Ignore page: " + page + "\n");
 		}
+
+	}
+
+	public void savePage(PageDTO page, Session session) throws Exception {
+		if (session == null || !session.isOpen()) {
+			throw new Exception("Session did not set");
+		}
+
+		PageDTO oldPage = session.get(PageDTO.class, page.getId());
+		if (oldPage == null) {
+			session.save(page);
+			logger.info("Save page: " + page + "\n");
+		} else if (!oldPage.equals(page)) {
+			session.update(page);
+			logger.info("Update page: " + page + "\n");
+		} else {
+			logger.info("Ignore page: " + page + "\n");
+		}
+
+
 	}
 
 }

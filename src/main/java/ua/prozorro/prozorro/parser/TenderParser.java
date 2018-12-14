@@ -4,17 +4,18 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import ua.prozorro.model.pages.PageContent;
-import ua.prozorro.model.pages.PageElement;
-import ua.prozorro.model.tenders.TenderData;
+import ua.prozorro.entity.TenderDTOUtils;
+import ua.prozorro.entity.pages.PageDTO;
+import ua.prozorro.entity.tenders.TenderDTO;
 import ua.prozorro.prozorro.PageServiceProzorro;
 import ua.prozorro.prozorro.TenderDataServiceProzorro;
+import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
+import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
+import ua.prozorro.prozorro.model.tenders.TenderData;
 import ua.prozorro.service.PageService;
 import ua.prozorro.service.TenderService;
 import ua.prozorro.utils.DateUtils;
 
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.Date;
 
 public class TenderParser implements DataParser {
@@ -59,48 +60,68 @@ public class TenderParser implements DataParser {
 		String startPageURL = pageServiceProzorro.getPageURL(dateFrom);
 		logger.info("Start parsing from URL " + startPageURL);
 		Transaction transaction = null;
+		TenderData tenderData = null;
+		PageDTO page  = null;
+		TenderDTO tenderDTO = null;
 		try {
 			dateTill = pageServiceProzorro.getDateTill(dateTill);
 
-			PageContent pageContent = pageServiceProzorro.getPageContentFromURL(startPageURL);
+			ProzorroPageContent pageContent = pageServiceProzorro.getPageContentFromURL(startPageURL);
 
 			Date nextOffsetDate = pageServiceProzorro.getDateFromPageOffset(pageContent.getNextPage().getOffset());
-			//logger.info("Get first Page: " + pageContent);
-			logger.info("Get first Page");
-			int page = 0;
+			//logger.info("Get first ProzorroPage: " + pageContent);
+			logger.info("Get first ProzorroPage");
+			int pageCount = 0;
 
 
 			while (dateTill.compareTo(nextOffsetDate) >= 0 && pageContent.getPageElementList() != null && !pageContent.getPageElementList().isEmpty()) {
-				page++;
+				pageCount++;
 
 				if (!session.isOpen()) {
 					session = session.getSessionFactory().openSession();
 				}
-				transaction = session.beginTransaction();
+				//transaction = session.beginTransaction();
 
-				int tender = 0;
+				int tenderCount = 0;
 				logger.info("Start parsing page: ");
-				for (PageElement pageElement : pageContent.getPageElementList()) {
-					tender++;
+				for (ProzorroPageElement pageElement : pageContent.getPageElementList()) {
+					if (!session.isOpen()) {
+						session = session.getSessionFactory().openSession();
+						logger.info("Opened session: " + session.isOpen());
+					}
+					transaction = session.beginTransaction();
+
+
+					tenderCount++;
 					//tenderDataServiceProzorro.getTenderDatasFromPageContent(pageContent);
-					TenderData tenderData = tenderDataServiceProzorro.getTenderDataFromPageElement(pageElement);
+					tenderData = tenderDataServiceProzorro.getTenderDataFromPageElement(pageElement);
+					logger.info("Session open?: " + session.isOpen());
+					page = TenderDTOUtils.getPageDTO(pageElement);
+					pageService.savePage(page, session);
 
-					//pageService.savePageElement(pageElement);
-					//tenderService.saveTender(tenderData.getTender());
-					logger.info("Page " + page + ", tender " + tender);
+					tenderDTO = TenderDTOUtils.getTenderDTO(tenderData.getTender());
+					tenderService.saveTender(tenderDTO, session);
+
+					logger.info("ProzorroPage " + pageCount + ", tender " + tenderCount);
+
+					transaction.commit();
+
+					//logger.info("Get next page with URL: " + pageContent.getNextPage().getUri());
+					pageContent = pageServiceProzorro.getPageContentFromURL(pageContent.getNextPage().getUri());
+					nextOffsetDate = pageServiceProzorro.getDateFromPageOffset(pageContent.getNextPage().getOffset());
+
+					//transaction.commit();
+
 				}
-
-				//logger.info("Get next page with URL: " + pageContent.getNextPage().getUri());
-				pageContent = pageServiceProzorro.getPageContentFromURL(pageContent.getNextPage().getUri());
-				nextOffsetDate = pageServiceProzorro.getDateFromPageOffset(pageContent.getNextPage().getOffset());
-
-				transaction.commit();
-
 			}
 
-		} catch (ParseException | IOException e) {
+		} catch (Exception e) {
+			//catch (ParseException | IOException | Exception e){
 			e.printStackTrace();
-			logger.info("Parse error: " + e.getMessage());
+			logger.info("Parse error: " + page + ", msg: " + e.getMessage());
+
+			logger.info("Tender: " + tenderData.getTender());
+			logger.info("TenderDTO: " + tenderDTO);
 			if (transaction != null) {
 				transaction.rollback();
 			}

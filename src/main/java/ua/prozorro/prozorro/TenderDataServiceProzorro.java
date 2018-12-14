@@ -4,9 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ua.prozorro.model.pages.PageContent;
-import ua.prozorro.model.pages.PageElement;
-import ua.prozorro.model.tenders.TenderData;
+import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
+import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
+import ua.prozorro.prozorro.model.tenders.TenderData;
 import ua.prozorro.utils.FileUtils;
 
 import java.io.IOException;
@@ -33,12 +33,12 @@ public class TenderDataServiceProzorro {
 		return getTenderDataContentFromStringJSON(genreJson);
 	}
 
-	public List<TenderData> getTenderDatasFromPageContent(PageContent pageContent) throws IOException {
+	public List<TenderData> getTenderDatasFromPageContent(ProzorroPageContent pageContent) throws IOException {
 		if (pageContent == null || pageContent.getPageElementList() == null) {
 			return null;
 		}
 		List<TenderData> tenderDataList = new ArrayList<>();
-		for (PageElement element : pageContent.getPageElementList()) {
+		for (ProzorroPageElement element : pageContent.getPageElementList()) {
 			String currentTenderURL = tenderURL + element.getId();
 
 			TenderData tenderData = getPageContentFromURL(currentTenderURL);
@@ -48,7 +48,7 @@ public class TenderDataServiceProzorro {
 		return tenderDataList;
 	}
 
-	public TenderData getTenderDataFromPageElement(PageElement pageElement) throws IOException {
+	public TenderData getTenderDataFromPageElement(ProzorroPageElement pageElement) throws IOException {
 		if (pageElement == null) {
 			return null;
 		}

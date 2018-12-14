@@ -4,10 +4,10 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.ParseException;
-import ua.prozorro.model.pages.PageContentURL;
-import ua.prozorro.model.pages.PageURL;
-import ua.prozorro.model.pages.PageElement;
-import ua.prozorro.model.tenders.*;
+import ua.prozorro.prozorro.model.pages.PageContentURL;
+import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
+import ua.prozorro.prozorro.model.pages.PageURL;
+import ua.prozorro.prozorro.model.tenders.*;
 import ua.prozorro.sql.SQLConnection;
 import ua.prozorro.utils.DateUtils;
 
@@ -128,7 +128,7 @@ public class Prozorro {
             dateTill = parseDateShotFromString(MAX_DATE_TILL);
         }
         List<TenderOld> tenderList = new ArrayList<>();
-        for (PageElement pageElement : pageContent.getPageElementList()) {
+        for (ProzorroPageElement pageElement : pageContent.getPageElementList()) {
             TenderOld tender = getTender(pageElement.getId());
             if (dateTill.compareTo(parseDateShotFromString(tender.getDateModified())) >= 0) {
                 tenderList.add(tender);
@@ -182,7 +182,7 @@ public class Prozorro {
         JSONArray tendersList = (JSONArray) jsonObj.get("data");
         for (Object jsObj : tendersList) {
             JSONObject joItem = (JSONObject) jsObj;
-            PageElement pageElement = new PageElement(joItem.get("id").toString(), joItem.get("dateModified").toString());
+            ProzorroPageElement pageElement = new ProzorroPageElement(joItem.get("id").toString(), joItem.get("dateModified").toString());
             pageContent.getPageElementList().add(pageElement);
         }
         return pageContent;
@@ -335,8 +335,8 @@ public class Prozorro {
     private static Value getValue(JSONObject jsonObject) {
         Value value = new Value();
         if (jsonObject != null) {
-            value.setCurrency(returnString(jsonObject.get("currency")));
-            value.setAmount(returnString(jsonObject.get("amount")));
+            value.setCurrency(returnString(jsonObject.get("guaranteeCurrency")));
+            value.setAmount(returnString(jsonObject.get("guaranteeAmount")));
             value.setValueAddedTaxIncluded(returnString(jsonObject.get("valueAddedTaxIncluded")));
         }
         return value;

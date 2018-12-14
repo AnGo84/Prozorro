@@ -10,19 +10,21 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ua.prozorro.Prozorro;
 import ua.prozorro.ProzorroApp;
 import ua.prozorro.fx.DialogText;
-import ua.prozorro.model.pages.PageContentURL;
-import ua.prozorro.model.tenders.TenderOld;
 import ua.prozorro.fx.Dialogs;
-import ua.prozorro.Prozorro;
-import ua.prozorro.model.pages.PageElement;
+import ua.prozorro.prozorro.model.pages.PageContentURL;
+import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
+import ua.prozorro.prozorro.model.tenders.TenderOld;
+import ua.prozorro.properties.PropertiesUtils;
 import ua.prozorro.sql.SQLConnection;
 import ua.prozorro.utils.DateUtils;
 import ua.prozorro.utils.FileUtils;
-import ua.prozorro.properties.PropertiesUtils;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Connection;
@@ -281,7 +283,7 @@ public class Controller {
                     public void run() {
                         try {
                             PageContentURL pageContent = Prozorro.getPageContent(new URL(inputText));
-                            for (PageElement pageElement : pageContent.getPageElementList()) {
+                            for (ProzorroPageElement pageElement : pageContent.getPageElementList()) {
                                 textArea.appendText(pageElement.toString() + "\n");
                             }
                         } catch (org.json.simple.parser.ParseException e) {
@@ -298,7 +300,7 @@ public class Controller {
 
 //                try {
 //                    PageContentURL pageContent = getPageContentFromStringJSON(new URL(inputText));
-//                    for (PageElement pageElement : pageContent.getPageElementList()) {
+//                    for (ProzorroPage pageElement : pageContent.getPageElementList()) {
 //                        textArea.appendText(pageElement.toString() + "\n");
 //                    }
 //                } catch (org.json.simple.parser.ParseException e) {

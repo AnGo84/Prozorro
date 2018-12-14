@@ -4,9 +4,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.ParseException;
-import ua.prozorro.model.pages.PageContentURL;
-import ua.prozorro.model.pages.PageElement;
-import ua.prozorro.model.tenders.*;
+import ua.prozorro.prozorro.model.pages.PageContentURL;
+import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
+import ua.prozorro.prozorro.model.tenders.*;
 import ua.prozorro.utils.DateUtils;
 import ua.prozorro.utils.FileUtils;
 import ua.prozorro.utils.ParseUtils;
@@ -27,7 +27,7 @@ public class TenderService {
 			dateTill = DateUtils.addDaysToDate(DateUtils.parseDateToFormate(new Date(), DateUtils.DATE_PROZORRO_SHORT_FORMAT),1);
 		}
 		List<TenderOld> tenderList = new ArrayList<>();
-		for (PageElement pageElement : pageContent.getPageElementList()) {
+		for (ProzorroPageElement pageElement : pageContent.getPageElementList()) {
 			TenderOld tender = getTender(pageElement.getId());
 			if (dateTill.compareTo(DateUtils.parseDateFromString(tender.getDateModified(), DateUtils.DATE_PROZORRO_SHORT_FORMAT)) >= 0) {
 				tenderList.add(tender);
@@ -128,8 +128,8 @@ public class TenderService {
 	private static Value getValue(JSONObject jsonObject) {
 		Value value = new Value();
 		if (jsonObject != null) {
-			value.setCurrency(ParseUtils.returnString(jsonObject.get("currency")));
-			value.setAmount(ParseUtils.returnString(jsonObject.get("amount")));
+			value.setCurrency(ParseUtils.returnString(jsonObject.get("guaranteeCurrency")));
+			value.setAmount(ParseUtils.returnString(jsonObject.get("guaranteeAmount")));
 			value.setValueAddedTaxIncluded(ParseUtils.returnString(jsonObject.get("valueAddedTaxIncluded")));
 		}
 		return value;

@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ua.prozorro.model.pages.PageContent;
+import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.utils.DateUtils;
@@ -27,22 +27,22 @@ public class PageServiceProzorro {
 		this.propertyFields = propertyFields;
 	}
 
-	public PageContent getPageContentFromStringJSON(String stringJSON) throws JsonParseException {
+	public ProzorroPageContent getPageContentFromStringJSON(String stringJSON) throws JsonParseException {
 		Gson gson = new Gson();
-		return gson.fromJson(stringJSON, PageContent.class);
+		return gson.fromJson(stringJSON, ProzorroPageContent.class);
 	}
 
-	public PageContent getPageContentFromURL(String url) throws JsonParseException, IOException {
+	public ProzorroPageContent getPageContentFromURL(String url) throws JsonParseException, IOException {
 		String genreJson = FileUtils.getStringFromURL(url);
 		return getPageContentFromStringJSON(genreJson);
 	}
 
 
-	public List<PageContent> getPagesList(Date dateFrom, Date dateTill) throws IOException, java.text.ParseException {
+	public List<ProzorroPageContent> getPagesList(Date dateFrom, Date dateTill) throws IOException, java.text.ParseException {
 		return getPagesList(dateFrom,dateTill,true);
 	}
 
-	public List<PageContent> getPagesList(Date dateFrom, Date dateTill, boolean withPageElements) throws IOException, java.text.ParseException {
+	public List<ProzorroPageContent> getPagesList(Date dateFrom, Date dateTill, boolean withPageElements) throws IOException, java.text.ParseException {
 		if (propertyFields == null || propertyFields.getProperties() == null) {
 			return null;
 		}
@@ -50,9 +50,9 @@ public class PageServiceProzorro {
 
 		dateTill = getDateTill(dateTill);
 
-		List<PageContent> pageContentList = new ArrayList<>();
+		List<ProzorroPageContent> pageContentList = new ArrayList<>();
 
-		PageContent pageContent = getPageContentFromURL(startPageURL);
+		ProzorroPageContent pageContent = getPageContentFromURL(startPageURL);
 
 		Date nextOffsetDate = getDateFromPageOffset(pageContent.getNextPage().getOffset());
 
@@ -109,7 +109,7 @@ public class PageServiceProzorro {
 	public ParsingResultData getApproximatelyParsingTimeForPeriod(Date dateFrom, Date dateTill) throws IOException, ParseException {
 		TenderDataServiceProzorro tenderDataServiceProzorro = new TenderDataServiceProzorro(propertyFields.getPropertiesStringValue(AppProperty.START_PAGE) + File.separator);
 		long startTime = System.nanoTime();
-		List<PageContent> list = getPagesList(dateFrom, dateTill, false);
+		List<ProzorroPageContent> list = getPagesList(dateFrom, dateTill, false);
 		//System.out.println("Pages list size: " + list.size());
 		long timeForPages = (System.nanoTime() - startTime);
 		//System.out.println("Time for page without data: " + timeForPages/1000000000);
@@ -117,11 +117,11 @@ public class PageServiceProzorro {
 		startTime = System.nanoTime();
 		long timeForPageTenders;
 		if (list != null && !list.isEmpty()) {
-			PageContent pageContent = getPageContentFromURL(getPageURL(dateFrom));
+			ProzorroPageContent pageContent = getPageContentFromURL(getPageURL(dateFrom));
 			tenderDataServiceProzorro.getTenderDatasFromPageContent(pageContent);
 		}
 		timeForPageTenders = (System.nanoTime() - startTime);
-		//System.out.println("Time for Page Tenders: " + timeForPageTenders/ 1000000000);
+		//System.out.println("Time for ProzorroPage Tenders: " + timeForPageTenders/ 1000000000);
 
 		long totalTime = timeForPages + list.size() * timeForPageTenders;
 
@@ -132,8 +132,8 @@ public class PageServiceProzorro {
 		return resultData;
 	}
 	/*  private GSONParser gsonParser = new GSONParser();
-		public PageContent getPageContentFromStringJSON(String genreJson) {
-		List<PageContent> list = GSONParser.getList(genreJson, PageContent[].class);
+		public ProzorroPageContent getPageContentFromStringJSON(String genreJson) {
+		List<ProzorroPageContent> list = GSONParser.getList(genreJson, ProzorroPageContent[].class);
 		if (list!=null) {
 
 			return list.get(0);

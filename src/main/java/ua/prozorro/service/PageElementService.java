@@ -3,7 +3,7 @@ package ua.prozorro.service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
-import ua.prozorro.model.pages.PageElement;
+import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
 
 import java.util.List;
 
@@ -17,14 +17,14 @@ public class PageElementService {
 		this.session = session;
 	}
 
-	public void savePageElementList(List<PageElement> pageElementList) throws Exception {
+	public void savePageElementList(List<ProzorroPageElement> pageElementList) throws Exception {
 		if (session==null){
 			throw  new Exception("Session не установлена");
 		}
-		for (PageElement pageElement : pageElementList) {
+		for (ProzorroPageElement pageElement : pageElementList) {
 			try {
 				session.beginTransaction();
-				PageElement oldPage = session.get(PageElement.class, pageElement.getId());
+				ProzorroPageElement oldPage = session.get(ProzorroPageElement.class, pageElement.getId());
 				if (oldPage==null){
 					session.save(pageElement);
 					logger.info("Save pageElement" + pageElement + "\n");

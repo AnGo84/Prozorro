@@ -42,7 +42,7 @@
         <!--END MYSQL-->
 
         <!-- Mapping With Model Class Containing Annotations -->
-        <mapping class="ua.prozorro.model.pages.PageElement"/>
+        <mapping class="ua.prozorro.prozorro.model.pages.ProzorroPageElement"/>
 
 
     </session-factory>

@@ -5,10 +5,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.json.simple.parser.ParseException;
 import ua.prozorro.Prozorro;
-import ua.prozorro.model.pages.PageContent;
-import ua.prozorro.model.pages.PageContentURL;
-import ua.prozorro.model.pages.PageElement;
-import ua.prozorro.model.tenders.TenderData;
+import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
+import ua.prozorro.prozorro.model.pages.PageContentURL;
+import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
+import ua.prozorro.prozorro.model.tenders.TenderData;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.prozorro.PageServiceProzorro;
@@ -49,6 +49,8 @@ public class Test {
 		//checkPataForPeriod();
 
 
+		//https://www.google.com/search?ei=SN0TXJPOAvDrrgS55JeoBQ&q=java+hibernate+%40onetoone+saveorupdate+child+first&oq=java+hibernate+%40onetoone+saveorupdate+child+first&gs_l=psy-ab.3...18094.18570..19344...0.0..0.94.270.3......0....1..gws-wiz.......0i71.ThMyYku4_E4
+
 		Session session = getSessionByDBName("mysql");
 
 		PageServiceProzorro pageServiceProzorro = new PageServiceProzorro(new PropertyFields(getStartProperties()));
@@ -65,7 +67,10 @@ public class Test {
 
 			e.printStackTrace();
 		}
-		session.close();
+		finally {
+			session.close();
+		}
+
 	}
 
 	private static Session getSessionByDBName(String dbName) {
@@ -85,7 +90,7 @@ public class Test {
 		try {
 			long startTime = System.nanoTime();
 
-			List<PageContent> list = pageServiceProzorro.getPagesList(DateUtils.parseDateFromString("2018-12-10", short_date_formate),
+			List<ProzorroPageContent> list = pageServiceProzorro.getPagesList(DateUtils.parseDateFromString("2018-12-10", short_date_formate),
 					DateUtils.parseDateFromString("2018-12-10", short_date_formate), false);
 			System.out.println("Pages list size: " + list.size());
 			long endTime = System.nanoTime();
@@ -102,12 +107,12 @@ public class Test {
 			startTime = System.nanoTime();
 			long timeForPageTenders;
 			if (list != null && !list.isEmpty()) {
-				PageContent pageContent = pageServiceProzorro.getPageContentFromURL(pageServiceProzorro.getPageURL(DateUtils.parseDateFromString("2018-12-10", short_date_formate)));
+				ProzorroPageContent pageContent = pageServiceProzorro.getPageContentFromURL(pageServiceProzorro.getPageURL(DateUtils.parseDateFromString("2018-12-10", short_date_formate)));
 				tenderDataServiceProzorro.getTenderDatasFromPageContent(pageContent);
 			}
 			endTime = System.nanoTime();
 			timeForPageTenders = (endTime - startTime) / 1000000000;
-			System.out.println("Time for Page Tenders: " + timeForPageTenders);
+			System.out.println("Time for ProzorroPage Tenders: " + timeForPageTenders);
 
 			long totalTime = timeForPages+ list.size()*timeForPageTenders;
 			System.out.println("Total time: " + totalTime + "sec, " + (totalTime/60)+ "m");
@@ -146,7 +151,7 @@ public class Test {
 			long startTime2 = startTime;
 
 
-			PageContent pageContent = pageServiceProzorro.getPageContentFromURL(getUrl);
+			ProzorroPageContent pageContent = pageServiceProzorro.getPageContentFromURL(getUrl);
 			System.out.println("Read from URL: " + getUrl);
 			int pageCount = 0;
 			int tenderCount = 0;
@@ -154,12 +159,12 @@ public class Test {
 				pageCount++;
 				System.out.println("Read from URL: " + getUrl);
 
-				for (PageElement element : pageContent.getPageElementList()) {
+				for (ProzorroPageElement element : pageContent.getPageElementList()) {
 					tenderCount++;
 					String tenderURL = "https://public.api.openprocurement.org/api/2.4/tenders/" + element.getId();
-					System.out.println("Get Tender URL: " + tenderURL);
+					System.out.println("Get TenderDTO URL: " + tenderURL);
 					TenderData tenderData = tenderDataServiceProzorro.getPageContentFromURL(tenderURL);
-					System.out.println("Tender " + tenderCount + ": " + tenderData);
+					System.out.println("TenderDTO " + tenderCount + ": " + tenderData);
 				}
 				long endTime = System.nanoTime();
 
@@ -186,9 +191,9 @@ public class Test {
 
             //getUrl = url +"/" +  pageContent.getPageElementList().get(0).getId();
             getUrl = "https://public.api.openprocurement.org/api/2.4/tenders/8689aed656e34ece8420559e50edaacb";
-            System.out.println("Get Tender URL: " + getUrl);
+            System.out.println("Get TenderDTO URL: " + getUrl);
             TenderData tenderData = tenderDataServiceProzorro.getPageContentFromURL(getUrl);
-            System.out.println("Tender:");
+            System.out.println("TenderDTO:");
             System.out.println(tenderData);*/
 
 		} catch (IOException e) {

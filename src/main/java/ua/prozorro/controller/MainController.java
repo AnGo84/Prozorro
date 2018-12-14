@@ -13,11 +13,11 @@ import org.hibernate.Session;
 import ua.prozorro.Prozorro;
 import ua.prozorro.ProzorroApp;
 import ua.prozorro.fx.Dialogs;
-import ua.prozorro.model.DataType;
-import ua.prozorro.model.pages.PageContent;
-import ua.prozorro.model.pages.PageContentURL;
-import ua.prozorro.model.pages.PageElement;
-import ua.prozorro.model.tenders.TenderOld;
+import ua.prozorro.prozorro.model.DataType;
+import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
+import ua.prozorro.prozorro.model.pages.PageContentURL;
+import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
+import ua.prozorro.prozorro.model.tenders.TenderOld;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.prozorro.PageServiceProzorro;
@@ -49,7 +49,7 @@ public class MainController {
 	private TenderDataServiceProzorro tenderDataServiceProzorro;
 
 	private PropertyFields propertyFields;
-	private List<PageContent> pageContentList = null;
+	private List<ProzorroPageContent> pageContentList = null;
 	private boolean findData = false;
 
 
@@ -279,7 +279,7 @@ public class MainController {
 					public void run() {
 						try {
 							PageContentURL pageContent = Prozorro.getPageContent(new URL(inputText));
-							for (PageElement pageElement : pageContent.getPageElementList()) {
+							for (ProzorroPageElement pageElement : pageContent.getPageElementList()) {
 								textArea.appendText(pageElement.toString() + "\n");
 							}
 						} catch (org.json.simple.parser.ParseException e) {

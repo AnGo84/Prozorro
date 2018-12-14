@@ -2,7 +2,7 @@ package ua.prozorro.sql;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ua.prozorro.model.tenders.*;
+import ua.prozorro.prozorro.model.tenders.*;
 
 import java.sql.*;
 import java.util.List;

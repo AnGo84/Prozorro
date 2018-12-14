@@ -1,7 +1,6 @@
 package ua.prozorro.sql;
 //https://o7planning.org/en/11223/generate-tables-from-entity-classes-in-hibernate
 
-import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -14,6 +13,7 @@ import java.util.EnumSet;
 
 public class HibernateSchemaGenerator {
 	public static final String SCRIPT_FILE = "exportScript.sql";
+	public static final String HIBERNATE_DIALECT_STORAGE_ENGINE = "hibernate.dialect.storage_engine";
 
 	private static SchemaExport getSchemaExport(String outputFilePath) {
 
@@ -54,23 +54,26 @@ public class HibernateSchemaGenerator {
 
 	}
 
+
+
 	public static void main(String[] args) {
 
 		// Using Oracle Database.
 
 		String configFileName = "hibernate_mysql.cfg.xml";
 
+		String tempDialectEngine= System.getProperty(HIBERNATE_DIALECT_STORAGE_ENGINE);
+		System.setProperty(HIBERNATE_DIALECT_STORAGE_ENGINE, "innodb");
 		// Create the ServiceRegistry from hibernate-xxx.cfg.xml
 		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()//
-		                                            .configure(configFileName).build();
+				                                  .configure(configFileName).build();
 
 		// Create a metadata sources using the specified service registry.
 		Metadata metadata = new MetadataSources(serviceRegistry).getMetadataBuilder().build();
 
 
-
 		// Script file.
-		File outputFile = new File("Oracle_"+SCRIPT_FILE);
+		File outputFile = new File("MySQL_" + SCRIPT_FILE);
 		String outputFilePath = outputFile.getAbsolutePath();
 		SchemaExport export = getSchemaExport(outputFilePath);
 
@@ -81,6 +84,8 @@ public class HibernateSchemaGenerator {
 		System.out.println("Create Database...");
 		// Create tables
 		createDataBase(export, metadata);
+
+		serviceRegistry.close();
 
 	}
 }
