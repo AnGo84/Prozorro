@@ -54,7 +54,9 @@ public class Test {
 		Session session = getSessionByDBName("mysql");
 
 		PageServiceProzorro pageServiceProzorro = new PageServiceProzorro(new PropertyFields(getStartProperties()));
-		TenderDataServiceProzorro tenderDataServiceProzorro = new TenderDataServiceProzorro(start_page + File.separator);
+		/*TenderDataServiceProzorro tenderDataServiceProzorro =
+				new TenderDataServiceProzorro(start_page + File.separator);*/
+		TenderDataServiceProzorro tenderDataServiceProzorro = new TenderDataServiceProzorro(start_page + "/");
 		TenderParser tenderParser = new TenderParser();
 		tenderParser.setSession(session);
 		tenderParser.setPageServiceProzorro(pageServiceProzorro);

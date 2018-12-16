@@ -81,7 +81,8 @@ public class PageService {
 		} else {
 			logger.info("Ignore page: " + page + "\n");
 		}
-
+		session.flush();
+		session.clear();
 
 	}
 

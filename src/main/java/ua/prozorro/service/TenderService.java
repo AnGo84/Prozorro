@@ -40,17 +40,19 @@ public class TenderService {
 		}
 
 		TenderDTO oldTenderDTO = session.get(TenderDTO.class, tender.getId());
+		session.flush();
+
 		if (oldTenderDTO == null) {
 			session.save(tender);
 			logger.info("Save Tender " + tender + "\n");
 		} else if (!oldTenderDTO.equals(tender)) {
-			session.delete(oldTenderDTO);
-			session.save(tender);
+			session.update(tender);
 			logger.info("Update Tender " + tender + "\n");
 		} else {
 			logger.info("Ignore Tender: " + tender + "\n");
 		}
-
+		session.flush();
+		session.clear();
 	}
 
 }
