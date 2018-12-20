@@ -7,7 +7,7 @@ import java.util.List;
 @Table(name = "Complaints")
 public class ComplaintDTO {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    //@GeneratedValue(strategy= GenerationType.AUTO)
     @Column
     private String id;
     @ManyToOne

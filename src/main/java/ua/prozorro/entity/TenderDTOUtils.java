@@ -58,19 +58,19 @@ public class TenderDTOUtils {
 		}
 		DocumentDTO documentDTO = new DocumentDTO();
 
-		document.setId(document.getId());
-		document.setHash(document.getHash());
-		document.setDescription(document.getDescription());
-		document.setTitle(document.getTitle());
-		document.setTitleRu(document.getTitleRu());
-		document.setTitleEn(document.getTitleEn());
-		document.setUrl(document.getUrl());
-		document.setFormat(document.getFormat());
-		document.setDocumentOf(document.getDocumentOf());
-		document.setDatePublished(document.getDatePublished());
-		document.setAuthor(document.getAuthor());
-		document.setDocumentType(document.getDocumentType());
-		document.setDateModified(document.getDateModified());
+		documentDTO.setId(document.getId());
+		documentDTO.setHash(document.getHash());
+		documentDTO.setDescription(document.getDescription());
+		documentDTO.setTitle(document.getTitle());
+		documentDTO.setTitleRu(document.getTitleRu());
+		documentDTO.setTitleEn(document.getTitleEn());
+		documentDTO.setUrl(document.getUrl());
+		documentDTO.setFormat(document.getFormat());
+		documentDTO.setDocumentOf(document.getDocumentOf());
+		documentDTO.setDatePublished(document.getDatePublished());
+		documentDTO.setAuthor(document.getAuthor());
+		documentDTO.setDocumentType(document.getDocumentType());
+		documentDTO.setDateModified(document.getDateModified());
 
 		return documentDTO;
 	}
@@ -573,52 +573,52 @@ public class TenderDTOUtils {
 		tenderDTO.setSubmissionMethod(tender.getSubmissionMethod());
 
 		tenderDTO.setProcuringEntity(getOrganizationDTO(tender.getProcuringEntity()));
-		/*tenderDTO.setFunders(getOrganizationDTOList(tender.getFunders()));
+		tenderDTO.setFunders(getOrganizationDTOList(tender.getFunders()));
 
-			tenderDTO.setOwner(tender.getOwner());
+		tenderDTO.setOwner(tender.getOwner());
 
-			tenderDTO.setDocuments(getDocumentDTOList(tender.getDocuments()));
+		tenderDTO.setDocuments(getDocumentDTOList(tender.getDocuments()));
 
-			tenderDTO.setTitle(tender.getTitle());
-			tenderDTO.setTenderID(tender.getTenderID());
-			tenderDTO.setDateModified(tender.getDateModified());
-			tenderDTO.setStatus(tender.getStatus());
-			if (tender.getTenderPeriod() != null) {
-				tenderDTO.setTenderPeriodStartDate(tender.getTenderPeriod().getStartDate());
-				tenderDTO.setTenderPeriodClarificationsUntil(tender.getTenderPeriod().getClarificationsUntil());
-				tenderDTO.setTenderPeriodEndDate(tender.getTenderPeriod().getEndDate());
-				tenderDTO.setTenderPeriodInvalidationDate(tender.getTenderPeriod().getInvalidationDate());
-			}
-			tenderDTO.setContracts(getContractDTOList(tender.getContracts()));
-			if (tender.getAuctionPeriod() != null) {
-				tenderDTO.setAuctionPeriodStartDate(tender.getAuctionPeriod().getStartDate());
-				tenderDTO.setAuctionPeriodClarificationsUntil(tender.getAuctionPeriod().getClarificationsUntil());
-				tenderDTO.setAuctionPeriodEndDate(tender.getAuctionPeriod().getEndDate());
-				tenderDTO.setAuctionPeriodInvalidationDate(tender.getAuctionPeriod().getInvalidationDate());
-			}
-			tenderDTO.setAwards(getAwardDTOList(tender.getAwards()));
-			if (tender.getMinimalStep() != null) {
-				tenderDTO.setMinimalStepCurrency(tender.getMinimalStep().getCurrency());
-				tenderDTO.setMinimalStepAmount(tender.getMinimalStep().getAmount());
-				tenderDTO.setMinimalStepValueAddedTaxIncluded(tender.getMinimalStep().getValueAddedTaxIncluded());
-			}
+		tenderDTO.setTitle(tender.getTitle());
+		tenderDTO.setTenderID(tender.getTenderID());
+		tenderDTO.setDateModified(tender.getDateModified());
+		tenderDTO.setStatus(tender.getStatus());
+		if (tender.getTenderPeriod() != null) {
+			tenderDTO.setTenderPeriodStartDate(tender.getTenderPeriod().getStartDate());
+			tenderDTO.setTenderPeriodClarificationsUntil(tender.getTenderPeriod().getClarificationsUntil());
+			tenderDTO.setTenderPeriodEndDate(tender.getTenderPeriod().getEndDate());
+			tenderDTO.setTenderPeriodInvalidationDate(tender.getTenderPeriod().getInvalidationDate());
+		}
+		tenderDTO.setContracts(getContractDTOList(tender.getContracts()));
+		if (tender.getAuctionPeriod() != null) {
+			tenderDTO.setAuctionPeriodStartDate(tender.getAuctionPeriod().getStartDate());
+			tenderDTO.setAuctionPeriodClarificationsUntil(tender.getAuctionPeriod().getClarificationsUntil());
+			tenderDTO.setAuctionPeriodEndDate(tender.getAuctionPeriod().getEndDate());
+			tenderDTO.setAuctionPeriodInvalidationDate(tender.getAuctionPeriod().getInvalidationDate());
+		}
+		tenderDTO.setAwards(getAwardDTOList(tender.getAwards()));
+		if (tender.getMinimalStep() != null) {
+			tenderDTO.setMinimalStepCurrency(tender.getMinimalStep().getCurrency());
+			tenderDTO.setMinimalStepAmount(tender.getMinimalStep().getAmount());
+			tenderDTO.setMinimalStepValueAddedTaxIncluded(tender.getMinimalStep().getValueAddedTaxIncluded());
+		}
 
-			tenderDTO.setItems(getItemDTOList(tender.getItems()));
-			tenderDTO.setBids(getBidDTOList(tender.getBids()));
-			tenderDTO.setCancellations(getCancellationDTOList(tender.getCancellations()));
+		tenderDTO.setItems(getItemDTOList(tender.getItems()));
+		tenderDTO.setBids(getBidDTOList(tender.getBids()));
+		tenderDTO.setCancellations(getCancellationDTOList(tender.getCancellations()));
 
-			if (tender.getValue() != null) {
-				tenderDTO.setCurrency(tender.getValue().getCurrency());
-				tenderDTO.setAmount(tender.getValue().getAmount());
-				tenderDTO.setAddedTaxIncluded(tender.getValue().getValueAddedTaxIncluded());
-			}
-			tenderDTO.setAwardCriteria(tender.getAwardCriteria());
-			tenderDTO.setDescription(tender.getDescription());
+		if (tender.getValue() != null) {
+			tenderDTO.setCurrency(tender.getValue().getCurrency());
+			tenderDTO.setAmount(tender.getValue().getAmount());
+			tenderDTO.setAddedTaxIncluded(tender.getValue().getValueAddedTaxIncluded());
+		}
+		tenderDTO.setAwardCriteria(tender.getAwardCriteria());
+		tenderDTO.setDescription(tender.getDescription());
 
-			tenderDTO.setLots(getLotDTOList(tender.getLots()));
-			tenderDTO.setFeatures(getFeatureDTOList(tender.getFeatures()));
-			tenderDTO.setQuestions(getQuestionDTOList(tender.getQuestions()));
-			tenderDTO.setComplaints(getComplaintDTOList(tender.getComplaints()));*/
+		tenderDTO.setLots(getLotDTOList(tender.getLots()));
+		tenderDTO.setFeatures(getFeatureDTOList(tender.getFeatures()));
+		tenderDTO.setQuestions(getQuestionDTOList(tender.getQuestions()));
+		tenderDTO.setComplaints(getComplaintDTOList(tender.getComplaints()));
 
 
 		return tenderDTO;

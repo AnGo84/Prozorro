@@ -46,19 +46,22 @@ public class Test {
 
 		//JSONParser(url);
 		//GSONPareser(url2);
-		//checkPataForPeriod();
+		//checkDataForPeriod();
+		parseAndSaveData();
 
+	}
 
+	private static void parseAndSaveData() {
 		//https://www.google.com/search?ei=SN0TXJPOAvDrrgS55JeoBQ&q=java+hibernate+%40onetoone+saveorupdate+child+first&oq=java+hibernate+%40onetoone+saveorupdate+child+first&gs_l=psy-ab.3...18094.18570..19344...0.0..0.94.270.3......0....1..gws-wiz.......0i71.ThMyYku4_E4
 
-		Session session = getSessionByDBName("mysql");
+		SessionFactory sessionFactory = getSessionFactoryByDBName("mysql");
 
 		PageServiceProzorro pageServiceProzorro = new PageServiceProzorro(new PropertyFields(getStartProperties()));
 		/*TenderDataServiceProzorro tenderDataServiceProzorro =
 				new TenderDataServiceProzorro(start_page + File.separator);*/
 		TenderDataServiceProzorro tenderDataServiceProzorro = new TenderDataServiceProzorro(start_page + "/");
 		TenderParser tenderParser = new TenderParser();
-		tenderParser.setSession(session);
+		tenderParser.setSessionFactory(sessionFactory);
 		tenderParser.setPageServiceProzorro(pageServiceProzorro);
 		tenderParser.setTenderDataServiceProzorro(tenderDataServiceProzorro);
 
@@ -70,12 +73,15 @@ public class Test {
 			e.printStackTrace();
 		}
 		finally {
-			session.close();
+			sessionFactory.close();
 		}
-
 	}
 
 	private static Session getSessionByDBName(String dbName) {
+		SessionFactory factory = getSessionFactoryByDBName(dbName);
+		return factory.getCurrentSession();
+	}
+	private static SessionFactory getSessionFactoryByDBName(String dbName) {
 		System.out.println("DBName = " + dbName);
 		if (dbName == null || dbName.equals("")) {
 			return null;
@@ -83,10 +89,10 @@ public class Test {
 		HibernateDataBaseType baseType = HibernateDataBaseType.valueOf(dbName.toUpperCase());
 		System.out.println("HibernateDataBaseType = " + baseType);
 		SessionFactory factory = HibernateFactory.getHibernateSession(baseType);
-		return factory.getCurrentSession();
+		return factory;
 	}
 
-	private static void checkPataForPeriod() {
+	private static void checkDataForPeriod() {
 		PageServiceProzorro pageServiceProzorro = new PageServiceProzorro(new PropertyFields(getStartProperties()));
 		TenderDataServiceProzorro tenderDataServiceProzorro = new TenderDataServiceProzorro(start_page + File.separator);
 		try {

@@ -11,16 +11,16 @@ import java.util.List;
 @Entity
 @Table(name = "Tenders")
 public class TenderDTO {
+	@Id
+	//@GeneratedValue(strategy= GenerationType.AUTO)
+	@Column(nullable = false)
+	private String id;
 	@Column
 	public String guaranteeCurrency;
 	@Column
 	public String guaranteeAmount;
 	@Column(length = 36)
 	public String date;
-	@Id
-	//@GeneratedValue(strategy= GenerationType.AUTO)
-	@Column
-	private String id;
 	@Column
 	private String procurementMethod;
 	@Column

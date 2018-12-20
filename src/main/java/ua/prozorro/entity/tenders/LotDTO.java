@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "Lots")
 public class LotDTO {
 	@Id
-	@GeneratedValue(strategy= GenerationType.AUTO)
+	//@GeneratedValue(strategy= GenerationType.AUTO)
 	@Column
 	private String id;
 	@Column(length = 2000)

@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "Questions")
 public class QuestionDTO {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    //@GeneratedValue(strategy= GenerationType.AUTO)
     @Column
     private String id;
     @ManyToOne(cascade = {CascadeType.ALL})

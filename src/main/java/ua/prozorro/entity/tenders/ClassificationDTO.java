@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Table(name = "Classifications")
 public class ClassificationDTO {
 	@Id
-	@GeneratedValue(strategy= GenerationType.AUTO)
+	//@GeneratedValue(strategy= GenerationType.AUTO)
 	@Column
 	private String id;
 

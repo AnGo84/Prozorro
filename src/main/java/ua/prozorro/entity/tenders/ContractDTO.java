@@ -7,7 +7,7 @@ import java.util.List;
 @Table(name = "Contracts")
 public class ContractDTO {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    //@GeneratedValue(strategy= GenerationType.AUTO)
     @Column
     private String id;
 

@@ -7,7 +7,7 @@ import java.util.List;
 @Table(name = "Bids")
 public class BidDTO {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    //@GeneratedValue(strategy= GenerationType.AUTO)
     @Column
     private String id;
     @Column

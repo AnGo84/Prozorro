@@ -48,42 +48,53 @@ public class PageService {
 		}
 	}
 
-	public void savePage(PageDTO page) throws Exception {
-		if (session == null || !session.isOpen()) {
+	public boolean savePage(PageDTO page) throws Exception {
+		session = session.getSessionFactory().getCurrentSession();
+
+		if (session.getSessionFactory() == null || !session.isOpen()) {
 			throw new Exception("Session did not set");
 		}
 
 		PageDTO oldPage = session.get(PageDTO.class, page.getId());
 		if (oldPage == null) {
 			session.save(page);
+
 			logger.info("Save page: " + page + "\n");
 		} else if (!oldPage.equals(page)) {
 			session.update(page);
+
 			logger.info("Update page: " + page + "\n");
 		} else {
 			logger.info("Ignore page: " + page + "\n");
-		}
-
-	}
-
-	public void savePage(PageDTO page, Session session) throws Exception {
-		if (session == null || !session.isOpen()) {
-			throw new Exception("Session did not set");
-		}
-
-		PageDTO oldPage = session.get(PageDTO.class, page.getId());
-		if (oldPage == null) {
-			session.save(page);
-			logger.info("Save page: " + page + "\n");
-		} else if (!oldPage.equals(page)) {
-			session.update(page);
-			logger.info("Update page: " + page + "\n");
-		} else {
-			logger.info("Ignore page: " + page + "\n");
+			return false;
 		}
 		session.flush();
-		session.clear();
+		return true;
+	}
 
+	public boolean savePage(PageDTO page, Session session) throws Exception {
+
+		if (session == null || !session.isOpen()) {
+			throw new Exception("Session did not set");
+		}
+
+		PageDTO oldPage = session.get(PageDTO.class, page.getId());
+		session.flush();
+		if (oldPage == null) {
+			session.save(page);
+			session.flush();
+
+			logger.info("Save page: " + page + "\n");
+		} else if (!oldPage.equals(page)) {
+			session.update(page);
+			session.flush();
+
+			logger.info("Update page: " + page + "\n");
+		} else {
+			logger.info("Ignore page: " + page + "\n");
+			return false;
+		}
+		return true;
 	}
 
 }

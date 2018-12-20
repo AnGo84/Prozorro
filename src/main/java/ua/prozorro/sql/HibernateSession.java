@@ -9,13 +9,12 @@ import org.hibernate.service.ServiceRegistry;
 public class HibernateSession {
 	private static final String DEFAULT_CONFIGURE_FILE_NAME = "hibernate.cfg.xml";
 
-	private static SessionFactory sessionFactory =null;
+	private static SessionFactory sessionFactory = null;
 
 	// Hibernate 5:
 	private static SessionFactory buildSessionFactory(String configureFileName) {
 		try {
-			if (configureFileName==null || configureFileName.equals(""))
-			{
+			if (configureFileName == null || configureFileName.equals("")) {
 				configureFileName = DEFAULT_CONFIGURE_FILE_NAME;
 			}
 			// Create the ServiceRegistry from hibernate.cfg.xml
@@ -33,18 +32,16 @@ public class HibernateSession {
 		}
 	}
 
-
-	public static SessionFactory instance(String configureFileName){
-		if (sessionFactory==null || sessionFactory.isClosed()){
+	public static SessionFactory instance(String configureFileName) {
+		if (sessionFactory == null || sessionFactory.isClosed()) {
 			sessionFactory = buildSessionFactory(configureFileName);
 		}
 		return sessionFactory;
 	}
 
-
 	public static void closeSession() {
 		// Close caches and connection pools
-		if(sessionFactory.isOpen()) {
+		if (sessionFactory.isOpen()) {
 			sessionFactory.close();
 		}
 	}

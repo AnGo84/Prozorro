@@ -54,6 +54,15 @@ public class HibernateSchemaGenerator {
 
 	}
 
+	public static Metadata getMetaData(String configFileName){
+		// Create the ServiceRegistry from hibernate-xxx.cfg.xml
+		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()//
+				                                  .configure(configFileName).build();
+
+		// Create a metadata sources using the specified service registry.
+		Metadata metadata = new MetadataSources(serviceRegistry).getMetadataBuilder().build();
+		return metadata;
+	}
 
 
 	public static void main(String[] args) {
@@ -64,13 +73,8 @@ public class HibernateSchemaGenerator {
 
 		String tempDialectEngine= System.getProperty(HIBERNATE_DIALECT_STORAGE_ENGINE);
 		System.setProperty(HIBERNATE_DIALECT_STORAGE_ENGINE, "innodb");
-		// Create the ServiceRegistry from hibernate-xxx.cfg.xml
-		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()//
-				                                  .configure(configFileName).build();
 
-		// Create a metadata sources using the specified service registry.
-		Metadata metadata = new MetadataSources(serviceRegistry).getMetadataBuilder().build();
-
+		Metadata metadata= getMetaData(configFileName);
 
 		// Script file.
 		File outputFile = new File("MySQL_" + SCRIPT_FILE);
@@ -84,8 +88,6 @@ public class HibernateSchemaGenerator {
 		System.out.println("Create Database...");
 		// Create tables
 		createDataBase(export, metadata);
-
-		serviceRegistry.close();
 
 	}
 }

@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "FeatureEnums")
 public class FeatureEnumDTO {
 	@Id
-	@GeneratedValue(strategy= GenerationType.AUTO)
+	//@GeneratedValue(strategy= GenerationType.AUTO)
 	@Column
 	private int id;
 	@Column

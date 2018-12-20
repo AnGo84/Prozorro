@@ -8,8 +8,7 @@ import java.util.List;
 public class AwardDTO {
 	@Id
 	@Column
-	@GeneratedValue(strategy= GenerationType.AUTO)
-
+	//@GeneratedValue(strategy= GenerationType.AUTO)
 	private String id;
 
 	@Column

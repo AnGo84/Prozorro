@@ -7,7 +7,7 @@ import java.io.Serializable;
 @Table(name = "Documents")
 public class DocumentDTO{
 	@Id
-	@GeneratedValue(strategy= GenerationType.AUTO)
+	//@GeneratedValue(strategy= GenerationType.AUTO)
 	@Column
 	private String id;
 	@Column

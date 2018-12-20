@@ -9,7 +9,7 @@ import java.util.List;
 @Table(name = "Features")
 public class FeatureDTO {
 	@Id
-	@GeneratedValue(strategy= GenerationType.AUTO)
+	//@GeneratedValue(strategy= GenerationType.AUTO)
 	@Column
 	private String code;
 	@Column

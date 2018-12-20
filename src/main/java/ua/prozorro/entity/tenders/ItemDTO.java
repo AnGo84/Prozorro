@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class ItemDTO {
 
 	@Id
-	@GeneratedValue(strategy= GenerationType.AUTO)
+	//@GeneratedValue(strategy= GenerationType.AUTO)
 	@Column
 	private String id;
 

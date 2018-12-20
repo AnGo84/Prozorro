@@ -73,6 +73,7 @@ public class Tender implements Serializable {
 	@SerializedName("status")
 	//@Expose
 	private String status;
+
 	@SerializedName("tenderPeriod")
 	//@Expose
 	private Period tenderPeriod;

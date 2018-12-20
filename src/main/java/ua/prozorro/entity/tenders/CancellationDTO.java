@@ -8,7 +8,7 @@ import java.util.List;
 @Table
 public class CancellationDTO{
 	@Id
-	@GeneratedValue(strategy= GenerationType.AUTO)
+	//@GeneratedValue(strategy= GenerationType.AUTO)
 	@Column
 	private String id;
 

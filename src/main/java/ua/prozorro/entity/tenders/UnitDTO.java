@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "Units")
 public class UnitDTO {
 	@Id
-	@GeneratedValue(strategy= GenerationType.AUTO)
+	//@GeneratedValue(strategy= GenerationType.AUTO)
 	@Column
 	private String code;
 

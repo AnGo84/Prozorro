@@ -32,16 +32,16 @@ public class TenderService {
 			logger.info("Ignore Tender: " + tender + "\n");
 		}
 
+		session.flush();
 
 	}
 	public void saveTender(TenderDTO tender, Session session) throws Exception {
 		if (session == null) {
 			throw new Exception("Session did not set");
 		}
-
+/*
 		TenderDTO oldTenderDTO = session.get(TenderDTO.class, tender.getId());
 		session.flush();
-
 		if (oldTenderDTO == null) {
 			session.save(tender);
 			logger.info("Save Tender " + tender + "\n");
@@ -50,7 +50,9 @@ public class TenderService {
 			logger.info("Update Tender " + tender + "\n");
 		} else {
 			logger.info("Ignore Tender: " + tender + "\n");
-		}
+		}*/
+
+		session.saveOrUpdate(tender);
 		session.flush();
 		session.clear();
 	}
