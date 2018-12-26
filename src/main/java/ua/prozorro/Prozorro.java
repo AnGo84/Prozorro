@@ -5,8 +5,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.ParseException;
 import ua.prozorro.prozorro.model.pages.PageContentURL;
-import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
 import ua.prozorro.prozorro.model.pages.PageURL;
+import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
 import ua.prozorro.prozorro.model.tenders.*;
 import ua.prozorro.sql.SQLConnection;
 import ua.prozorro.utils.DateUtils;
@@ -33,7 +33,7 @@ public class Prozorro {
     public static final String START_PAGE = "https://public.api.openprocurement.org/api/0/tenders";
     private static final String PAGE_BEGIN_WITH = "https://public.api.openprocurement.org/api/2.3/tenders?offset=";
     private static final String PAGE_END_WITH = "T00%3A00%3A00.000000%2B03%3A00";
-//    private static final String START_PATH = "/api/0/tenders";
+    //    private static final String START_PATH = "/api/0/tenders";
     private static final String TENDER_START_PATH = "https://public.api.openprocurement.org/api/0/tenders/";
     // Example date:  2015-06-19T21:00:03.340891+03:00
     private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX";
@@ -47,8 +47,8 @@ public class Prozorro {
     private static String DateEnd = "2016-10-04";
 
     public static void main(String[] args) throws IOException {
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
-//        System.out.println(simpleDateFormat.format(new Date()));
+        //        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
+        //        System.out.println(simpleDateFormat.format(new Date()));
         try {
             Properties property = getConnectionProperties(DB_PROPERTY_PATH);
             System.out.println(getPropertyText(property));
@@ -61,7 +61,7 @@ public class Prozorro {
         List<PageContentURL> pageContentList = null;
         try {
             pageContentList = getPagesList(simpleDateShotFormat.parse(DateBegin), simpleDateShotFormat.parse(DateEnd));
-        } catch (java.text.ParseException|IOException e) {
+        } catch (java.text.ParseException | IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
@@ -72,7 +72,9 @@ public class Prozorro {
             System.out.println("Find pages: " + pageContentList.size());
             System.out.println("Count the approximate time...");
             try {
-                System.out.println("Count time: " + DateUtils.getTextTime(getAvgParsingSize(pageContentList.get(0), simpleDateShotFormat.parse(DateEnd)) * pageContentList.size()));
+                System.out.println("Count time: " + DateUtils.getTextTime(
+                        getAvgParsingSize(pageContentList.get(0), simpleDateShotFormat.parse(DateEnd)) *
+                        pageContentList.size()));
             } catch (java.text.ParseException e) {
                 e.printStackTrace();
             }
@@ -81,11 +83,13 @@ public class Prozorro {
             int pageCount = 0;
             int allTenders = 0;
             try {
-                try (Connection dbConnection = SQLConnection.getDBConnection(getConnectionProperties(DB_PROPERTY_PATH))) {
+                try (Connection dbConnection = SQLConnection
+                        .getDBConnection(getConnectionProperties(DB_PROPERTY_PATH))) {
                     SQLConnection.cleanTables(dbConnection);
                     for (PageContentURL pageContent : pageContentList) {
                         int count = 0;
-                        List<TenderOld> tenderList = getTendersFromPage(pageContent, simpleDateShotFormat.parse(DateEnd));
+                        List<TenderOld> tenderList =
+                                getTendersFromPage(pageContent, simpleDateShotFormat.parse(DateEnd));
                         pageCount++;
                         allTenders += tenderList.size();
 
@@ -115,15 +119,16 @@ public class Prozorro {
                 e.printStackTrace();
             }
         }
-//        try {
-//            writeToXMLFile(tenderList, new File("D:\\Test.xml"));
-//            System.out.println("File created");
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
+        //        try {
+        //            writeToXMLFile(tenderList, new File("D:\\Test.xml"));
+        //            System.out.println("File created");
+        //        } catch (FileNotFoundException e) {
+        //            e.printStackTrace();
+        //        }
     }
 
-    public static List<TenderOld> getTendersFromPage(PageContentURL pageContent, Date dateTill) throws IOException, java.text.ParseException {
+    public static List<TenderOld> getTendersFromPage(PageContentURL pageContent, Date dateTill)
+            throws IOException, java.text.ParseException {
         if (dateTill == null) {
             dateTill = parseDateShotFromString(MAX_DATE_TILL);
         }
@@ -132,20 +137,20 @@ public class Prozorro {
             TenderOld tender = getTender(pageElement.getId());
             if (dateTill.compareTo(parseDateShotFromString(tender.getDateModified())) >= 0) {
                 tenderList.add(tender);
-            } else break;
+            } else
+                break;
         }
         return tenderList;
     }
 
     public static void writeToXMLFile(List<TenderOld> tenderList, File file) throws FileNotFoundException {
-        XMLEncoder xmlEncoder = new XMLEncoder(
-                new BufferedOutputStream(
-                        new FileOutputStream(file)));
+        XMLEncoder xmlEncoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)));
         xmlEncoder.writeObject(tenderList);
         xmlEncoder.close();
     }
 
-    public static List<PageContentURL> getPagesList(Date dateFrom, Date dateTill) throws IOException, java.text.ParseException, ParseException {
+    public static List<PageContentURL> getPagesList(Date dateFrom, Date dateTill)
+            throws IOException, java.text.ParseException, ParseException {
         String startPage = START_PAGE;
         if (dateFrom != null) {
             startPage = PAGE_BEGIN_WITH + dateToShotFormat(dateFrom) + PAGE_END_WITH;
@@ -153,14 +158,14 @@ public class Prozorro {
         if (dateTill == null) {
             dateTill = parseDateShotFromString(MAX_DATE_TILL);
         }
-//        System.out.println("Start_page: " + startPage);
+        //        System.out.println("Start_page: " + startPage);
         List<PageContentURL> pageContentList = new ArrayList<>();
         URL currentURL = new URL(startPage);
         PageContentURL pageContent;
         do {
             pageContent = getPageContent(currentURL);
             pageContentList.add(pageContent);
-//                System.out.println("Pages: " + pageContentList.size() + "; Current: " + currentURL.toString() + "; Next: " + pageContent.getNextPage().getUrl());
+            //                System.out.println("Pages: " + pageContentList.size() + "; Current: " + currentURL.toString() + "; Next: " + pageContent.getNextPage().getUrl());
             if (dateTill.compareTo(parseDateShotFromString(pageContent.getNextPage().getOffset())) >= 0) {
                 currentURL = pageContent.getNextPage().getUrl();
             }
@@ -176,13 +181,15 @@ public class Prozorro {
     public static PageContentURL getPageContent(URL pageURL, String res) throws ParseException {
         JSONObject jsonObj = (JSONObject) JSONValue.parseWithException(res);
         JSONObject joPageItem = (JSONObject) jsonObj.get("next_page");
-        PageURL nextPage = new PageURL(joPageItem.get("path").toString(), joPageItem.get("uri").toString(), joPageItem.get("offset").toString());
+        PageURL nextPage = new PageURL(joPageItem.get("path").toString(), joPageItem.get("uri").toString(),
+                                       joPageItem.get("offset").toString());
 
         PageContentURL pageContent = new PageContentURL(pageURL, nextPage);
         JSONArray tendersList = (JSONArray) jsonObj.get("data");
         for (Object jsObj : tendersList) {
             JSONObject joItem = (JSONObject) jsObj;
-            ProzorroPageElement pageElement = new ProzorroPageElement(joItem.get("id").toString(), joItem.get("dateModified").toString());
+            ProzorroPageElement pageElement =
+                    new ProzorroPageElement(joItem.get("id").toString(), joItem.get("dateModified").toString());
             pageContent.getPageElementList().add(pageElement);
         }
         return pageContent;
@@ -324,7 +331,7 @@ public class Prozorro {
         List<Organization> tendersList = new ArrayList<>();
         if (itemsList != null) {
             for (Object jsObj : itemsList) {
-//                JSONObject joItem = (JSONObject) jsObj;
+                //                JSONObject joItem = (JSONObject) jsObj;
                 tendersList.add(getOrganization((JSONObject) jsObj));
             }
         }
@@ -416,7 +423,7 @@ public class Prozorro {
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
                 stringBuilder.append(inputLine);
-//                System.out.println(inputLine);
+                //                System.out.println(inputLine);
             }
         }
         return stringBuilder.toString();
@@ -425,7 +432,7 @@ public class Prozorro {
     public static Date parseDateFromString(String stringDate) throws java.text.ParseException {
         Date date = null;
         date = simpleDateFormat.parse(stringDate);
-//            System.out.println("tenders.TenderOld date: "+ date.toString());
+        //            System.out.println("tenders.TenderOld date: "+ date.toString());
 
         return date;
     }
@@ -439,7 +446,8 @@ public class Prozorro {
         return simpleDateShotFormat.format(date);
     }
 
-    public static long getAvgParsingSize(PageContentURL pageContent, Date dateEnd) throws IOException, java.text.ParseException {
+    public static long getAvgParsingSize(PageContentURL pageContent, Date dateEnd)
+            throws IOException, java.text.ParseException {
         long start = System.currentTimeMillis();
         List<TenderOld> tenderList = getTendersFromPage(pageContent, dateEnd);
         return (System.currentTimeMillis() - start);
@@ -455,8 +463,9 @@ public class Prozorro {
     }
 
     public static String getPropertyText(Properties properties) {
-        return String.format("Server: %s. Host: %s. Scheme name: %s. User name: %s",
-                properties.getProperty("db.type"), properties.getProperty("db.host"), properties.getProperty("db.name"), properties.getProperty("db.login"));
+        return String.format("Server: %s. Host: %s. Scheme name: %s. User name: %s", properties.getProperty("db.type"),
+                             properties.getProperty("db.host"), properties.getProperty("db.name"),
+                             properties.getProperty("db.login"));
     }
 
 

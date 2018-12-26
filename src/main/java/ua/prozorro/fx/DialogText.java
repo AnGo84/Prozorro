@@ -53,13 +53,17 @@ public class DialogText {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         DialogText that = (DialogText) o;
 
-        if (titleText != null ? !titleText.equals(that.titleText) : that.titleText != null) return false;
-        if (headerText != null ? !headerText.equals(that.headerText) : that.headerText != null) return false;
+        if (titleText != null ? !titleText.equals(that.titleText) : that.titleText != null)
+            return false;
+        if (headerText != null ? !headerText.equals(that.headerText) : that.headerText != null)
+            return false;
         return contentText != null ? contentText.equals(that.contentText) : that.contentText == null;
     }
 

@@ -26,130 +26,130 @@ import java.util.Properties;
 
 public class ProzorroApp extends Application {
 
-	private static final String APP_NAME = "Prozorro App";
-	private static final String CONFIG_FILE_NAME = "Prozorro.properties";
-	private static final Logger logger = LogManager.getRootLogger();
+    private static final String APP_NAME = "Prozorro App";
+    private static final String CONFIG_FILE_NAME = "Prozorro.properties";
+    private static final Logger logger = LogManager.getRootLogger();
 
-	private Session session;
+    private Session session;
 
-	private Stage primaryStage;
-	private BorderPane root;
+    private Stage primaryStage;
+    private BorderPane root;
 
-	private Properties properties = new Properties();
+    private Properties properties = new Properties();
 
-	public static void main(String[] args) {
-		logger.info("Start");
-		launch(args);
-		logger.info("Close");
-	}
+    public static void main(String[] args) {
+        logger.info("Start");
+        launch(args);
+        logger.info("Close");
+    }
 
-	public static String getAppName() {
-		return APP_NAME;
-	}
+    public static String getAppName() {
+        return APP_NAME;
+    }
 
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		this.primaryStage = primaryStage;
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        this.primaryStage = primaryStage;
 
-		File propertiesFile = FileUtils.getFileWithName(this.getClass(), CONFIG_FILE_NAME);
-		logger.info("property File: " + propertiesFile);
+        File propertiesFile = FileUtils.getFileWithName(this.getClass(), CONFIG_FILE_NAME);
+        logger.info("property File: " + propertiesFile);
 
-		try {
-			properties = PropertiesUtils.getPropertiesFromFile(propertiesFile);
+        try {
+            properties = PropertiesUtils.getPropertiesFromFile(propertiesFile);
 
 			/*for (String prop : properties.stringPropertyNames()) {
 				logger.info("Prop: " + prop + " | value: " + properties.getProperty(prop));
 			}*/
 
-			String dbName = PropertiesUtils.getPropertyString(properties, "db.type");
-			session = getSessionByDBName(dbName);
+            String dbName = PropertiesUtils.getPropertyString(properties, "db.type");
+            session = getSessionByDBName(dbName);
 
 
-		} catch (IOException e) {
-//            e.printStackTrace();
-			Dialogs.showErrorDialog(e,
-					new DialogText("Application start error", "Error with resource's file", "Can't find resource's file '" + CONFIG_FILE_NAME + "'"), logger);
-		}
+        } catch (IOException e) {
+            //            e.printStackTrace();
+            Dialogs.showErrorDialog(e, new DialogText("Application start error", "Error with resource's file",
+                                                      "Can't find resource's file '" + CONFIG_FILE_NAME + "'"), logger);
+        }
 
-		initMainView();
+        initMainView();
 
 
-		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-			@Override
-			public void handle(WindowEvent we) {
-				if (isConfirmShutDown()) {
-					if (session.isConnected()) {
-						session.close();
-					}
-					Platform.exit();
-					System.exit(0);
-				} else {
-					we.consume();
-				}
-			}
-		});
-	}
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent we) {
+                if (isConfirmShutDown()) {
+                    if (session.isConnected()) {
+                        session.close();
+                    }
+                    Platform.exit();
+                    System.exit(0);
+                } else {
+                    we.consume();
+                }
+            }
+        });
+    }
 
-	private Session getSessionByDBName(String dbName) {
-		//logger.info("DBName = " + dbName);
-		if (dbName == null || dbName.equals("")) {
-			return null;
-		}
-		HibernateDataBaseType baseType = HibernateDataBaseType.valueOf(dbName.toUpperCase());
-		logger.info("HibernateDataBaseType = " + baseType);
-		SessionFactory factory = HibernateFactory.getHibernateSession(baseType);
-		return factory.getCurrentSession();
-	}
+    private Session getSessionByDBName(String dbName) {
+        //logger.info("DBName = " + dbName);
+        if (dbName == null || dbName.equals("")) {
+            return null;
+        }
+        HibernateDataBaseType baseType = HibernateDataBaseType.valueOf(dbName.toUpperCase());
+        logger.info("HibernateDataBaseType = " + baseType);
+        SessionFactory factory = HibernateFactory.getHibernateSession(baseType);
+        return factory.getCurrentSession();
+    }
 
-	private void initMainView() throws IOException {
+    private void initMainView() throws IOException {
 		/*FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(MainApp.class.getResource("/views/LoginForm.fxml"));*/
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("/views/mainForm.fxml"));
-		root = loader.load();
-		//Parent root = loader.load();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/views/mainForm.fxml"));
+        root = loader.load();
+        //Parent root = loader.load();
 
-		primaryStage.setTitle("Данные из портала Prozorro.gov.ua");
-		primaryStage.setScene(new Scene(root));
+        primaryStage.setTitle("Данные из портала Prozorro.gov.ua");
+        primaryStage.setScene(new Scene(root));
 
-		MainController controller = loader.getController();
+        MainController controller = loader.getController();
 
-		controller.setProzorroApp(this);
+        controller.setProzorroApp(this);
 
-		primaryStage.show();
+        primaryStage.show();
 
-	}
+    }
 
-	public boolean shutDown() {
-		if (isConfirmShutDown()) {
+    public boolean shutDown() {
+        if (isConfirmShutDown()) {
 
-			Platform.exit();
+            Platform.exit();
 
-			return true;
-		}
-		return false;
-	}
+            return true;
+        }
+        return false;
+    }
 
-	public boolean isConfirmShutDown() {
-		if (Dialogs.showConfirmDialog(new DialogText("Припинення роботи", "Додаток буде закритий", "Підтвердити?"))) {
-			return true;
-		}
-		return false;
-	}
+    public boolean isConfirmShutDown() {
+        if (Dialogs.showConfirmDialog(new DialogText("Припинення роботи", "Додаток буде закритий", "Підтвердити?"))) {
+            return true;
+        }
+        return false;
+    }
 
-	public Stage getPrimaryStage() {
-		return primaryStage;
-	}
+    public Stage getPrimaryStage() {
+        return primaryStage;
+    }
 
-	public BorderPane getRoot() {
-		return root;
-	}
+    public BorderPane getRoot() {
+        return root;
+    }
 
-	public Session getSession() {
-		return session;
-	}
+    public Session getSession() {
+        return session;
+    }
 
-	public Properties getProperties() {
-		return properties;
-	}
+    public Properties getProperties() {
+        return properties;
+    }
 }

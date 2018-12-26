@@ -2,7 +2,7 @@ package ua.prozorro.prozorro.model.tenders;
 
 import com.google.gson.annotations.SerializedName;
 
-import javax.persistence.*;
+import javax.persistence.Column;
 import java.util.List;
 
 public class Contract {

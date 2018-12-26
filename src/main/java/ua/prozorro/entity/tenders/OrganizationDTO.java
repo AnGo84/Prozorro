@@ -12,24 +12,24 @@ public class OrganizationDTO {
     @Column
     private int id;
 
-    @Column(length = 1000)
+    @Column(length = 4000)
     private String name;
     @Column
     private String telephone;
-    @Column
+    @Column(length = 2000)
     private String url;
-    @Column
+    @Column(length = 2000)
     private String contactPointName;
     @Column
     private String email;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-            /*(cascade = {CascadeType.ALL})*/
+    @ManyToOne(fetch = FetchType.LAZY)
+    /*(cascade = {CascadeType.ALL})*/
     @JoinColumn(name = "identifier_id")
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private IdentifierDTO identifier;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private AddressDTO address;
@@ -101,19 +101,27 @@ public class OrganizationDTO {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         OrganizationDTO that = (OrganizationDTO) o;
 
-        if (id != that.id) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (telephone != null ? !telephone.equals(that.telephone) : that.telephone != null) return false;
-        if (url != null ? !url.equals(that.url) : that.url != null) return false;
+        if (id != that.id)
+            return false;
+        if (name != null ? !name.equals(that.name) : that.name != null)
+            return false;
+        if (telephone != null ? !telephone.equals(that.telephone) : that.telephone != null)
+            return false;
+        if (url != null ? !url.equals(that.url) : that.url != null)
+            return false;
         if (contactPointName != null ? !contactPointName.equals(that.contactPointName) : that.contactPointName != null)
             return false;
-        if (email != null ? !email.equals(that.email) : that.email != null) return false;
-        if (identifier != null ? !identifier.equals(that.identifier) : that.identifier != null) return false;
+        if (email != null ? !email.equals(that.email) : that.email != null)
+            return false;
+        if (identifier != null ? !identifier.equals(that.identifier) : that.identifier != null)
+            return false;
         return address != null ? address.equals(that.address) : that.address == null;
     }
 

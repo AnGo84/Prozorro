@@ -35,8 +35,9 @@ public class PropertiesUtils {
     }
 
     public static String getDBPropertyText(Properties properties) {
-        return String.format("Server: %s. Host: %s. Scheme name: %s. User name: %s",
-                properties.getProperty("db.type"), properties.getProperty("db.host"), properties.getProperty("db.name"), properties.getProperty("db.login"));
+        return String.format("Server: %s. Host: %s. Scheme name: %s. User name: %s", properties.getProperty("db.type"),
+                             properties.getProperty("db.host"), properties.getProperty("db.name"),
+                             properties.getProperty("db.login"));
     }
 
     private static void checkProperties(Properties properties) {
@@ -51,14 +52,15 @@ public class PropertiesUtils {
 
     public static int getPropertyInt(Properties properties, String propertyName, int defaultValue) {
         int value = defaultValue;
-        if (getPropertyString(properties, propertyName) != null && getPropertyString(properties, propertyName).length() > 0) {
+        if (getPropertyString(properties, propertyName) != null &&
+            getPropertyString(properties, propertyName).length() > 0) {
             value = Integer.parseInt(getPropertyString(properties, propertyName));
         }
         return value;
     }
 
     public static String toString(Properties properties) {
-        if (properties==null){
+        if (properties == null) {
             return null;
         }
         final StringBuilder sb = new StringBuilder("Properties{").append("\n");

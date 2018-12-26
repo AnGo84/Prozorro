@@ -46,12 +46,15 @@ public class ProzorroPageElement {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         ProzorroPageElement that = (ProzorroPageElement) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null)
+            return false;
         return dateModified != null ? dateModified.equals(that.dateModified) : that.dateModified == null;
     }
 

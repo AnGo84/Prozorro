@@ -14,7 +14,7 @@ public class BidDTO {
     private String status;
     @Column
     private String date;
-    @Column(length = 1000)
+    @Column(length = 2000)
     private String participationUrl;
 
     @Column
@@ -28,14 +28,16 @@ public class BidDTO {
     private boolean selfEligible;
     @Column(length = 1)
     private boolean selfQualified;
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-    @JoinTable(name = "Bids_Documents", joinColumns = { @JoinColumn(name = "bid_id") }, inverseJoinColumns = {
-            @JoinColumn(name = "document_id") })
+    /*@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @JoinTable(name = "Bids_Documents", joinColumns = {@JoinColumn(name = "bid_id")},
+            inverseJoinColumns = {@JoinColumn(name = "document_id")})*/
+    @Transient
     private List<DocumentDTO> documents = null;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "Bids_Organizations", joinColumns = { @JoinColumn(name = "bid_id") }, inverseJoinColumns = {
-            @JoinColumn(name = "organization_id") })
+    /*@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @JoinTable(name = "Bids_Organizations", joinColumns = {@JoinColumn(name = "bid_id")},
+            inverseJoinColumns = {@JoinColumn(name = "organization_id")})*/
+    @Transient
     private List<OrganizationDTO> tenderers = null;
 
     public String getId() {
@@ -128,23 +130,35 @@ public class BidDTO {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         BidDTO bidDTO = (BidDTO) o;
 
-        if (selfEligible != bidDTO.selfEligible) return false;
-        if (selfQualified != bidDTO.selfQualified) return false;
-        if (id != null ? !id.equals(bidDTO.id) : bidDTO.id != null) return false;
-        if (status != null ? !status.equals(bidDTO.status) : bidDTO.status != null) return false;
-        if (date != null ? !date.equals(bidDTO.date) : bidDTO.date != null) return false;
-        if (participationUrl != null ? !participationUrl.equals(bidDTO.participationUrl) : bidDTO.participationUrl != null)
+        if (selfEligible != bidDTO.selfEligible)
             return false;
-        if (currency != null ? !currency.equals(bidDTO.currency) : bidDTO.currency != null) return false;
-        if (amount != null ? !amount.equals(bidDTO.amount) : bidDTO.amount != null) return false;
-        if (valueAddedTaxIncluded != null ? !valueAddedTaxIncluded.equals(bidDTO.valueAddedTaxIncluded) : bidDTO.valueAddedTaxIncluded != null)
+        if (selfQualified != bidDTO.selfQualified)
             return false;
-        if (documents != null ? !documents.equals(bidDTO.documents) : bidDTO.documents != null) return false;
+        if (id != null ? !id.equals(bidDTO.id) : bidDTO.id != null)
+            return false;
+        if (status != null ? !status.equals(bidDTO.status) : bidDTO.status != null)
+            return false;
+        if (date != null ? !date.equals(bidDTO.date) : bidDTO.date != null)
+            return false;
+        if (participationUrl != null ? !participationUrl.equals(bidDTO.participationUrl) :
+                bidDTO.participationUrl != null)
+            return false;
+        if (currency != null ? !currency.equals(bidDTO.currency) : bidDTO.currency != null)
+            return false;
+        if (amount != null ? !amount.equals(bidDTO.amount) : bidDTO.amount != null)
+            return false;
+        if (valueAddedTaxIncluded != null ? !valueAddedTaxIncluded.equals(bidDTO.valueAddedTaxIncluded) :
+                bidDTO.valueAddedTaxIncluded != null)
+            return false;
+        if (documents != null ? !documents.equals(bidDTO.documents) : bidDTO.documents != null)
+            return false;
         return tenderers != null ? tenderers.equals(bidDTO.tenderers) : bidDTO.tenderers == null;
     }
 

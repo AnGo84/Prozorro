@@ -29,16 +29,16 @@ public class TenderOld {
     private String auctionUrl;
     private String description;
     private String title;
-    private List<ItemOld> itemList=new ArrayList<>();
+    private List<ItemOld> itemList = new ArrayList<>();
     private Value value;
     private Value minimalStep;
     private String owner;
     private String awardCriteria;
 
     private Organization procuringEntity;
-    private List<Bid> bidList= new ArrayList<>();
-    private List<Award> awardList= new ArrayList<>();
-    private List<Contract> contractList= new ArrayList<>();
+    private List<Bid> bidList = new ArrayList<>();
+    private List<Award> awardList = new ArrayList<>();
+    private List<Contract> contractList = new ArrayList<>();
 
     public TenderOld() {
     }

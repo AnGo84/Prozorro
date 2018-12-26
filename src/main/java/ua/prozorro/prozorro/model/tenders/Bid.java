@@ -1,6 +1,5 @@
 package ua.prozorro.prozorro.model.tenders;
 
-import javax.persistence.*;
 import java.util.List;
 
 public class Bid {

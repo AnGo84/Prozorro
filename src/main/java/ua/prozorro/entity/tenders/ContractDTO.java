@@ -14,14 +14,16 @@ public class ContractDTO {
     @Column
     private String status;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    /*@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinTable(name = "Contracts_Items", joinColumns = { @JoinColumn(name = "contract_id") }, inverseJoinColumns = {
-            @JoinColumn(name = "item_id") })
+            @JoinColumn(name = "item_id") })*/
+    @Transient
     private List<ItemDTO> items = null;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    /*@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinTable(name = "Contracts_Organizations", joinColumns = { @JoinColumn(name = "contract_id") }, inverseJoinColumns = {
-            @JoinColumn(name = "organization_id") })
+            @JoinColumn(name = "organization_id") })*/
+    @Transient
     private List<OrganizationDTO> suppliers = null;
 
     @Column
@@ -111,20 +113,30 @@ public class ContractDTO {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         ContractDTO that = (ContractDTO) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (status != null ? !status.equals(that.status) : that.status != null) return false;
-        if (items != null ? !items.equals(that.items) : that.items != null) return false;
-        if (suppliers != null ? !suppliers.equals(that.suppliers) : that.suppliers != null) return false;
-        if (currency != null ? !currency.equals(that.currency) : that.currency != null) return false;
-        if (amount != null ? !amount.equals(that.amount) : that.amount != null) return false;
-        if (valueAddedTaxIncluded != null ? !valueAddedTaxIncluded.equals(that.valueAddedTaxIncluded) : that.valueAddedTaxIncluded != null)
+        if (id != null ? !id.equals(that.id) : that.id != null)
             return false;
-        if (awardID != null ? !awardID.equals(that.awardID) : that.awardID != null) return false;
+        if (status != null ? !status.equals(that.status) : that.status != null)
+            return false;
+        if (items != null ? !items.equals(that.items) : that.items != null)
+            return false;
+        if (suppliers != null ? !suppliers.equals(that.suppliers) : that.suppliers != null)
+            return false;
+        if (currency != null ? !currency.equals(that.currency) : that.currency != null)
+            return false;
+        if (amount != null ? !amount.equals(that.amount) : that.amount != null)
+            return false;
+        if (valueAddedTaxIncluded != null ? !valueAddedTaxIncluded.equals(that.valueAddedTaxIncluded) :
+                that.valueAddedTaxIncluded != null)
+            return false;
+        if (awardID != null ? !awardID.equals(that.awardID) : that.awardID != null)
+            return false;
         return contractID != null ? contractID.equals(that.contractID) : that.contractID == null;
     }
 

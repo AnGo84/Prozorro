@@ -14,10 +14,10 @@ import ua.prozorro.Prozorro;
 import ua.prozorro.ProzorroApp;
 import ua.prozorro.fx.DialogText;
 import ua.prozorro.fx.Dialogs;
+import ua.prozorro.properties.PropertiesUtils;
 import ua.prozorro.prozorro.model.pages.PageContentURL;
 import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
 import ua.prozorro.prozorro.model.tenders.TenderOld;
-import ua.prozorro.properties.PropertiesUtils;
 import ua.prozorro.sql.SQLConnection;
 import ua.prozorro.utils.DateUtils;
 import ua.prozorro.utils.FileUtils;
@@ -93,10 +93,12 @@ public class Controller {
 
             textArea.appendText("Открыт файл настроек: " + Prozorro.getPropertyText(properties) + "\n");
         } catch (IOException e) {
-//            showMessage(Alert.AlertType.ERROR, "Ошибка", "Ошибка открытия файла \'/resources/Prozorro.properties\'!", e.getMessage());
-            textArea.appendText("Ошибка открытия файла настроек \'/resources/Prozorro.properties\' или файл не найден!" + "\n");
+            //            showMessage(Alert.AlertType.ERROR, "Ошибка", "Ошибка открытия файла \'/resources/Prozorro.properties\'!", e.getMessage());
+            textArea.appendText(
+                    "Ошибка открытия файла настроек \'/resources/Prozorro.properties\' или файл не найден!" + "\n");
             textArea.appendText(e.getMessage() + "\n");
-            Dialogs.showErrorDialog(e, new DialogText("Application start error", "Error with resource's file", "Can't find resource's file '" + propertiesFile + "'"), logger);
+            Dialogs.showErrorDialog(e, new DialogText("Application start error", "Error with resource's file",
+                                                      "Can't find resource's file '" + propertiesFile + "'"), logger);
         }
         try {
             dbConnection = SQLConnection.getDBConnection(properties);
@@ -123,14 +125,13 @@ public class Controller {
 
     public void onChooseXMLFolder(ActionEvent actionEvent) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
-        File selectedDirectory =
-                directoryChooser.showDialog(tFieldXMLFolder.getScene().getWindow());
+        File selectedDirectory = directoryChooser.showDialog(tFieldXMLFolder.getScene().getWindow());
 
         if (selectedDirectory != null) {
             tFieldXMLFolder.setText(selectedDirectory.getAbsolutePath());
             textArea.appendText("Установлен каталог для выгрузки XML-файлов: " + tFieldXMLFolder.getText() + "\n");
         } else {
-//            tFieldXMLFolder.setText("No Directory selected");
+            //            tFieldXMLFolder.setText("No Directory selected");
         }
     }
 
@@ -139,19 +140,23 @@ public class Controller {
             buttonGetTenders.setDisable(true);
             dateFrom = Date.from(datePickerFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
             dateTill = Date.from(datePickerTill.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-            textArea.appendText("Отбираются тендеры за период с " + Prozorro.simpleDateShotFormat.format(dateFrom) + " по " + Prozorro.simpleDateShotFormat.format(dateTill) + "\n");
+            textArea.appendText(
+                    "Отбираются тендеры за период с " + Prozorro.simpleDateShotFormat.format(dateFrom) + " по " +
+                    Prozorro.simpleDateShotFormat.format(dateTill) + "\n");
 
             if (dbConnection != null || (new File(tFieldXMLFolder.getText()).exists())) {
                 Task task = new Task() {
                     @Override
                     protected Integer call() throws Exception {
-//                    System.out.println(buttonGetPages.getScene().getClass().toString());
+                        //                    System.out.println(buttonGetPages.getScene().getClass().toString());
                         buttonGetPages.getParent().getParent().setDisable(true);
                         buttonGetPages.getParent().getScene().setCursor(Cursor.WAIT); //Change cursor to wait style
                         try {
                             pageContentList = Prozorro.getPagesList(dateFrom, dateTill);
                             textArea.appendText("Найдено страниц с тендерами: " + pageContentList.size() + "\n");
-                            approximatelyTime = DateUtils.getTextTime(Prozorro.getAvgParsingSize(pageContentList.get(0), dateTill) * pageContentList.size());
+                            approximatelyTime = DateUtils.getTextTime(
+                                    Prozorro.getAvgParsingSize(pageContentList.get(0), dateTill) *
+                                    pageContentList.size());
                             buttonGetTenders.setDisable(false);
                         } catch (java.text.ParseException e) {
                             textArea.appendText(e.getMessage() + "\n");
@@ -160,34 +165,40 @@ public class Controller {
                             textArea.appendText(e.getMessage() + "\n");
                             Dialogs.showErrorDialog(e, "Exception Dialog", "Look, an Exception Dialog", e.getMessage());
                         }
-                        buttonGetPages.getParent().getScene().setCursor(Cursor.DEFAULT); //Change cursor to default style
+                        buttonGetPages.getParent().getScene()
+                                .setCursor(Cursor.DEFAULT); //Change cursor to default style
                         buttonGetPages.getParent().getParent().setDisable(false);
                         return pageContentList.size();
                     }
                 };
                 Thread th = new Thread(task);
-//            th.setDaemon(true);
+                //            th.setDaemon(true);
                 th.start();
             } else {
                 textArea.appendText("Нет подключения к БД и не выбран каталог. Зачем работать?");
-                Dialogs.showMessage(Alert.AlertType.WARNING, "Предупреждение", "Нет подключения к БД и не выбран каталог!", "Нет подключения к БД и не выбран каталог. Зачем работать!");
+                Dialogs.showMessage(Alert.AlertType.WARNING, "Предупреждение",
+                                    "Нет подключения к БД и не выбран каталог!",
+                                    "Нет подключения к БД и не выбран каталог. Зачем работать!");
             }
         }
     }
 
     private Boolean checkInputDate() {
         if (datePickerFrom.getValue() == null) {
-            Dialogs.showMessage(Alert.AlertType.WARNING, "Предупреждение", "Дата \"С\" не установлена!", "Дата \"С\" не может быть пустой!");
+            Dialogs.showMessage(Alert.AlertType.WARNING, "Предупреждение", "Дата \"С\" не установлена!",
+                                "Дата \"С\" не может быть пустой!");
             datePickerFrom.requestFocus();
             return false;
         }
         if (datePickerTill.getValue() == null) {
-            Dialogs.showMessage(Alert.AlertType.WARNING, "Предупреждение", "Дата \"ПО\" не установлена!", "Дата \"ПО\" не может быть пустой!");
+            Dialogs.showMessage(Alert.AlertType.WARNING, "Предупреждение", "Дата \"ПО\" не установлена!",
+                                "Дата \"ПО\" не может быть пустой!");
             datePickerTill.requestFocus();
             return false;
         }
         if (datePickerFrom.getValue().compareTo(datePickerTill.getValue()) > 0) {
-            Dialogs.showMessage(Alert.AlertType.WARNING, "Предупреждение", "Дата \"С\" больше даты \"ПО\"!", "Дата \"С\" не может быть больше даты \"ПО\"!");
+            Dialogs.showMessage(Alert.AlertType.WARNING, "Предупреждение", "Дата \"С\" больше даты \"ПО\"!",
+                                "Дата \"С\" не может быть больше даты \"ПО\"!");
             datePickerTill.requestFocus();
             return false;
         }
@@ -195,10 +206,10 @@ public class Controller {
     }
 
 
-
     public void onGetTenders(ActionEvent actionEvent) {
         if (pageContentList.size() > 0) {
-            if (Dialogs.showConfirmDialog("Подтвердите действие", "Время выполнения примерно " + approximatelyTime, "Время выполнения примерно " + approximatelyTime + ". Продолжить?")) {
+            if (Dialogs.showConfirmDialog("Подтвердите действие", "Время выполнения примерно " + approximatelyTime,
+                                          "Время выполнения примерно " + approximatelyTime + ". Продолжить?")) {
 
                 if (dbConnection != null) {
                     try {
@@ -210,12 +221,13 @@ public class Controller {
                 }
 
                 Thread th = new Thread(getTendersTask(pageContentList));
-//            th.setDaemon(true);
+                //            th.setDaemon(true);
                 th.start();
 
             }
         } else {
-            Dialogs.showMessage(Alert.AlertType.WARNING, "Предупреждение", "Нет страниц для разбора!", "За указанный период нет данных для разбора.");
+            Dialogs.showMessage(Alert.AlertType.WARNING, "Предупреждение", "Нет страниц для разбора!",
+                                "За указанный период нет данных для разбора.");
         }
     }
 
@@ -225,7 +237,7 @@ public class Controller {
         Task task = new Task() {
             @Override
             protected Integer call() throws Exception {
-//                    System.out.println(buttonGetPages.getScene().getClass().toString());
+                //                    System.out.println(buttonGetPages.getScene().getClass().toString());
                 int pageCount = 0;
                 int findTenders = 0;
                 buttonGetTenders.getParent().getParent().setDisable(true);
@@ -244,16 +256,21 @@ public class Controller {
                     if (dbConnection != null) {
                         try {
                             SQLConnection.insertTenders(dbConnection, tenderList);
-//                            System.out.println("Added " + tenderList.size() + " new Tenders to DB");
-                            textArea.appendText("Добавлено " + tenderList.size() + " новых тендеров в базу. Страница: " + pageContent.getPageHeader() + "\n");
+                            //                            System.out.println("Added " + tenderList.size() + " new Tenders to DB");
+                            textArea.appendText(
+                                    "Добавлено " + tenderList.size() + " новых тендеров в базу. Страница: " +
+                                    pageContent.getPageHeader() + "\n");
                         } catch (SQLException e) {
                             textArea.appendText(e.getMessage() + "\n");
                         }
                     }
                     if (new File(tFieldXMLFolder.getText()).exists()) {
                         try {
-                            Prozorro.writeToXMLFile(tenderList, new File(tFieldXMLFolder.getText() + "\\page_" + pageCount + ".xml"));
-                            textArea.appendText("Создан файл: " + tFieldXMLFolder.getText() + "\\page_" + pageCount + ".xml" + "\n");
+                            Prozorro.writeToXMLFile(tenderList, new File(
+                                    tFieldXMLFolder.getText() + "\\page_" + pageCount + ".xml"));
+                            textArea.appendText(
+                                    "Создан файл: " + tFieldXMLFolder.getText() + "\\page_" + pageCount + ".xml" +
+                                    "\n");
                         } catch (FileNotFoundException e) {
                             textArea.appendText(e.getMessage() + "\n");
                         }
@@ -273,7 +290,8 @@ public class Controller {
 
     public void onParsePage(ActionEvent actionEvent) {
         if (urlConnection) {
-            String inputText = Dialogs.showInputDialog("Разобрать страницу по URl", "Укажите страницу для разбора", "Страница:");
+            String inputText =
+                    Dialogs.showInputDialog("Разобрать страницу по URl", "Укажите страницу для разбора", "Страница:");
             textArea.appendText("Страница для разбора: " + inputText + "\n");
             if (!inputText.isEmpty() && inputText != null) {
 
@@ -298,38 +316,42 @@ public class Controller {
                     }
                 });
 
-//                try {
-//                    PageContentURL pageContent = getPageContentFromStringJSON(new URL(inputText));
-//                    for (ProzorroPage pageElement : pageContent.getPageElementList()) {
-//                        textArea.appendText(pageElement.toString() + "\n");
-//                    }
-//                } catch (org.json.simple.parser.ParseException e) {
-//                    textArea.appendText(e.getMessage() + "\n");
-//                    showErrorDialog(e, "Exception Dialog", "Разбора страницы по URL", e.getMessage());
-//                } catch (IOException e) {
-//                    textArea.appendText(e.getMessage() + "\n");
-//                    showErrorDialog(e, "Exception Dialog", "Ошибка подключения по URL", e.getMessage());
-//                }
+                //                try {
+                //                    PageContentURL pageContent = getPageContentFromStringJSON(new URL(inputText));
+                //                    for (ProzorroPage pageElement : pageContent.getPageElementList()) {
+                //                        textArea.appendText(pageElement.toString() + "\n");
+                //                    }
+                //                } catch (org.json.simple.parser.ParseException e) {
+                //                    textArea.appendText(e.getMessage() + "\n");
+                //                    showErrorDialog(e, "Exception Dialog", "Разбора страницы по URL", e.getMessage());
+                //                } catch (IOException e) {
+                //                    textArea.appendText(e.getMessage() + "\n");
+                //                    showErrorDialog(e, "Exception Dialog", "Ошибка подключения по URL", e.getMessage());
+                //                }
             }
 
         } else
-            Dialogs.showMessage(Alert.AlertType.WARNING, "Ошибка ", "Ошибка подключенияпо ссылке", "Ошибка доступа или ошибка данных с сайта Прозоро");
+            Dialogs.showMessage(Alert.AlertType.WARNING, "Ошибка ", "Ошибка подключенияпо ссылке",
+                                "Ошибка доступа или ошибка данных с сайта Прозоро");
     }
 
     public void onClean(ActionEvent actionEvent) {
-        if (Dialogs.showConfirmDialog("Очистить логи", "Высобираетесь очистить текст с логими", "Весь текст будет утерян. Продолжить?")) {
+        if (Dialogs.showConfirmDialog("Очистить логи", "Высобираетесь очистить текст с логими",
+                                      "Весь текст будет утерян. Продолжить?")) {
             textArea.clear();
         }
     }
 
     public void onClose(ActionEvent actionEvent) {
-        if (Dialogs.showConfirmDialog("Закрытие приложения", "Приложение будет закрыто", "Вы точно хотите закрыть приложение?"))
+        if (Dialogs.showConfirmDialog("Закрытие приложения", "Приложение будет закрыто",
+                                      "Вы точно хотите закрыть приложение?"))
             Platform.exit();
     }
 
     public void onParseTender(ActionEvent actionEvent) {
         if (urlConnection) {
-            String inputText = Dialogs.showInputDialog("Разобрать тендер по ID", "Укажите ID тендера для разбора", "Тендер:");
+            String inputText =
+                    Dialogs.showInputDialog("Разобрать тендер по ID", "Укажите ID тендера для разбора", "Тендер:");
             textArea.appendText("Тендер для разбора: " + inputText + "\n");
             if (!inputText.isEmpty() && inputText != null) {
                 buttonGetTenders.getParent().getScene().setCursor(Cursor.WAIT);
@@ -348,15 +370,16 @@ public class Controller {
                 });
             }
 
-//            try {
-//                TenderOld tender = getTender(inputText);
-//                textArea.appendText(tender.toString() + "\n");
-//            } catch (IOException e) {
-//                textArea.appendText(e.getMessage() + "\n");
-//                showErrorDialog(e, "Exception Dialog", "Ошибка доступа по ID", e.getMessage());
-//            }
+            //            try {
+            //                TenderOld tender = getTender(inputText);
+            //                textArea.appendText(tender.toString() + "\n");
+            //            } catch (IOException e) {
+            //                textArea.appendText(e.getMessage() + "\n");
+            //                showErrorDialog(e, "Exception Dialog", "Ошибка доступа по ID", e.getMessage());
+            //            }
         } else
-            Dialogs.showMessage(Alert.AlertType.WARNING, "Ошибка ", "Ошибка подключенияпо ссылке", "Ошибка доступа или ошибка данных с сайта Прозоро");
+            Dialogs.showMessage(Alert.AlertType.WARNING, "Ошибка ", "Ошибка подключенияпо ссылке",
+                                "Ошибка доступа или ошибка данных с сайта Прозоро");
 
     }
 
@@ -371,7 +394,8 @@ public class Controller {
             try {
                 FileUtils.SaveToFile(textArea.getText(), file);
             } catch (IOException e) {
-                Dialogs.showMessage(Alert.AlertType.WARNING, "Ошибка сохранения", "Ошибка при попытке сохранить файл " + file.getAbsoluteFile(), e.getMessage());
+                Dialogs.showMessage(Alert.AlertType.WARNING, "Ошибка сохранения",
+                                    "Ошибка при попытке сохранить файл " + file.getAbsoluteFile(), e.getMessage());
             }
         }
     }

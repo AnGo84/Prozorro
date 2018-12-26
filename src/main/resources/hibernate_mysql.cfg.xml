@@ -14,7 +14,7 @@
         <property name="connection.password">prozorro</property>
 
         <!-- JDBC connection pool (use the built-in) -->
-        <property name="connection.pool_size">1</property>
+        <property name="connection.pool_size">100</property>
 
         <!-- SQL dialect -->
         <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
@@ -57,8 +57,28 @@
         <mapping class="ua.prozorro.entity.tenders.LotDTO"/>
         <mapping class="ua.prozorro.entity.tenders.OrganizationDTO"/>
         <mapping class="ua.prozorro.entity.tenders.QuestionDTO"/>
-        <mapping class="ua.prozorro.entity.tenders.TenderDTO"/>
         <mapping class="ua.prozorro.entity.tenders.UnitDTO"/>
+
+        <mapping class="ua.prozorro.entity.tenders.TenderDTO"/>
+        <!--Additional for tender-->
+        <mapping class="ua.prozorro.entity.tenders.TenderAwardDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.TenderBidDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.TenderComplaintDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.TenderContractDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.TenderDocumentDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.TenderFunderDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.TenderItemDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.TenderQuestionDTO"/>
+        <!--Additional for bid-->
+        <mapping class="ua.prozorro.entity.tenders.BidDocumentDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.BidTendererDTO"/>
+        <!--Additional for award-->
+        <mapping class="ua.prozorro.entity.tenders.AwardDocumentDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.AwardSupplierDTO"/>
+        <!--Additional for contracts-->
+        <mapping class="ua.prozorro.entity.tenders.ContractItemDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.ContractSupplierDTO"/>
+
         <!--/Tenders-->
 
 

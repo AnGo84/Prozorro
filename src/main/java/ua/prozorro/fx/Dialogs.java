@@ -38,8 +38,9 @@ public class Dialogs {
             return false;
         }
     }
+
     public static Boolean showConfirmDialog(DialogText dialogText) {
-        return showConfirmDialog(dialogText.getTitleText(),dialogText.getHeaderText(),dialogText.getContentText());
+        return showConfirmDialog(dialogText.getTitleText(), dialogText.getHeaderText(), dialogText.getContentText());
     }
 
     public static void showErrorDialog(Exception ex, String titleText, String headerText, String contentText) {
@@ -77,7 +78,7 @@ public class Dialogs {
     private static Alert getAlert(Alert.AlertType alertType, DialogText dialogText) {
         Alert alert = new Alert(alertType);
 
-//        alert.setGraphic(new ImageView(new Dialogs().DIALOG_ICON));
+        //        alert.setGraphic(new ImageView(new Dialogs().DIALOG_ICON));
 
         alert.setTitle(dialogText.getTitleText());
         alert.setHeaderText(dialogText.getHeaderText());

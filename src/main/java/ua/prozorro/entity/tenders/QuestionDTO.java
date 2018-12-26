@@ -12,17 +12,19 @@ public class QuestionDTO {
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "author_id")
     private OrganizationDTO author;
-	@Column(length = 2000)
+    @Column(length = 4000)
     private String title;
-	@Column(length = 8000)
+    //@Column(length = 8000)
+    @Lob
+    @Column
     private String description;
     @Column
     private String date;
     @Column
     private String dateAnswered;
-	@Column(length = 1000)
+    @Column(length = 4000)
     private String answer;
-	@Column(length = 1000)
+    @Column(length = 4000)
     private String questionOf;
     @Column
     private String relatedItem;
@@ -101,19 +103,29 @@ public class QuestionDTO {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         QuestionDTO that = (QuestionDTO) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (author != null ? !author.equals(that.author) : that.author != null) return false;
-        if (title != null ? !title.equals(that.title) : that.title != null) return false;
-        if (description != null ? !description.equals(that.description) : that.description != null) return false;
-        if (date != null ? !date.equals(that.date) : that.date != null) return false;
-        if (dateAnswered != null ? !dateAnswered.equals(that.dateAnswered) : that.dateAnswered != null) return false;
-        if (answer != null ? !answer.equals(that.answer) : that.answer != null) return false;
-        if (questionOf != null ? !questionOf.equals(that.questionOf) : that.questionOf != null) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null)
+            return false;
+        if (author != null ? !author.equals(that.author) : that.author != null)
+            return false;
+        if (title != null ? !title.equals(that.title) : that.title != null)
+            return false;
+        if (description != null ? !description.equals(that.description) : that.description != null)
+            return false;
+        if (date != null ? !date.equals(that.date) : that.date != null)
+            return false;
+        if (dateAnswered != null ? !dateAnswered.equals(that.dateAnswered) : that.dateAnswered != null)
+            return false;
+        if (answer != null ? !answer.equals(that.answer) : that.answer != null)
+            return false;
+        if (questionOf != null ? !questionOf.equals(that.questionOf) : that.questionOf != null)
+            return false;
         return relatedItem != null ? relatedItem.equals(that.relatedItem) : that.relatedItem == null;
     }
 

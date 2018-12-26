@@ -29,13 +29,14 @@ public class FileUtils {
      * @see FileUtils#urlToFile(URL) to convert the result to a {@link File}.
      */
     public static URL getLocation(final Class<?> c) {
-        if (c == null) return null; // could not load the class
+        if (c == null)
+            return null; // could not load the class
 
         // try the easy way first
         try {
-            final URL codeSourceLocation =
-                    c.getProtectionDomain().getCodeSource().getLocation();
-            if (codeSourceLocation != null) return codeSourceLocation;
+            final URL codeSourceLocation = c.getProtectionDomain().getCodeSource().getLocation();
+            if (codeSourceLocation != null)
+                return codeSourceLocation;
         } catch (final SecurityException e) {
             // NB: Cannot access protection domain.
         } catch (final NullPointerException e) {
@@ -48,11 +49,13 @@ public class FileUtils {
 
         // get the class's raw resource path
         final URL classResource = c.getResource(c.getSimpleName() + ".class");
-        if (classResource == null) return null; // cannot find class resource
+        if (classResource == null)
+            return null; // cannot find class resource
 
         final String url = classResource.toString();
         final String suffix = c.getCanonicalName().replace('.', '/') + ".class";
-        if (!url.endsWith(suffix)) return null; // weird URL
+        if (!url.endsWith(suffix))
+            return null; // weird URL
 
         // strip the class's path from the URL string
         final String base = url.substring(0, url.length() - suffix.length());
@@ -60,7 +63,8 @@ public class FileUtils {
         String path = base;
 
         // remove the "jar:" prefix and "!/" suffix, if present
-        if (path.startsWith("jar:")) path = path.substring(4, path.length() - 2);
+        if (path.startsWith("jar:"))
+            path = path.substring(4, path.length() - 2);
 
         try {
             return new URL(path);
@@ -136,20 +140,19 @@ public class FileUtils {
     }
 
 
-
     public static void openDirectory(String path) throws IOException {
         File file = new File(path);
         if (file.exists()) {
-            if (!file.isDirectory()){
+            if (!file.isDirectory()) {
                 file = getDirectory(file);
             }
-//            Runtime.getRuntime().exec("explorer.exe /select," + file.getPath());
+            //            Runtime.getRuntime().exec("explorer.exe /select," + file.getPath());
             Runtime.getRuntime().exec("explorer.exe " + file.getPath());
         }
     }
 
 
-    public static String fileNameWithDir(String directoryName, String fileName){
+    public static String fileNameWithDir(String directoryName, String fileName) {
         return directoryName + File.separator + fileName;
     }
 
@@ -163,7 +166,7 @@ public class FileUtils {
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
                 stringBuilder.append(inputLine);
-//                System.out.println(inputLine);
+                //                System.out.println(inputLine);
             }
         }
         return stringBuilder.toString();

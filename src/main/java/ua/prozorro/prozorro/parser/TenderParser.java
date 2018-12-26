@@ -17,7 +17,6 @@ import ua.prozorro.service.PageService;
 import ua.prozorro.service.TenderService;
 import ua.prozorro.utils.DateUtils;
 
-import javax.net.ssl.SSLHandshakeException;
 import java.util.Date;
 
 public class TenderParser implements DataParser {
@@ -28,15 +27,15 @@ public class TenderParser implements DataParser {
     private PageServiceProzorro pageServiceProzorro;
     private TenderDataServiceProzorro tenderDataServiceProzorro;
 
-	public SessionFactory getSessionFactory() {
-		return sessionFactory;
-	}
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
 
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-	}
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
-	public PageServiceProzorro getPageServiceProzorro() {
+    public PageServiceProzorro getPageServiceProzorro() {
         return pageServiceProzorro;
     }
 
@@ -58,16 +57,17 @@ public class TenderParser implements DataParser {
                     DateUtils.dateToString(dateTill));
 
 
-
         String startPageURL = pageServiceProzorro.getPageURL(dateFrom);
         logger.info("Start parsing from URL " + startPageURL);
         Transaction transaction = null;
         TenderData tenderData = null;
         PageDTO page = null;
         TenderDTO tenderDTO = null;
-	    Session session = null;
+        Session session = null;
 
-	    try {
+        int pageCount = 0;
+        int tenderCount = 0;
+        try {
             dateTill = pageServiceProzorro.getDateTill(dateTill);
 
             ProzorroPageContent pageContent = pageServiceProzorro.getPageContentFromURL(startPageURL);
@@ -75,23 +75,23 @@ public class TenderParser implements DataParser {
             Date nextOffsetDate = pageServiceProzorro.getDateFromPageOffset(pageContent.getNextPage().getOffset());
             //logger.info("Get first ProzorroPage: " + pageContent);
             logger.info("Get first ProzorroPage");
-            int pageCount = 0;
+
 
             while (dateTill.compareTo(nextOffsetDate) >= 0 && pageContent.getPageElementList() != null &&
                    !pageContent.getPageElementList().isEmpty()) {
                 pageCount++;
 
-                int tenderCount = 0;
+                tenderCount = 0;
                 logger.info("Start parsing page: ");
                 for (ProzorroPageElement pageElement : pageContent.getPageElementList()) {
                     /*if (!session.isOpen()) {
                         session = session.getSessionFactory().openSession();
                         logger.info("Opened session: " + session.isOpen());
                     }*/
-	                session = sessionFactory.openSession();
+                    session = sessionFactory.openSession();
 
-	                PageService pageService = new PageService(session);
-	                TenderService tenderService = new TenderService(session);
+                    PageService pageService = new PageService(session);
+                    TenderService tenderService = new TenderService(session);
 
                     transaction = session.beginTransaction();
 
@@ -103,42 +103,42 @@ public class TenderParser implements DataParser {
 
                     //boolean updatedPage = pageService.savePage(page);
                     boolean updatedPage = pageService.savePage(page, session);
-					if(updatedPage) {
-						tenderDTO = TenderDTOUtils.getTenderDTO(tenderData.getTender());
-						tenderService.saveTender(tenderDTO, session);
-					}
-	                logger.info("ProzorroPage № " + pageCount + ", tender on page № " + tenderCount + ", added/updated: " + updatedPage);
+                    if (updatedPage) {
+                        tenderDTO = TenderDTOUtils.getTenderDTO(tenderData.getTender());
+                        tenderService.saveTender(tenderDTO, session);
+                    }
+                    logger.info(
+                            "ProzorroPage № " + pageCount + ", tender on page № " + tenderCount + ", added/updated: " +
+                            updatedPage);
 
-					session.flush();
-	                session.clear();
+                    session.flush();
+                    session.clear();
                     transaction.commit();
 
-					session.close();
+                    session.close();
 
                     //transaction.commit();
                 }
-	            logger.info("Get next page with URL: " + pageContent.getNextPage().getUri());
-	            pageContent = pageServiceProzorro.getPageContentFromURL(pageContent.getNextPage().getUri());
-	            nextOffsetDate = pageServiceProzorro.getDateFromPageOffset(pageContent.getNextPage().getOffset());
+                logger.info("Get next page with URL: " + pageContent.getNextPage().getUri());
+                pageContent = pageServiceProzorro.getPageContentFromURL(pageContent.getNextPage().getUri());
+                nextOffsetDate = pageServiceProzorro.getDateFromPageOffset(pageContent.getNextPage().getOffset());
 
             }
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             //catch (ParseException | IOException | Exception e){
             e.printStackTrace();
-            logger.error("Parse error: " + page + ", msg: " + e.getMessage());
-
+            logger.error("Page № " + pageCount + ", tender № " + tenderCount + ", Parse error: " + page + ", msg: " +
+                         e.getMessage());
             logger.error("Tender: " + tenderData.getTender());
             logger.error("TenderDTO: " + tenderDTO);
             if (transaction != null) {
                 transaction.rollback();
             }
 
-           throw new Exception(e);
-        }
-        finally {
-	        session.close();
+            throw new Exception(e);
+        } finally {
+            session.close();
         }
 
         return true;

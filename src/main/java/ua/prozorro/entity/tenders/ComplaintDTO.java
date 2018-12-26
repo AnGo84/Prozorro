@@ -1,5 +1,7 @@
 package ua.prozorro.entity.tenders;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -10,12 +12,16 @@ public class ComplaintDTO {
     //@GeneratedValue(strategy= GenerationType.AUTO)
     @Column
     private String id;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private OrganizationDTO author;
-    @Column(length = 2000)
+
+    @Column(length = 4000)
     private String title;
-    @Column(length = 8000)
+    //@Column(length = 8000)
+    @Lob
+    @Column
     private String description;
     @Column
     private String date;
@@ -33,20 +39,26 @@ public class ComplaintDTO {
     private String status;
     @Column
     private String type;
+    //@Column(length = 4000)
+    @Lob
     @Column
     private String resolution;
     @Column
     private String resolutionType;
     @Column(length = 1)
     private boolean satisfied;
-    @Column(length = 2000)
+    //@Column(length = 4000)
+    @Lob
+    @Column
     private String decision;
-    @Column(length = 2000)
+    //@Column(length = 4000)
+    @Lob
+    @Column
     private String cancellationReason;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-    @JoinTable(name = "Complaints_Documents", joinColumns = { @JoinColumn(name = "complaint_id") }, inverseJoinColumns = {
-            @JoinColumn(name = "document_id") })
+    @JoinTable(name = "Complaints_Documents", joinColumns = {@JoinColumn(name = "complaint_id")},
+            inverseJoinColumns = {@JoinColumn(name = "document_id")})
     private List<DocumentDTO> documents;
     @Column
     private String relatedLot;
@@ -225,37 +237,56 @@ public class ComplaintDTO {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         ComplaintDTO that = (ComplaintDTO) o;
 
-        if (satisfied != that.satisfied) return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (author != null ? !author.equals(that.author) : that.author != null) return false;
-        if (title != null ? !title.equals(that.title) : that.title != null) return false;
-        if (description != null ? !description.equals(that.description) : that.description != null) return false;
-        if (date != null ? !date.equals(that.date) : that.date != null) return false;
+        if (satisfied != that.satisfied)
+            return false;
+        if (id != null ? !id.equals(that.id) : that.id != null)
+            return false;
+        if (author != null ? !author.equals(that.author) : that.author != null)
+            return false;
+        if (title != null ? !title.equals(that.title) : that.title != null)
+            return false;
+        if (description != null ? !description.equals(that.description) : that.description != null)
+            return false;
+        if (date != null ? !date.equals(that.date) : that.date != null)
+            return false;
         if (dateSubmitted != null ? !dateSubmitted.equals(that.dateSubmitted) : that.dateSubmitted != null)
             return false;
-        if (dateAnswered != null ? !dateAnswered.equals(that.dateAnswered) : that.dateAnswered != null) return false;
+        if (dateAnswered != null ? !dateAnswered.equals(that.dateAnswered) : that.dateAnswered != null)
+            return false;
         if (dateEscalated != null ? !dateEscalated.equals(that.dateEscalated) : that.dateEscalated != null)
             return false;
-        if (dateDecision != null ? !dateDecision.equals(that.dateDecision) : that.dateDecision != null) return false;
-        if (dateCanceled != null ? !dateCanceled.equals(that.dateCanceled) : that.dateCanceled != null) return false;
-        if (status != null ? !status.equals(that.status) : that.status != null) return false;
-        if (type != null ? !type.equals(that.type) : that.type != null) return false;
-        if (resolution != null ? !resolution.equals(that.resolution) : that.resolution != null) return false;
+        if (dateDecision != null ? !dateDecision.equals(that.dateDecision) : that.dateDecision != null)
+            return false;
+        if (dateCanceled != null ? !dateCanceled.equals(that.dateCanceled) : that.dateCanceled != null)
+            return false;
+        if (status != null ? !status.equals(that.status) : that.status != null)
+            return false;
+        if (type != null ? !type.equals(that.type) : that.type != null)
+            return false;
+        if (resolution != null ? !resolution.equals(that.resolution) : that.resolution != null)
+            return false;
         if (resolutionType != null ? !resolutionType.equals(that.resolutionType) : that.resolutionType != null)
             return false;
-        if (decision != null ? !decision.equals(that.decision) : that.decision != null) return false;
-        if (cancellationReason != null ? !cancellationReason.equals(that.cancellationReason) : that.cancellationReason != null)
+        if (decision != null ? !decision.equals(that.decision) : that.decision != null)
             return false;
-        if (documents != null ? !documents.equals(that.documents) : that.documents != null) return false;
-        if (relatedLot != null ? !relatedLot.equals(that.relatedLot) : that.relatedLot != null) return false;
+        if (cancellationReason != null ? !cancellationReason.equals(that.cancellationReason) :
+                that.cancellationReason != null)
+            return false;
+        if (documents != null ? !documents.equals(that.documents) : that.documents != null)
+            return false;
+        if (relatedLot != null ? !relatedLot.equals(that.relatedLot) : that.relatedLot != null)
+            return false;
         if (tendererAction != null ? !tendererAction.equals(that.tendererAction) : that.tendererAction != null)
             return false;
-        return tendererActionDate != null ? tendererActionDate.equals(that.tendererActionDate) : that.tendererActionDate == null;
+        return tendererActionDate != null ? tendererActionDate.equals(that.tendererActionDate) :
+                that.tendererActionDate == null;
     }
 
     @Override
