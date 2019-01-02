@@ -48,7 +48,7 @@ public class PageServiceProzorro {
         if (propertyFields == null || propertyFields.getProperties() == null) {
             return null;
         }
-        String startPageURL = getPageURL(dateFrom);
+        String startPageURL = getTenderPageURL(dateFrom);
 
         dateTill = getDateTill(dateTill);
 
@@ -87,30 +87,30 @@ public class PageServiceProzorro {
         return dateTill;
     }
 
-    public String getPageURL(Date date) {
+    public String getTenderPageURL(Date date) {
         if (date == null) {
-            return propertyFields.getPropertiesStringValue(AppProperty.START_PAGE);
+            return propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE);
         }
-        String pageURL = propertyFields.getPropertiesStringValue(AppProperty.START_PAGE) + "?" +
-                         propertyFields.getPropertiesStringValue(AppProperty.PAGE_OFFSET) + "=" + DateUtils
+        String pageURL = propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE) + "?" +
+                         propertyFields.getPropertiesStringValue(AppProperty.TENDER_SPAGE_OFFSET) + "=" + DateUtils
                                  .parseDateToString(date, propertyFields
                                          .getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT)) +
-                         propertyFields.getPropertiesStringValue(AppProperty.PAGE_END);
+                         propertyFields.getPropertiesStringValue(AppProperty.TENDER_SPAGE_END);
         //logger.info("Get page from date "+ DateUtils.dateToString(date) +" with URL: " + pageURL);
         return pageURL;
     }
 
     public String getPageURLWithLimit(Date date) {
         if (date == null) {
-            return propertyFields.getPropertiesStringValue(AppProperty.START_PAGE);
+            return propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE);
         }
-        String pageURL = propertyFields.getPropertiesStringValue(AppProperty.START_PAGE) + "?" +
-                         propertyFields.getPropertiesStringValue(AppProperty.PAGE_LIMIT) + "=" +
-                         propertyFields.getPropertiesStringValue(AppProperty.PAGE_LIMIT_VALUE) + "&" +
-                         propertyFields.getPropertiesStringValue(AppProperty.PAGE_OFFSET) + "=" + DateUtils
+        String pageURL = propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE) + "?" +
+                         propertyFields.getPropertiesStringValue(AppProperty.TENDER_SPAGE_LIMIT) + "=" +
+                         propertyFields.getPropertiesStringValue(AppProperty.TENDER_SPAGE_LIMIT_VALUE) + "&" +
+                         propertyFields.getPropertiesStringValue(AppProperty.TENDER_SPAGE_OFFSET) + "=" + DateUtils
                                  .parseDateToString(date, propertyFields
                                          .getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT)) +
-                         propertyFields.getPropertiesStringValue(AppProperty.PAGE_END);
+                         propertyFields.getPropertiesStringValue(AppProperty.TENDER_SPAGE_END);
         logger.info("Get page from date " + DateUtils.dateToString(date) + " with URL: " + pageURL);
         return pageURL;
     }
@@ -118,7 +118,7 @@ public class PageServiceProzorro {
     public ParsingResultData getApproximatelyParsingTimeForPeriod(Date dateFrom, Date dateTill)
             throws IOException, ParseException {
         TenderDataServiceProzorro tenderDataServiceProzorro = new TenderDataServiceProzorro(
-                propertyFields.getPropertiesStringValue(AppProperty.START_PAGE) + File.separator);
+                propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE) + File.separator);
         long startTime = System.nanoTime();
         List<ProzorroPageContent> list = getPagesList(dateFrom, dateTill, false);
         //System.out.println("Pages list size: " + list.size());
@@ -128,7 +128,7 @@ public class PageServiceProzorro {
         startTime = System.nanoTime();
         long timeForPageTenders;
         if (list != null && !list.isEmpty()) {
-            ProzorroPageContent pageContent = getPageContentFromURL(getPageURL(dateFrom));
+            ProzorroPageContent pageContent = getPageContentFromURL(getTenderPageURL(dateFrom));
             tenderDataServiceProzorro.getTenderDatasFromPageContent(pageContent);
         }
         timeForPageTenders = (System.nanoTime() - startTime);

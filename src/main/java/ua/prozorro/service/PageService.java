@@ -3,7 +3,7 @@ package ua.prozorro.service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
-import ua.prozorro.entity.pages.PageDTO;
+import ua.prozorro.entity.pages.TenderPageDTO;
 
 import java.util.List;
 
@@ -17,14 +17,14 @@ public class PageService {
         this.session = session;
     }
 
-    public void savePageList(List<PageDTO> pageList) throws Exception {
+    public void savePageList(List<TenderPageDTO> pageList) throws Exception {
         if (session == null) {
             throw new Exception("Session did not set");
         }
-        for (PageDTO page : pageList) {
+        for (TenderPageDTO page : pageList) {
             try {
                 session.beginTransaction();
-                PageDTO oldPage = session.get(PageDTO.class, page.getId());
+                TenderPageDTO oldPage = session.get(TenderPageDTO.class, page.getId());
                 if (oldPage == null) {
                     session.save(page);
                     logger.info("Save page" + page + "\n");
@@ -48,14 +48,14 @@ public class PageService {
         }
     }
 
-    public boolean savePage(PageDTO page) throws Exception {
+    public boolean savePage(TenderPageDTO page) throws Exception {
         session = session.getSessionFactory().getCurrentSession();
 
         if (session.getSessionFactory() == null || !session.isOpen()) {
             throw new Exception("Session did not set");
         }
 
-        PageDTO oldPage = session.get(PageDTO.class, page.getId());
+        TenderPageDTO oldPage = session.get(TenderPageDTO.class, page.getId());
         if (oldPage == null) {
             session.save(page);
 
@@ -72,13 +72,13 @@ public class PageService {
         return true;
     }
 
-    public boolean savePage(PageDTO page, Session session) throws Exception {
+    public boolean savePage(TenderPageDTO page, Session session) throws Exception {
 
         if (session == null || !session.isOpen()) {
             throw new Exception("Session did not set");
         }
 
-        PageDTO oldPage = session.get(PageDTO.class, page.getId());
+        TenderPageDTO oldPage = session.get(TenderPageDTO.class, page.getId());
         session.flush();
         if (oldPage == null) {
             session.save(page);

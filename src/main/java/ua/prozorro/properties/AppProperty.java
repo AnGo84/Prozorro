@@ -8,9 +8,11 @@ public enum AppProperty {
 	db.login = prozorro
 	db.password = prozorro*/
 
-    START_PAGE("prozorro.start_page"), PAGE_LIMIT("prozorro.page_limit"), PAGE_LIMIT_VALUE(
-            "prozorro.page_limit_value"), PAGE_OFFSET("prozorro.page_offset"), PAGE_END(
-            "prozorro.page_end"), DATE_FORMAT("prozorro.date_formate"), SHORT_DATE_FORMAT(
+    TENDER_START_PAGE("prozorro.tender.start_page"), TENDER_SPAGE_LIMIT("prozorro.tender.page_limit"), TENDER_SPAGE_LIMIT_VALUE(
+            "prozorro.tender.page_limit_value"), TENDER_SPAGE_OFFSET("prozorro.tender.page_offset"), TENDER_SPAGE_END(
+            "prozorro.tender.page_end"),
+    //
+    DATE_FORMAT("prozorro.date_formate"), SHORT_DATE_FORMAT(
             "prozorro.short_date_formate");
 
     private String propertyName;

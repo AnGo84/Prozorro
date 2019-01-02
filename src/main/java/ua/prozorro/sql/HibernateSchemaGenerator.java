@@ -3,9 +3,6 @@ package ua.prozorro.sql;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.schema.TargetType;
 
@@ -13,49 +10,49 @@ import java.io.File;
 import java.util.EnumSet;
 
 public class HibernateSchemaGenerator {
-    public static final String SCRIPT_FILE = "exportScript.sql";
-    public static final String HIBERNATE_DIALECT_STORAGE_ENGINE = "hibernate.dialect.storage_engine";
+/*	public static final String SCRIPT_FILE = "exportScript.sql";
+	public static final String HIBERNATE_DIALECT_STORAGE_ENGINE = "hibernate.dialect.storage_engine";
 
-    private static SchemaExport getSchemaExport(String outputFilePath) {
+	private static SchemaExport getSchemaExport(String outputFilePath) {
 
-        SchemaExport export = new SchemaExport();
+		SchemaExport export = new SchemaExport();
 
-        System.out.println("Export file: " + outputFilePath);
+		System.out.println("Export file: " + outputFilePath);
 
-        export.setDelimiter(";");
-        export.setOutputFile(outputFilePath);
+		export.setDelimiter(";");
+		export.setOutputFile(outputFilePath);
 
-        // No Stop if Error
-        export.setHaltOnError(false);
-        //
-        return export;
-    }
+		// No Stop if Error
+		export.setHaltOnError(false);
+		//
+		return export;
+	}
 
-    public static void dropDataBase(SchemaExport export, Metadata metadata) {
-        // TargetType.DATABASE - Execute on Databse
-        // TargetType.SCRIPT - Write Script file.
-        // TargetType.STDOUT - Write log to Console.
-        EnumSet<TargetType> targetTypes = EnumSet.of(TargetType.DATABASE, TargetType.SCRIPT, TargetType.STDOUT);
+	public static void dropDataBase(SchemaExport export, Metadata metadata) {
+		// TargetType.DATABASE - Execute on Databse
+		// TargetType.SCRIPT - Write Script file.
+		// TargetType.STDOUT - Write log to Console.
+		EnumSet<TargetType> targetTypes = EnumSet.of(TargetType.DATABASE, TargetType.SCRIPT, TargetType.STDOUT);
 
-        export.drop(targetTypes, metadata);
-    }
+		export.drop(targetTypes, metadata);
+	}
 
-    public static void createDataBase(SchemaExport export, Metadata metadata) {
-        // TargetType.DATABASE - Execute on Databse
-        // TargetType.SCRIPT - Write Script file.
-        // TargetType.STDOUT - Write log to Console.
+	public static void createDataBase(SchemaExport export, Metadata metadata) {
+		// TargetType.DATABASE - Execute on Databse
+		// TargetType.SCRIPT - Write Script file.
+		// TargetType.STDOUT - Write log to Console.
 
-        EnumSet<TargetType> targetTypes = EnumSet.of(TargetType.DATABASE, TargetType.SCRIPT, TargetType.STDOUT);
+		EnumSet<TargetType> targetTypes = EnumSet.of(TargetType.DATABASE, TargetType.SCRIPT, TargetType.STDOUT);
 
-        SchemaExport.Action action = SchemaExport.Action.CREATE;
-        //
-        export.execute(targetTypes, action, metadata);
+		SchemaExport.Action action = SchemaExport.Action.CREATE;
+		//
+		export.execute(targetTypes, action, metadata);
 
-        System.out.println("Export OK");
+		System.out.println("Export OK");
 
-    }
+	}*/
 
-    public static Metadata getMetaData(String configFileName) {
+    /*public static Metadata getMetaData(String configFileName) {
         // Create the ServiceRegistry from hibernate-xxx.cfg.xml
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()//
                 .configure(configFileName).build();
@@ -63,35 +60,34 @@ public class HibernateSchemaGenerator {
         // Create a metadata sources using the specified service registry.
         Metadata metadata = new MetadataSources(serviceRegistry).getMetadataBuilder().build();
         return metadata;
-    }
+    }*/
 
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
+		// Using Oracle Database.
+		String configFileName = "hibernate_mysql.cfg.xml";
 
-        // Using Oracle Database.
+		String tempDialectEngine = System.getProperty(HibernateSession.HIBERNATE_DIALECT_STORAGE_ENGINE);
+		System.setProperty(HibernateSession.HIBERNATE_DIALECT_STORAGE_ENGINE, "innodb");
 
-        String configFileName = "hibernate_mysql.cfg.xml";
+		Metadata metadata = HibernateSession.getMetaData(configFileName);
 
-        String tempDialectEngine = System.getProperty(HIBERNATE_DIALECT_STORAGE_ENGINE);
-        System.setProperty(HIBERNATE_DIALECT_STORAGE_ENGINE, "innodb");
+		// Script file.
+		File outputFile = new File("MySQL_" + HibernateSession.SCRIPT_FILE);
+		String outputFilePath = outputFile.getAbsolutePath();
+		SchemaExport export = HibernateSession.getSchemaExport(outputFilePath);
 
-        Metadata metadata = getMetaData(configFileName);
+		System.out.println("Drop Database...");
+		// Drop Database
+		HibernateSession.dropDataBase(export, metadata);
 
-        // Script file.
-        File outputFile = new File("MySQL_" + SCRIPT_FILE);
-        String outputFilePath = outputFile.getAbsolutePath();
-        SchemaExport export = getSchemaExport(outputFilePath);
+		System.out.println("Create Database...");
+		// Create tables
+		HibernateSession.createDataBase(export, metadata);
 
-        System.out.println("Drop Database...");
-        // Drop Database
-        dropDataBase(export, metadata);
+		SessionFactory sessionFactory = metadata.getSessionFactoryBuilder().build();
+		sessionFactory.close();
 
-        System.out.println("Create Database...");
-        // Create tables
-        createDataBase(export, metadata);
-
-        SessionFactory sessionFactory = metadata.getSessionFactoryBuilder().build();
-        sessionFactory.close();
-
-    }
+		System.setProperty(HibernateSession.HIBERNATE_DIALECT_STORAGE_ENGINE, tempDialectEngine);
+	}
 }

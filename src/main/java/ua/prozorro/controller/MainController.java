@@ -1,6 +1,8 @@
 package ua.prozorro.controller;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,10 +12,16 @@ import javafx.stage.FileChooser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import ua.prozorro.Prozorro;
 import ua.prozorro.ProzorroApp;
+import ua.prozorro.entity.TenderDTOUtils;
+import ua.prozorro.entity.pages.TenderPageDTO;
+import ua.prozorro.entity.tenders.TenderDTO;
 import ua.prozorro.fx.Dialogs;
 import ua.prozorro.properties.AppProperty;
+import ua.prozorro.properties.PropertiesUtils;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.prozorro.PageServiceProzorro;
 import ua.prozorro.prozorro.ParsingResultData;
@@ -22,8 +30,13 @@ import ua.prozorro.prozorro.model.DataType;
 import ua.prozorro.prozorro.model.pages.PageContentURL;
 import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
 import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
+import ua.prozorro.prozorro.model.tenders.TenderData;
 import ua.prozorro.prozorro.model.tenders.TenderOld;
-import ua.prozorro.service.PageElementService;
+import ua.prozorro.service.PageService;
+import ua.prozorro.service.ProzorroServiceFactory;
+import ua.prozorro.service.TenderService;
+import ua.prozorro.sql.HibernateDataBaseType;
+import ua.prozorro.sql.HibernateFactory;
 import ua.prozorro.utils.DateUtils;
 import ua.prozorro.utils.FileUtils;
 
@@ -34,65 +47,90 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.List;
 
 public class MainController {
-    private static final Logger logger = LogManager.getRootLogger();
-    int allTenders;
-    private Date dateFrom;
-    private Date dateTill;
-    private String approximatelyTime;
-    private Boolean urlConnection = false;
-    private ProzorroApp prozorroApp;
+	private static final Logger logger = LogManager.getRootLogger();
 
-    private PageServiceProzorro pageServiceProzorro;
-    private TenderDataServiceProzorro tenderDataServiceProzorro;
+	private Date dateFrom;
+	private Date dateTill;
 
-    private PropertyFields propertyFields;
-    private List<ProzorroPageContent> pageContentList = null;
-    private boolean findData = false;
+	private Boolean urlConnection = false;
+	private ProzorroApp prozorroApp;
+
+	private PropertyFields propertyFields;
+
+	private ParsingResultData resultData;
+	private boolean findData = false;
 
 
-    @FXML
-    private Button buttonGetPages;
-    @FXML
-    private Button buttonGetData;
+	@FXML
+	private Button buttonGetPages;
+	@FXML
+	private Button buttonGetData;
 
-    @FXML
-    private TextArea textArea;
+	@FXML
+	private TextArea textArea;
 
-    @FXML
-    private ComboBox<DataType> comboBoxDataType;
+	@FXML
+	private ComboBox<DataType> comboBoxDataType;
 
-    @FXML
-    private DatePicker datePickerFrom;
-    @FXML
-    private DatePicker datePickerTill;
-    @FXML
-    private ProgressBar progressBar;
-    @FXML
-    private ProgressIndicator progressIndicator;
-    @FXML
-    private MenuItem menuItemParseList;
-    @FXML
-    private MenuItem menuItemParseTender;
+	@FXML
+	private DatePicker datePickerFrom;
+	@FXML
+	private DatePicker datePickerTill;
+	@FXML
+	private ProgressBar progressBar;
+	@FXML
+	private ProgressIndicator progressIndicator;
+	@FXML
+	private MenuItem menuItemParseList;
+	@FXML
+	private MenuItem menuItemParseTender;
 
-    @FXML
-    private void initialize() {
-        buttonGetPages.setTooltip(new Tooltip("Выбрать страницы за указанный период"));
-        buttonGetData.setTooltip(new Tooltip("Выбрать тендеры с отобранных страниц"));
+	@FXML
+	private void initialize() {
+		buttonGetPages.setTooltip(new Tooltip("Выбрать страницы за указанный период"));
+		buttonGetData.setTooltip(new Tooltip("Выбрать тендеры с отобранных страниц"));
 
-        textArea.appendText("Start" + "\n");
+		// auto cleaning textAria
+		textArea.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable,
+			                    String oldValue, String newValue) {
 
-        datePickerFrom.setValue(LocalDate.now());
-        datePickerTill.setValue(LocalDate.now());
+				if (newValue != null && newValue.length() > 2000) {
+					newValue = newValue.substring(newValue.length() - 2001);
+				}
+				textArea.setText(newValue);
 
-        comboBoxDataType.getItems().setAll(DataType.values());
-        comboBoxDataType.setValue(DataType.TENDERS);
+				/*String[] lines = newValue.split("\n", -1);
+				if(lines.length>50){
+
+					StringBuffer stringBuffer = new StringBuffer();
+
+					for (int i=0;i <=50;i++){
+						stringBuffer.append(lines[lines.length-50 + i]);
+					}
+					textArea.setText(stringBuffer.toString());
+				}else{
+					textArea.setText(newValue);
+				}*/
+			}
+		});
+
+		textArea.appendText("Start" + "\n");
+
+		//textArea.appendText("TEXT max length: " + String.valueOf(textArea.getMaxHeight()) + "\n");
+
+		datePickerFrom.setValue(LocalDate.now());
+		datePickerTill.setValue(LocalDate.now());
+
+		comboBoxDataType.getItems().setAll(DataType.values());
+		comboBoxDataType.setValue(DataType.TENDERS);
 		/*
 		try {
 
-			Prozorro.parseUrl(new URL(Prozorro.START_PAGE));
+			Prozorro.parseUrl(new URL(Prozorro.TENDER_START_PAGE));
 			urlConnection = true;
 
 		} catch (IOException e) {
@@ -100,295 +138,357 @@ public class MainController {
 			Dialogs.showErrorDialog(e, "Exception Dialog", "Ошибка подключения по URL", e.getMessage());
 		}
 		*/
-    }
+	}
 
-    public void onCheckDataForPeriod(ActionEvent actionEvent) {
-        String checkDate = DateUtils.checkDatesForPeriod(datePickerFrom.getValue(), datePickerTill.getValue());
-        findData = false;
-        if (checkDate == null) {
-            //buttonGetData.setDisable(true);
-            dateFrom = Date.from(datePickerFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-            dateTill = Date.from(datePickerTill.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+	public void onCheckDataForPeriod(ActionEvent actionEvent) {
+		String checkDate = DateUtils.checkDatesForPeriod(datePickerFrom.getValue(), datePickerTill.getValue());
 
-            checkDataForPeriodMessage();
+		findData = false;
+		if (checkDate == null) {
+			//buttonGetData.setDisable(true);
+			dateFrom = Date.from(datePickerFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+			dateTill = Date.from(datePickerTill.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-            Task task = new Task() {
-                @Override
-                protected Integer call() throws Exception {
-                    //System.out.println(buttonGetPages.getScene().getClass().toString());
+			checkDataForPeriodMessage();
 
-                    setWaitingProcess(true);
-                    try {
-                        ParsingResultData resultData =
-                                pageServiceProzorro.getApproximatelyParsingTimeForPeriod(dateFrom, dateTill);
-                        findData = resultData.isHasData();
-                        //System.out.println("Total time: " + totalTime + "sec, " + (totalTime/60)+ "m");
+			Task task = new Task() {
+				@Override
+				protected Integer call() throws Exception {
+					//System.out.println(buttonGetPages.getScene().getClass().toString());
 
-
-                        String mess =
-                                "Найдено страниц с " + comboBoxDataType.getValue() + ": " + resultData.getListSize() +
-                                ". Приблизительное время обработки: " +
-                                DateUtils.getTextTime(resultData.getParsingTime() / 1000000);
-                        logger.info(mess);
-                        textArea.appendText(mess + "\n");
-
-                    } catch (IOException e) {
-                        //e.printStackTrace();
-                        textArea.appendText(e.getMessage() + "\n");
-                        Dialogs.showErrorDialog(e, "Exception Dialog", "Look, an Exception Dialog", e.getMessage());
-                    }
-
-                    setWaitingProcess(false);
-                    return pageContentList.size();
-                }
-            };
-            Thread th = new Thread(task);
-            //th.setDaemon(true);
-            th.start();
-
-        } else {
-            Dialogs.showMessage(Alert.AlertType.WARNING, "Предупреждение", "Даты установлены не верно!", checkDate);
-            datePickerFrom.requestFocus();
-        }
-    }
-
-    private void setWaitingProcess(boolean isWaiting) {
-        prozorroApp.getRoot().setDisable(isWaiting);
-
-        buttonGetPages.getParent().getParent().setDisable(isWaiting);
-        buttonGetPages.getParent().getScene()
-                .setCursor((isWaiting) ? Cursor.WAIT : Cursor.DEFAULT); //Change cursor to wait style
-
-        buttonGetData.setDisable(findData);
-    }
-
-    private void checkDataForPeriodMessage() {
-
-        String textDateFrom = DateUtils
-                .parseDateToString(dateFrom, propertyFields.getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT));
-        String textDateTill = DateUtils
-                .parseDateToString(dateTill, propertyFields.getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT));
-
-        textArea.appendText(
-                "Отбираются записи по '" + comboBoxDataType.getValue() + "' за период с " + textDateFrom + " по " +
-                textDateTill + "\n");
-    }
-
-    public void onGetData(ActionEvent actionEvent) {
-        if (pageContentList.size() > 0) {
-            if (Dialogs.showConfirmDialog("Подтвердите действие", "Время выполнения примерно " + approximatelyTime,
-                                          "Время выполнения примерно " + approximatelyTime + ". Продолжить?")) {
-
-				/*if (prozorroApp.getConnection() != null) {
+					setWaitingProcess(true);
 					try {
-						SQLConnection.cleanTables(prozorroApp.getConnection());
-						textArea.appendText("Таблицы очищены" + "\n");
-					} catch (SQLException e) {
+						resultData = ProzorroServiceFactory.getApproximatelyParsingTimeForPeriod(propertyFields, comboBoxDataType.getValue(), dateFrom, dateTill);
+						//pageServiceProzorro.getApproximatelyParsingTimeForPeriod(dateFrom, dateTill);
+						findData = resultData.isHasData();
+						//System.out.println("Total time: " + totalTime + "sec, " + (totalTime/60)+ "m");
+
+						String mess =
+								"Найдено страниц с " + comboBoxDataType.getValue() + ": " + resultData.getListSize() +
+										". Приблизительное время обработки: " +
+										DateUtils.getTextTime(resultData.getParsingTime() / 1000000);
+						logger.info(mess);
+						textArea.appendText(mess + "\n");
+
+					} catch (IOException e) {
+						//e.printStackTrace();
+						resultData = new ParsingResultData();
 						textArea.appendText(e.getMessage() + "\n");
+						Dialogs.showErrorDialog(e, "Exception Dialog", "Look, an Exception Dialog", e.getMessage());
+					}
+
+					setWaitingProcess(false);
+					return resultData.getListSize();
+				}
+			};
+			Thread th = new Thread(task);
+			//th.setDaemon(true);
+			th.start();
+
+		} else {
+			Dialogs.showMessage(Alert.AlertType.WARNING, "Предупреждение", "Даты установлены не верно!", checkDate);
+			datePickerFrom.requestFocus();
+		}
+	}
+
+	private void setWaitingProcess(boolean isWaiting) {
+		prozorroApp.getRoot().setDisable(isWaiting);
+
+		buttonGetPages.getParent().getParent().setDisable(isWaiting);
+		buttonGetPages.getParent().getScene()
+				.setCursor((isWaiting) ? Cursor.WAIT : Cursor.DEFAULT); //Change cursor to wait style
+
+		buttonGetData.setDisable(!findData);
+	}
+
+	private void checkDataForPeriodMessage() {
+
+		String textDateFrom = DateUtils
+				                      .parseDateToString(dateFrom, propertyFields.getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT));
+		String textDateTill = DateUtils
+				                      .parseDateToString(dateTill, propertyFields.getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT));
+
+		textArea.appendText(
+				"Отбираются записи по '" + comboBoxDataType.getValue() + "' за период с " + textDateFrom + " по " +
+						textDateTill + "\n");
+	}
+
+	public void onGetData(ActionEvent actionEvent) {
+		if (resultData.isHasData()) {
+			dateFrom = Date.from(datePickerFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+			dateTill = Date.from(datePickerTill.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+			if (Dialogs.showConfirmDialog("Подтвердите действие", "Примерное время выполнения " + DateUtils.getTextTime(resultData.getParsingTime() / 1000000),
+					"Время отбора за период с " + DateUtils.dateToString(dateFrom) + "\n по " + DateUtils.dateToString(dateTill) + " " + DateUtils.getTextTime(resultData.getParsingTime() / 1000000) + ". Продолжить?")) {
+				SessionFactory sessionFactory = null;
+				try {
+					sessionFactory = getSessionFactoryByDBName(PropertiesUtils.getPropertyString(prozorroApp.getProperties(), "db.type"));
+					printConnectionResult(sessionFactory);
+					Thread th = new Thread(getDataAndSave(sessionFactory, resultData));
+
+					th.start();
+
+					//th.join();
+
+				} catch (Exception e) {
+					logger.error("Exception: " + e.getMessage() + "\n");
+					textArea.appendText("Exception: " + e.getMessage() + "\n");
+
+					e.printStackTrace();
+				}
+				/*finally {
+					if (sessionFactory.isOpen()) {
+						sessionFactory.close();
 					}
 				}*/
 
 				/*Thread th = new Thread(getTendersTask(pageContentList));
-
 				th.start();*/
 
-            }
-        } else {
-            Dialogs.showMessage(Alert.AlertType.WARNING, "Предупреждение", "Нет страниц для разбора!",
-                                "За указанный период нет данных для разбора.");
-        }
-    }
+			}
+		} else {
+			Dialogs.showMessage(Alert.AlertType.WARNING, "Предупреждение", "Нет данных для разбора!",
+					"За указанный период нет данных по " + comboBoxDataType.getValue() + " для разбора.");
+		}
+	}
 
-    private Task getTendersTask(List<PageContentURL> pageContents) {
-        progressBar.setProgress(0);
-        progressIndicator.setProgress(0);
-        Task task = new Task() {
-            @Override
-            protected Integer call() throws Exception {
-                //                    System.out.println(buttonGetPages.getScene().getClass().toString());
-                int pageCount = 0;
-                int findTenders = 0;
-                buttonGetData.getParent().getParent().setDisable(true);
-                buttonGetData.getParent().getScene().setCursor(Cursor.WAIT); //Change cursor to wait style
+	private Task getDataAndSave(SessionFactory sessionFactory, ParsingResultData resultData) {
+		progressBar.setProgress(0);
+		progressIndicator.setProgress(0);
+		Task task = new Task() {
+			@Override
+			protected Integer call() throws Exception {
+				setWaitingProcess(true);
+				/*
+				buttonGetData.getParent().getParent().setDisable(true);
+				buttonGetData.getParent().getScene().setCursor(Cursor.WAIT); //Change cursor to wait style*/
 
-                Session sessionObj = null;
-                try {
-                    sessionObj = prozorroApp.getSession().getSessionFactory().openSession();
+				logger.info("Start parsing for period from " + DateUtils.dateToString(dateFrom) + " till " +
+						            DateUtils.dateToString(dateTill));
 
+				PageServiceProzorro pageServiceProzorro = new PageServiceProzorro(propertyFields);
 
-                    //-------------------------------------------
-                    for (PageContentURL pageContent : pageContents) {
-                        List<TenderOld> tenderList = null;
-                        try {
-                            tenderList = Prozorro.getTendersFromPage(pageContent, dateTill);
-                        } catch (IOException e) {
-                            textArea.appendText(e.getMessage() + "\n");
-                        } catch (ParseException e) {
-                            textArea.appendText(e.getMessage() + "\n");
-                        }
-                        pageCount++;
-                        findTenders += tenderList.size();
-					/*if (prozorroApp.getConnection() != null) {
-						try {
-							SQLConnection.insertTenders(prozorroApp.getConnection(), tenderList);
-//                            System.out.println("Added " + tenderList.size() + " new Tenders to DB");
-							textArea.appendText("Добавлено " + tenderList.size() + " новых тендеров в базу. Страница: " + pageContent.getPageHeader() + "\n");
-						} catch (SQLException e) {
-							textArea.appendText(e.getMessage() + "\n");
+				String startPageURL = pageServiceProzorro.getTenderPageURL(dateFrom);
+				logger.info("Start parsing from URL " + startPageURL);
+				textArea.appendText("Start parsing from URL " + startPageURL + "\n");
+
+				TenderPageDTO page = null;
+
+				Session session = null;
+				Transaction transaction = null;
+
+				String text = "";
+
+				int pageCount = 0;
+				int pageElementCount = 0;
+				try {
+					dateTill = pageServiceProzorro.getDateTill(dateTill);
+
+					ProzorroPageContent pageContent = pageServiceProzorro.getPageContentFromURL(startPageURL);
+
+					Date nextOffsetDate = pageServiceProzorro.getDateFromPageOffset(pageContent.getNextPage().getOffset());
+					//logger.info("Get first ProzorroPage: " + pageContent);
+					logger.info("Get first ProzorroPage");
+
+					session = sessionFactory.openSession();
+					while (dateTill.compareTo(nextOffsetDate) >= 0 && pageContent.getPageElementList() != null &&
+							       !pageContent.getPageElementList().isEmpty()) {
+						pageCount++;
+
+						pageElementCount = 0;
+						logger.info("Start parsing page №" + pageCount + ": ");
+
+						for (ProzorroPageElement pageElement : pageContent.getPageElementList()) {
+							pageElementCount++;
+
+							PageService pageService = new PageService(session);
+
+							transaction = session.beginTransaction();
+
+							page = TenderDTOUtils.getPageDTO(pageElement);
+
+							boolean updatedPage = pageService.savePage(page, session);
+							if (updatedPage) {
+								TenderService tenderService = new TenderService(session);
+
+								TenderDataServiceProzorro tenderDataServiceProzorro = new TenderDataServiceProzorro(
+										propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE) + "/");
+
+								TenderData tenderData = tenderDataServiceProzorro.getTenderDataFromPageElement(pageElement);
+								text = tenderData.toString();
+								TenderDTO tenderDTO = TenderDTOUtils.getTenderDTO(tenderData.getTender());
+								tenderService.saveTender(tenderDTO, session);
+							}
+							logger.info(
+									"ProzorroPage № " + pageCount + ", " + comboBoxDataType.getValue() + " on page № " + pageElementCount + ", added/updated: " +
+											updatedPage);
+							textArea.appendText("ProzorroPage № " + pageCount + ", " + comboBoxDataType.getValue() + " on page № " + pageElementCount + ", added/updated: " + updatedPage + " \n");
+							session.flush();
+							session.clear();
+							transaction.commit();
 						}
-					}*/
-                        PageElementService pageElementService = new PageElementService(sessionObj);
-                        pageElementService.savePageElementList(pageContent.getPageElementList());
+						logger.info("Get next page with URL: " + pageContent.getNextPage().getUri());
+						pageContent = pageServiceProzorro.getPageContentFromURL(pageContent.getNextPage().getUri());
+						nextOffsetDate = pageServiceProzorro.getDateFromPageOffset(pageContent.getNextPage().getOffset());
+					}
+
+				} catch (Exception e) {
+					//catch (ParseException | IOException | Exception e){
+					e.printStackTrace();
+					logger.error("Page " + page + " № " + pageCount + ", " + comboBoxDataType.getValue() + " № " + pageElementCount + ", Parse error msg: " +
+							             e.getMessage());
+					logger.error("Tender: " + text);
+
+					if (transaction != null) {
+						transaction.rollback();
+					}
+					//throw new Exception(e);
+
+				} finally {
+					session.close();
+					setWaitingProcess(true);
+
+					textArea.appendText("Найдено " + pageElementCount + " " + comboBoxDataType.getValue() + "\n");
+					return pageElementCount;
+				}
+				/*
+				buttonGetData.getParent().getScene().setCursor(Cursor.DEFAULT); //Change cursor to default style
+				buttonGetData.getParent().getParent().setDisable(false);
+				*/
 
 
-                        progressBar.setProgress(Double.valueOf(pageCount) / pageContents.size());
-                        progressIndicator.setProgress(Double.valueOf(pageCount) / pageContents.size());
-                    }
-                    //----------------------------------
+			}
+		};
+		return task;
+	}
 
 
-                } catch (Exception sqlException) {
+	public void onParsePage(ActionEvent actionEvent) {
+		if (urlConnection) {
+			String inputText =
+					Dialogs.showInputDialog("Разобрать страницу по URl", "Укажите страницу для разбора", "Страница:");
+			textArea.appendText("Страница для разбора: " + inputText + "\n");
+			if (!inputText.isEmpty() && inputText != null) {
 
-                    if (null != sessionObj.getTransaction()) {
+				buttonGetData.getParent().getScene().setCursor(Cursor.WAIT);
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							PageContentURL pageContent = Prozorro.getPageContent(new URL(inputText));
+							for (ProzorroPageElement pageElement : pageContent.getPageElementList()) {
+								textArea.appendText(pageElement.toString() + "\n");
+							}
+						} catch (org.json.simple.parser.ParseException e) {
+							textArea.appendText(e.getMessage() + "\n");
+							Dialogs.showErrorDialog(e, "Exception Dialog", "Разбора страницы по URL", e.getMessage());
 
-                        System.out.println("\n.......Transaction Is Being Rolled Back.......");
-                        textArea.appendText("SQL exception: " + sqlException.getMessage() + "\n");
-                        textArea.appendText(".......Transaction Is Being Rolled Back......." + "\n");
+						} catch (IOException e) {
+							textArea.appendText(e.getMessage() + "\n");
+							Dialogs.showErrorDialog(e, "Exception Dialog", "Ошибка подключения по URL", e.getMessage());
+						}
+						buttonGetData.getParent().getScene().setCursor(Cursor.DEFAULT);
+					}
+				});
 
-                        sessionObj.getTransaction().rollback();
+			}
 
-                    }
-                    sqlException.printStackTrace();
-                } finally {
-                    if (sessionObj != null) {
-                        sessionObj.close();
-                    }
-                }
+		} else
+			Dialogs.showMessage(Alert.AlertType.WARNING, "Ошибка ", "Ошибка подключенияпо ссылке",
+					"Ошибка доступа или ошибка данных с сайта Прозоро");
+	}
 
+	public void onClean(ActionEvent actionEvent) {
+		if (Dialogs.showConfirmDialog("Очистить логи", "Вы собираетесь очистить текст с логими",
+				"Весь текст будет утерян. Продолжить?")) {
+			textArea.clear();
+		}
+	}
 
-                buttonGetData.getParent().getScene().setCursor(Cursor.DEFAULT); //Change cursor to default style
-                buttonGetData.getParent().getParent().setDisable(false);
-                allTenders = findTenders;
-                textArea.appendText("Найдено " + allTenders + " тендеров " + "\n");
-                return findTenders;
-            }
-        };
-        return task;
-    }
+	public void onClose(ActionEvent actionEvent) {
+		if (prozorroApp.isConfirmShutDown()) {
+			Platform.exit();
+			System.exit(0);
+		}
+	}
 
+	public void onParseTender(ActionEvent actionEvent) {
+		if (urlConnection) {
+			String inputText =
+					Dialogs.showInputDialog("Разобрать тендер по ID", "Укажите ID тендера для разбора", "Тендер:");
+			textArea.appendText("Тендер для разбора: " + inputText + "\n");
+			if (!inputText.isEmpty() && inputText != null) {
+				buttonGetData.getParent().getScene().setCursor(Cursor.WAIT);
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							TenderOld tender = Prozorro.getTender(inputText);
+							textArea.appendText(tender.toString() + "\n");
+						} catch (IOException e) {
+							textArea.appendText(e.getMessage() + "\n");
+							Dialogs.showErrorDialog(e, "Exception Dialog", "Ошибка доступа по ID", e.getMessage());
+						}
+						buttonGetData.getParent().getScene().setCursor(Cursor.DEFAULT);
+					}
+				});
+			}
 
-    public void onParsePage(ActionEvent actionEvent) {
-        if (urlConnection) {
-            String inputText =
-                    Dialogs.showInputDialog("Разобрать страницу по URl", "Укажите страницу для разбора", "Страница:");
-            textArea.appendText("Страница для разбора: " + inputText + "\n");
-            if (!inputText.isEmpty() && inputText != null) {
+			//            try {
+			//                TenderOld tender = getTender(inputText);
+			//                textArea.appendText(tender.toString() + "\n");
+			//            } catch (IOException e) {
+			//                textArea.appendText(e.getMessage() + "\n");
+			//                showErrorDialog(e, "Exception Dialog", "Ошибка доступа по ID", e.getMessage());
+			//            }
+		} else
+			Dialogs.showMessage(Alert.AlertType.WARNING, "Ошибка ", "Ошибка подключенияпо ссылке",
+					"Ошибка доступа или ошибка данных с сайта Прозоро");
 
-                buttonGetData.getParent().getScene().setCursor(Cursor.WAIT);
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            PageContentURL pageContent = Prozorro.getPageContent(new URL(inputText));
-                            for (ProzorroPageElement pageElement : pageContent.getPageElementList()) {
-                                textArea.appendText(pageElement.toString() + "\n");
-                            }
-                        } catch (org.json.simple.parser.ParseException e) {
-                            textArea.appendText(e.getMessage() + "\n");
-                            Dialogs.showErrorDialog(e, "Exception Dialog", "Разбора страницы по URL", e.getMessage());
+	}
 
-                        } catch (IOException e) {
-                            textArea.appendText(e.getMessage() + "\n");
-                            Dialogs.showErrorDialog(e, "Exception Dialog", "Ошибка подключения по URL", e.getMessage());
-                        }
-                        buttonGetData.getParent().getScene().setCursor(Cursor.DEFAULT);
-                    }
-                });
+	public void onSaveLogToFile(ActionEvent actionEvent) {
+		FileChooser fileChooser = new FileChooser();
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+		fileChooser.getExtensionFilters().add(extFilter);
+		File file = fileChooser.showSaveDialog(buttonGetPages.getScene().getWindow());
 
-            }
+		if (file != null) {
+			textArea.appendText("Выбран  файл для сохранения журнала: " + file.getAbsoluteFile() + "\n");
+			try {
+				FileUtils.SaveToFile(textArea.getText(), file);
+			} catch (IOException e) {
+				Dialogs.showMessage(Alert.AlertType.WARNING, "Ошибка сохранения",
+						"Ошибка при попытке сохранить файл " + file.getAbsoluteFile(), e.getMessage());
+			}
+		}
+	}
 
-        } else
-            Dialogs.showMessage(Alert.AlertType.WARNING, "Ошибка ", "Ошибка подключенияпо ссылке",
-                                "Ошибка доступа или ошибка данных с сайта Прозоро");
-    }
+	public void setProzorroApp(ProzorroApp prozorroApp) {
+		this.prozorroApp = prozorroApp;
+		this.propertyFields = new PropertyFields(prozorroApp.getProperties());
+	}
 
-    public void onClean(ActionEvent actionEvent) {
-        if (Dialogs.showConfirmDialog("Очистить логи", "Вы собираетесь очистить текст с логими",
-                                      "Весь текст будет утерян. Продолжить?")) {
-            textArea.clear();
-        }
-    }
+	private SessionFactory getSessionFactoryByDBName(String dbName) {
+		//logger.info("DBName = " + dbName);
+		//String dbName = PropertiesUtils.getPropertyString(prozorroApp.getProperties(), "db.type");
+		if (dbName == null || dbName.equals("")) {
+			return null;
+		}
+		HibernateDataBaseType baseType = HibernateDataBaseType.valueOf(dbName.toUpperCase());
+		logger.info("HibernateDataBaseType = " + baseType);
+		SessionFactory factory = HibernateFactory.getHibernateSession(baseType);
+		return factory;
+	}
 
-    public void onClose(ActionEvent actionEvent) {
-        if (prozorroApp.isConfirmShutDown()) {
-            Platform.exit();
-            System.exit(0);
-        }
-    }
-
-    public void onParseTender(ActionEvent actionEvent) {
-        if (urlConnection) {
-            String inputText =
-                    Dialogs.showInputDialog("Разобрать тендер по ID", "Укажите ID тендера для разбора", "Тендер:");
-            textArea.appendText("Тендер для разбора: " + inputText + "\n");
-            if (!inputText.isEmpty() && inputText != null) {
-                buttonGetData.getParent().getScene().setCursor(Cursor.WAIT);
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            TenderOld tender = Prozorro.getTender(inputText);
-                            textArea.appendText(tender.toString() + "\n");
-                        } catch (IOException e) {
-                            textArea.appendText(e.getMessage() + "\n");
-                            Dialogs.showErrorDialog(e, "Exception Dialog", "Ошибка доступа по ID", e.getMessage());
-                        }
-                        buttonGetData.getParent().getScene().setCursor(Cursor.DEFAULT);
-                    }
-                });
-            }
-
-            //            try {
-            //                TenderOld tender = getTender(inputText);
-            //                textArea.appendText(tender.toString() + "\n");
-            //            } catch (IOException e) {
-            //                textArea.appendText(e.getMessage() + "\n");
-            //                showErrorDialog(e, "Exception Dialog", "Ошибка доступа по ID", e.getMessage());
-            //            }
-        } else
-            Dialogs.showMessage(Alert.AlertType.WARNING, "Ошибка ", "Ошибка подключенияпо ссылке",
-                                "Ошибка доступа или ошибка данных с сайта Прозоро");
-
-    }
-
-    public void onSaveLogToFile(ActionEvent actionEvent) {
-        FileChooser fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
-        fileChooser.getExtensionFilters().add(extFilter);
-        File file = fileChooser.showSaveDialog(buttonGetPages.getScene().getWindow());
-
-        if (file != null) {
-            textArea.appendText("Выбран  файл для сохранения журнала: " + file.getAbsoluteFile() + "\n");
-            try {
-                FileUtils.SaveToFile(textArea.getText(), file);
-            } catch (IOException e) {
-                Dialogs.showMessage(Alert.AlertType.WARNING, "Ошибка сохранения",
-                                    "Ошибка при попытке сохранить файл " + file.getAbsoluteFile(), e.getMessage());
-            }
-        }
-    }
-
-    public void setProzorroApp(ProzorroApp prozorroApp) {
-        this.prozorroApp = prozorroApp;
-        if (prozorroApp.getSession() == null) {
-            textArea.appendText("Подключено к БД" + "\n");
-        } else {
-            textArea.appendText("БД не доступна" + "\n");
-        }
-        this.propertyFields = new PropertyFields(prozorroApp.getProperties());
-        this.pageServiceProzorro = new PageServiceProzorro(propertyFields);
-        this.tenderDataServiceProzorro = new TenderDataServiceProzorro(
-                propertyFields.getPropertiesStringValue(AppProperty.START_PAGE) + File.separator);
-    }
+	private void printConnectionResult(SessionFactory sessionFactory) {
+		String text;
+		if (sessionFactory != null) {
+			text = "Подключено к БД" + "\n";
+		} else {
+			text = "БД не доступна" + "\n";
+		}
+		logger.info(text);
+		textArea.appendText(text);
+	}
 
 }

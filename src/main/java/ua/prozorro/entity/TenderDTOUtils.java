@@ -1,6 +1,6 @@
 package ua.prozorro.entity;
 
-import ua.prozorro.entity.pages.PageDTO;
+import ua.prozorro.entity.pages.TenderPageDTO;
 import ua.prozorro.entity.tenders.*;
 import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
 import ua.prozorro.prozorro.model.tenders.*;
@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TenderDTOUtils {
-    public static PageDTO getPageDTO(ProzorroPageElement pageElement) {
+    public static TenderPageDTO getPageDTO(ProzorroPageElement pageElement) {
         if (pageElement == null) {
             return null;
         }
-        PageDTO page = new PageDTO();
+        TenderPageDTO page = new TenderPageDTO();
 
         page.setId(pageElement.getId());
         page.setDateModified(pageElement.getDateModified());

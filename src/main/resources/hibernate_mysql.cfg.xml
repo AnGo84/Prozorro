@@ -14,7 +14,7 @@
         <property name="connection.password">prozorro</property>
 
         <!-- JDBC connection pool (use the built-in) -->
-        <property name="connection.pool_size">100</property>
+        <property name="connection.pool_size">2</property>
 
         <!-- SQL dialect -->
         <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
@@ -41,7 +41,7 @@
 
         <!-- Mapping With Model Class Containing Annotations -->
         <!--Tenders-->
-        <mapping class="ua.prozorro.entity.pages.PageDTO"/>
+        <mapping class="ua.prozorro.entity.pages.TenderPageDTO"/>
         <mapping class="ua.prozorro.entity.tenders.AddressDTO"/>
         <mapping class="ua.prozorro.entity.tenders.AwardDTO"/>
         <mapping class="ua.prozorro.entity.tenders.BidDTO"/>

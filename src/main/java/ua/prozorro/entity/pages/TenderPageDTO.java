@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "ALL_tenders_IMPORT")
-public class PageDTO {
+public class TenderPageDTO {
 
     @Id
     //@GeneratedValue(strategy= GenerationType.AUTO)
@@ -17,10 +17,10 @@ public class PageDTO {
     @Column(name = "dateModified")
     private String dateModified;
 
-    public PageDTO() {
+    public TenderPageDTO() {
     }
 
-    public PageDTO(String id, String dateModified) {
+    public TenderPageDTO(String id, String dateModified) {
         this.dateModified = dateModified;
         this.id = id;
     }
@@ -48,7 +48,7 @@ public class PageDTO {
         if (o == null || getClass() != o.getClass())
             return false;
 
-        PageDTO that = (PageDTO) o;
+        TenderPageDTO that = (TenderPageDTO) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null)
             return false;

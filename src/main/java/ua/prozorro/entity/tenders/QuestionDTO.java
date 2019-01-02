@@ -22,7 +22,9 @@ public class QuestionDTO {
     private String date;
     @Column
     private String dateAnswered;
-    @Column(length = 4000)
+    //@Column(length = 4000)
+    @Lob
+    @Column
     private String answer;
     @Column(length = 4000)
     private String questionOf;

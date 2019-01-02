@@ -30,7 +30,7 @@ public class ProzorroApp extends Application {
     private static final String CONFIG_FILE_NAME = "Prozorro.properties";
     private static final Logger logger = LogManager.getRootLogger();
 
-    private Session session;
+    //private Session session;
 
     private Stage primaryStage;
     private BorderPane root;
@@ -57,13 +57,10 @@ public class ProzorroApp extends Application {
         try {
             properties = PropertiesUtils.getPropertiesFromFile(propertiesFile);
 
-			/*for (String prop : properties.stringPropertyNames()) {
-				logger.info("Prop: " + prop + " | value: " + properties.getProperty(prop));
-			}*/
+			PropertiesUtils.toString(properties);
 
-            String dbName = PropertiesUtils.getPropertyString(properties, "db.type");
-            session = getSessionByDBName(dbName);
-
+            /*String dbName = PropertiesUtils.getPropertyString(properties, "db.type");
+            session = getSessionByDBName(dbName);*/
 
         } catch (IOException e) {
             //            e.printStackTrace();
@@ -73,14 +70,10 @@ public class ProzorroApp extends Application {
 
         initMainView();
 
-
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent we) {
                 if (isConfirmShutDown()) {
-                    if (session.isConnected()) {
-                        session.close();
-                    }
                     Platform.exit();
                     System.exit(0);
                 } else {
@@ -90,16 +83,6 @@ public class ProzorroApp extends Application {
         });
     }
 
-    private Session getSessionByDBName(String dbName) {
-        //logger.info("DBName = " + dbName);
-        if (dbName == null || dbName.equals("")) {
-            return null;
-        }
-        HibernateDataBaseType baseType = HibernateDataBaseType.valueOf(dbName.toUpperCase());
-        logger.info("HibernateDataBaseType = " + baseType);
-        SessionFactory factory = HibernateFactory.getHibernateSession(baseType);
-        return factory.getCurrentSession();
-    }
 
     private void initMainView() throws IOException {
 		/*FXMLLoader loader = new FXMLLoader();
@@ -145,9 +128,9 @@ public class ProzorroApp extends Application {
         return root;
     }
 
-    public Session getSession() {
+    /*public Session getSession() {
         return session;
-    }
+    }*/
 
     public Properties getProperties() {
         return properties;
