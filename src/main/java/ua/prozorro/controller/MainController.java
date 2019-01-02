@@ -60,7 +60,6 @@ public class MainController {
 	private PropertyFields propertyFields;
 
 	private ParsingResultData resultData;
-	private boolean findData = false;
 
 
 	@FXML
@@ -92,31 +91,7 @@ public class MainController {
 		buttonGetPages.setTooltip(new Tooltip("Выбрать страницы за указанный период"));
 		buttonGetData.setTooltip(new Tooltip("Выбрать тендеры с отобранных страниц"));
 
-		// auto cleaning textAria
-		textArea.textProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> observable,
-			                    String oldValue, String newValue) {
-
-				if (newValue != null && newValue.length() > 2000) {
-					newValue = newValue.substring(newValue.length() - 2001);
-				}
-				textArea.setText(newValue);
-
-				/*String[] lines = newValue.split("\n", -1);
-				if(lines.length>50){
-
-					StringBuffer stringBuffer = new StringBuffer();
-
-					for (int i=0;i <=50;i++){
-						stringBuffer.append(lines[lines.length-50 + i]);
-					}
-					textArea.setText(stringBuffer.toString());
-				}else{
-					textArea.setText(newValue);
-				}*/
-			}
-		});
+		ininListeners();
 
 		textArea.appendText("Start" + "\n");
 
@@ -127,23 +102,47 @@ public class MainController {
 
 		comboBoxDataType.getItems().setAll(DataType.values());
 		comboBoxDataType.setValue(DataType.TENDERS);
-		/*
-		try {
 
-			Prozorro.parseUrl(new URL(Prozorro.TENDER_START_PAGE));
-			urlConnection = true;
+	}
 
-		} catch (IOException e) {
-			textArea.appendText(e.getMessage() + "\n");
-			Dialogs.showErrorDialog(e, "Exception Dialog", "Ошибка подключения по URL", e.getMessage());
-		}
-		*/
+	private void ininListeners() {
+		// auto cleaning textAria
+		textArea.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable,
+								String oldValue, String newValue) {
+
+				if (newValue != null && newValue.length() > 2000) {
+					newValue = newValue.substring(newValue.length() - 2001);
+				}
+				textArea.setText(newValue);
+				/*String[] lines = newValue.split("\n", -1);
+				if(lines.length>50){
+					StringBuffer stringBuffer = new StringBuffer();
+					for (int i=0;i <=50;i++){
+						stringBuffer.append(lines[lines.length-50 + i]);
+					}
+					textArea.setText(stringBuffer.toString());
+				}else{
+					textArea.setText(newValue);
+				}*/
+			}
+		});
+
+		comboBoxDataType.valueProperty().addListener(new ChangeListener<DataType>() {
+			@Override public void changed(ObservableValue ov, DataType t, DataType t1) {
+				if (!t.equals(t1)){
+					resultData= new ParsingResultData();
+					buttonGetData.setDisable(true);
+				}
+
+			}
+		});
 	}
 
 	public void onCheckDataForPeriod(ActionEvent actionEvent) {
 		String checkDate = DateUtils.checkDatesForPeriod(datePickerFrom.getValue(), datePickerTill.getValue());
 
-		findData = false;
 		if (checkDate == null) {
 			//buttonGetData.setDisable(true);
 			dateFrom = Date.from(datePickerFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
@@ -159,8 +158,6 @@ public class MainController {
 					setWaitingProcess(true);
 					try {
 						resultData = ProzorroServiceFactory.getApproximatelyParsingTimeForPeriod(propertyFields, comboBoxDataType.getValue(), dateFrom, dateTill);
-						//pageServiceProzorro.getApproximatelyParsingTimeForPeriod(dateFrom, dateTill);
-						findData = resultData.isHasData();
 						//System.out.println("Total time: " + totalTime + "sec, " + (totalTime/60)+ "m");
 
 						String mess =
@@ -198,7 +195,7 @@ public class MainController {
 		buttonGetPages.getParent().getScene()
 				.setCursor((isWaiting) ? Cursor.WAIT : Cursor.DEFAULT); //Change cursor to wait style
 
-		buttonGetData.setDisable(!findData);
+		buttonGetData.setDisable(isWaiting || !resultData.isHasData());
 	}
 
 	private void checkDataForPeriodMessage() {
@@ -226,9 +223,7 @@ public class MainController {
 					Thread th = new Thread(getDataAndSave(sessionFactory, resultData));
 
 					th.start();
-
 					//th.join();
-
 				} catch (Exception e) {
 					logger.error("Exception: " + e.getMessage() + "\n");
 					textArea.appendText("Exception: " + e.getMessage() + "\n");
@@ -240,10 +235,6 @@ public class MainController {
 						sessionFactory.close();
 					}
 				}*/
-
-				/*Thread th = new Thread(getTendersTask(pageContentList));
-				th.start();*/
-
 			}
 		} else {
 			Dialogs.showMessage(Alert.AlertType.WARNING, "Предупреждение", "Нет данных для разбора!",
@@ -354,8 +345,6 @@ public class MainController {
 				buttonGetData.getParent().getScene().setCursor(Cursor.DEFAULT); //Change cursor to default style
 				buttonGetData.getParent().getParent().setDisable(false);
 				*/
-
-
 			}
 		};
 		return task;
@@ -491,4 +480,7 @@ public class MainController {
 		textArea.appendText(text);
 	}
 
+	public void onMenuItemScheme(ActionEvent actionEvent) {
+		boolean okClicked = prozorroApp.showSchemeDialog();
+	}
 }

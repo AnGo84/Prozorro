@@ -117,8 +117,7 @@ public class PageServiceProzorro {
 
     public ParsingResultData getApproximatelyParsingTimeForPeriod(Date dateFrom, Date dateTill)
             throws IOException, ParseException {
-        TenderDataServiceProzorro tenderDataServiceProzorro = new TenderDataServiceProzorro(
-                propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE) + File.separator);
+
         long startTime = System.nanoTime();
         List<ProzorroPageContent> list = getPagesList(dateFrom, dateTill, false);
         //System.out.println("Pages list size: " + list.size());
@@ -129,6 +128,9 @@ public class PageServiceProzorro {
         long timeForPageTenders;
         if (list != null && !list.isEmpty()) {
             ProzorroPageContent pageContent = getPageContentFromURL(getTenderPageURL(dateFrom));
+
+            TenderDataServiceProzorro tenderDataServiceProzorro = new TenderDataServiceProzorro(
+                    propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE) + "/");
             tenderDataServiceProzorro.getTenderDatasFromPageContent(pageContent);
         }
         timeForPageTenders = (System.nanoTime() - startTime);

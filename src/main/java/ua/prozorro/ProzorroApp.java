@@ -5,7 +5,9 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import org.apache.logging.log4j.LogManager;
@@ -13,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import ua.prozorro.controller.MainController;
+import ua.prozorro.controller.SchemeDialogController;
 import ua.prozorro.fx.DialogText;
 import ua.prozorro.fx.Dialogs;
 import ua.prozorro.properties.PropertiesUtils;
@@ -101,6 +104,38 @@ public class ProzorroApp extends Application {
 
         primaryStage.show();
 
+    }
+
+    public boolean showSchemeDialog() {
+        try {
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/views/SchemeDialog.fxml"));
+
+            AnchorPane page = (AnchorPane) loader.load();
+
+            // Создаём диалоговое окно Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Импорт схемы БД");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            SchemeDialogController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setProzorroApp(this);
+
+            dialogStage.showAndWait();
+
+            return controller.isOkClicked();
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            Dialogs.showErrorDialog(e, new DialogText("Application start error", "Error with resource's file",
+                                                      "Can't find resource's file '" + CONFIG_FILE_NAME + "'"), logger);
+            return false;
+        }
     }
 
     public boolean shutDown() {
