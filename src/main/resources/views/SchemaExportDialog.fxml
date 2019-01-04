@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="249.0" prefWidth="524.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.prozorro.controller.SchemeDialogController">
+<AnchorPane prefHeight="249.0" prefWidth="524.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.prozorro.controller.SchemaExportDialogController">
    <children>
       <GridPane layoutX="10.0" layoutY="30.0" prefHeight="151.0" prefWidth="502.0">
         <columnConstraints>
@@ -31,7 +31,7 @@
             <Label text="Файл" GridPane.rowIndex="2" />
             <TextField fx:id="textFieldFileName" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Button fx:id="buttonChooseFile" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onButtonChooseFile" prefWidth="50.0" text="..." GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <CheckBox fx:id="checkBoxSaveScheme" mnemonicParsing="false" prefHeight="18.0" prefWidth="161.0" text="Создать схему в БД" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <CheckBox fx:id="checkBoxSaveScheme" mnemonicParsing="false" prefHeight="18.0" prefWidth="364.0" text="Создать схему в БД из файла настроек" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
       </GridPane>
       <Button fx:id="buttonOk" layoutX="363.0" layoutY="206.0" mnemonicParsing="false" onAction="#onButtonOk" prefHeight="26.0" prefWidth="100.0" text="Ok" />

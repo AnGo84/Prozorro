@@ -170,9 +170,10 @@ public class TenderDTO {
             inverseJoinColumns = {@JoinColumn(name = "lot_id")})
     private List<LotDTO> lots = null;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    /*@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinTable(name = "Tenders_Features", joinColumns = {@JoinColumn(name = "tender_id")},
-            inverseJoinColumns = {@JoinColumn(name = "feature_id")})
+            inverseJoinColumns = {@JoinColumn(name = "feature_id")})*/
+    @Transient
     private List<FeatureDTO> features = null;
 
     /*@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})

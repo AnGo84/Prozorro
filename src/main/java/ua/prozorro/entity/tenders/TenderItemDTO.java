@@ -40,6 +40,7 @@ public class TenderItemDTO {
     public TenderItemDTO(TenderDTO tender, ItemDTO itemDTO) {
         this.tender = tender;
         this.itemDTO = itemDTO;
+        //this.id = 31 * tender.getId().hashCode() + itemDTO.getId().hashCode();
     }
 
     public TenderDTO getTender() {

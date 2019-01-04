@@ -43,7 +43,7 @@ public class ItemDTO {
     private UnitDTO unit;
 
     @Column
-    private int quantity;
+    private long quantity;
 
     public String getDescription() {
         return description;
@@ -85,11 +85,11 @@ public class ItemDTO {
         this.unit = unit;
     }
 
-    public int getQuantity() {
+    public long getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(long quantity) {
         this.quantity = quantity;
     }
 
@@ -172,7 +172,7 @@ public class ItemDTO {
         result = 31 * result + (deliveryEndDate != null ? deliveryEndDate.hashCode() : 0);
         result = 31 * result + (deliveryInvalidationDate != null ? deliveryInvalidationDate.hashCode() : 0);
         result = 31 * result + (unit != null ? unit.hashCode() : 0);
-        result = 31 * result + quantity;
+        result = 31 * result + (int) (quantity ^ (quantity >>> 32));
         return result;
     }
 

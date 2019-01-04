@@ -30,6 +30,7 @@ public class BidDocumentDTO {
     public BidDocumentDTO(BidDTO bid, DocumentDTO document) {
         this.bid = bid;
         this.document = document;
+        //this.id = 31 * bid.getId().hashCode() + document.getId().hashCode();
     }
 
     public long getId() {

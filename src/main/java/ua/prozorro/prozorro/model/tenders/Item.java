@@ -25,7 +25,7 @@ public class Item {
     private Unit unit;
 
     @SerializedName("quantity")
-    private int quantity;
+    private long quantity;
 
     public String getDescription() {
         return description;
@@ -75,7 +75,7 @@ public class Item {
         this.unit = unit;
     }
 
-    public int getQuantity() {
+    public long getQuantity() {
         return quantity;
     }
 

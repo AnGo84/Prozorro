@@ -29,6 +29,7 @@ public class ContractItemDTO {
     public ContractItemDTO(ContractDTO contract, ItemDTO item) {
         this.contract = contract;
         this.item = item;
+        //this.id = 31 * contract.getId().hashCode() + item.getId().hashCode();
     }
 
     public long getId() {

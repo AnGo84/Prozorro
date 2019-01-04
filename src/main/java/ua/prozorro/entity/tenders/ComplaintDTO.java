@@ -62,6 +62,7 @@ public class ComplaintDTO {
     private List<DocumentDTO> documents;
     @Column
     private String relatedLot;
+    @Lob
     @Column
     private String tendererAction;
     @Column

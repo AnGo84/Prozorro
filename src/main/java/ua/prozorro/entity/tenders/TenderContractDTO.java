@@ -35,6 +35,7 @@ public class TenderContractDTO {
     public TenderContractDTO(String tenderId, String contractId) {
         this.tenderId = tenderId;
         this.contractId = contractId;
+        //this.id = 31 * tenderId.hashCode() + contractId.hashCode();
     }
 
     public long getId() {

@@ -66,6 +66,7 @@
         <mapping class="ua.prozorro.entity.tenders.TenderComplaintDTO"/>
         <mapping class="ua.prozorro.entity.tenders.TenderContractDTO"/>
         <mapping class="ua.prozorro.entity.tenders.TenderDocumentDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.TenderFeatureDTO"/>
         <mapping class="ua.prozorro.entity.tenders.TenderFunderDTO"/>
         <mapping class="ua.prozorro.entity.tenders.TenderItemDTO"/>
         <mapping class="ua.prozorro.entity.tenders.TenderQuestionDTO"/>
@@ -78,7 +79,8 @@
         <!--Additional for contracts-->
         <mapping class="ua.prozorro.entity.tenders.ContractItemDTO"/>
         <mapping class="ua.prozorro.entity.tenders.ContractSupplierDTO"/>
-
+        <!--Additional for features-->
+        <mapping class="ua.prozorro.entity.tenders.FeatureEnumsDTO"/>
         <!--/Tenders-->
 
 

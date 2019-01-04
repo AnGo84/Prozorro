@@ -29,6 +29,7 @@ public class AwardDocumentDTO {
     public AwardDocumentDTO(AwardDTO award, DocumentDTO document) {
         this.award = award;
         this.document = document;
+        //this.id = 31 * award.getId().hashCode() + document.getId().hashCode();
     }
 
     public long getId() {

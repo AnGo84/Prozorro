@@ -3,7 +3,7 @@ package ua.prozorro.entity.tenders;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "FeatureEnums")
+@Table(name = "FeatureEnumsDTO")
 public class FeatureEnumDTO {
     @Id
     //@GeneratedValue(strategy= GenerationType.AUTO)

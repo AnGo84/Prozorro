@@ -14,128 +14,138 @@ import java.util.Optional;
  * Created by AnGo on 07.03.2017.
  */
 public class Dialogs {
-    private static final String LABEL_STACKTRACE_TEXT = "The exception stacktrace is:";
+	private static final String LABEL_STACKTRACE_TEXT = "The exception stacktrace is:";
 
-    public static void showMessage(Alert.AlertType alertType, String titleText, String headerText, String contentText) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(titleText);
-        alert.setHeaderText(headerText);
-        alert.setContentText(contentText);
+	public static void showMessage(Alert.AlertType alertType, String titleText, String headerText, String contentText) {
+		Alert alert = new Alert(alertType);
+		alert.setTitle(titleText);
+		alert.setHeaderText(headerText);
+		alert.setContentText(contentText);
 
-        alert.showAndWait();
-    }
+		alert.showAndWait();
+	}
 
-    public static Boolean showConfirmDialog(String titleText, String headerText, String contentText) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle(titleText);
-        alert.setHeaderText(headerText);
-        alert.setContentText(contentText);
+	public static void showMessage(Alert.AlertType alertType, DialogText dialogText, Logger logger) {
+		Alert alert = new Alert(alertType);
+		alert.setTitle(dialogText.getTitleText());
+		alert.setHeaderText(dialogText.getHeaderText());
+		alert.setContentText(dialogText.getContentText());
 
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+		logger.info(alertType + ": " + dialogText + "\n");
+		alert.showAndWait();
+	}
 
-    public static Boolean showConfirmDialog(DialogText dialogText) {
-        return showConfirmDialog(dialogText.getTitleText(), dialogText.getHeaderText(), dialogText.getContentText());
-    }
+	public static Boolean showConfirmDialog(String titleText, String headerText, String contentText) {
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.setTitle(titleText);
+		alert.setHeaderText(headerText);
+		alert.setContentText(contentText);
 
-    public static void showErrorDialog(Exception ex, String titleText, String headerText, String contentText) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle(titleText);
-        alert.setHeaderText(headerText);
-        alert.setContentText(contentText);
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.OK) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        ex.printStackTrace(pw);
-        String exceptionText = sw.toString();
+	public static Boolean showConfirmDialog(DialogText dialogText) {
+		return showConfirmDialog(dialogText.getTitleText(), dialogText.getHeaderText(), dialogText.getContentText());
+	}
 
-        Label label = new Label("The exception stacktrace was:");
+	public static void showErrorDialog(Exception ex, String titleText, String headerText, String contentText) {
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.setTitle(titleText);
+		alert.setHeaderText(headerText);
+		alert.setContentText(contentText);
 
-        TextArea textArea = new TextArea(exceptionText);
-        textArea.setEditable(false);
-        textArea.setWrapText(true);
+		StringWriter sw = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw);
+		ex.printStackTrace(pw);
+		String exceptionText = sw.toString();
 
-        textArea.setMaxWidth(Double.MAX_VALUE);
-        textArea.setMaxHeight(Double.MAX_VALUE);
-        GridPane.setVgrow(textArea, Priority.ALWAYS);
-        GridPane.setHgrow(textArea, Priority.ALWAYS);
+		Label label = new Label("The exception stacktrace was:");
 
-        GridPane expContent = new GridPane();
-        expContent.setMaxWidth(Double.MAX_VALUE);
-        expContent.add(label, 0, 0);
-        expContent.add(textArea, 0, 1);
+		TextArea textArea = new TextArea(exceptionText);
+		textArea.setEditable(false);
+		textArea.setWrapText(true);
 
-        alert.getDialogPane().setExpandableContent(expContent);
+		textArea.setMaxWidth(Double.MAX_VALUE);
+		textArea.setMaxHeight(Double.MAX_VALUE);
+		GridPane.setVgrow(textArea, Priority.ALWAYS);
+		GridPane.setHgrow(textArea, Priority.ALWAYS);
 
-        alert.showAndWait();
-    }
+		GridPane expContent = new GridPane();
+		expContent.setMaxWidth(Double.MAX_VALUE);
+		expContent.add(label, 0, 0);
+		expContent.add(textArea, 0, 1);
 
-    private static Alert getAlert(Alert.AlertType alertType, DialogText dialogText) {
-        Alert alert = new Alert(alertType);
+		alert.getDialogPane().setExpandableContent(expContent);
 
-        //        alert.setGraphic(new ImageView(new Dialogs().DIALOG_ICON));
+		alert.showAndWait();
+	}
 
-        alert.setTitle(dialogText.getTitleText());
-        alert.setHeaderText(dialogText.getHeaderText());
-        alert.setContentText(dialogText.getContentText());
+	private static Alert getAlert(Alert.AlertType alertType, DialogText dialogText) {
+		Alert alert = new Alert(alertType);
 
-        // Get the Stage.
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        // Add a custom icon.
-        //stage.getIcons().add(ImageResources.getAppIcon());
+		//        alert.setGraphic(new ImageView(new Dialogs().DIALOG_ICON));
+
+		alert.setTitle(dialogText.getTitleText());
+		alert.setHeaderText(dialogText.getHeaderText());
+		alert.setContentText(dialogText.getContentText());
+
+		// Get the Stage.
+		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+		// Add a custom icon.
+		//stage.getIcons().add(ImageResources.getAppIcon());
 
 
-        return alert;
-    }
+		return alert;
+	}
 
-    public static void showErrorDialog(Exception ex, DialogText dialogText, Logger logger) {
+	public static void showErrorDialog(Exception ex, DialogText dialogText, Logger logger) {
 
-        Alert alert = getAlert(Alert.AlertType.ERROR, dialogText);
+		Alert alert = getAlert(Alert.AlertType.ERROR, dialogText);
 
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        ex.printStackTrace(pw);
-        String exceptionText = dialogText.getContentText() + " : " + sw.toString();
+		StringWriter sw = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw);
+		ex.printStackTrace(pw);
+		String exceptionText = dialogText.getContentText() + " : " + sw.toString();
 
-        logger.error(dialogText + "\n. Error message= \n" + sw.toString());
+		logger.error(dialogText + "\n. Error message= \n" + sw.toString());
 
-        Label label = new Label(LABEL_STACKTRACE_TEXT);
+		Label label = new Label(LABEL_STACKTRACE_TEXT);
 
-        TextArea textArea = new TextArea(exceptionText);
-        textArea.setEditable(false);
-        textArea.setWrapText(true);
+		TextArea textArea = new TextArea(exceptionText);
+		textArea.setEditable(false);
+		textArea.setWrapText(true);
 
-        textArea.setMaxWidth(Double.MAX_VALUE);
-        textArea.setMaxHeight(Double.MAX_VALUE);
-        GridPane.setVgrow(textArea, Priority.ALWAYS);
-        GridPane.setHgrow(textArea, Priority.ALWAYS);
+		textArea.setMaxWidth(Double.MAX_VALUE);
+		textArea.setMaxHeight(Double.MAX_VALUE);
+		GridPane.setVgrow(textArea, Priority.ALWAYS);
+		GridPane.setHgrow(textArea, Priority.ALWAYS);
 
-        GridPane expContent = new GridPane();
-        expContent.setMaxWidth(Double.MAX_VALUE);
-        expContent.add(label, 0, 0);
-        expContent.add(textArea, 0, 1);
+		GridPane expContent = new GridPane();
+		expContent.setMaxWidth(Double.MAX_VALUE);
+		expContent.add(label, 0, 0);
+		expContent.add(textArea, 0, 1);
 
-        alert.getDialogPane().setExpandableContent(expContent);
+		alert.getDialogPane().setExpandableContent(expContent);
 
-        alert.showAndWait();
-    }
+		alert.showAndWait();
+	}
 
-    public static String showInputDialog(String titleText, String headerText, String contentText) {
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle(titleText);
-        dialog.setHeaderText(headerText);
-        dialog.setContentText(contentText);
+	public static String showInputDialog(String titleText, String headerText, String contentText) {
+		TextInputDialog dialog = new TextInputDialog();
+		dialog.setTitle(titleText);
+		dialog.setHeaderText(headerText);
+		dialog.setContentText(contentText);
 
-        Optional<String> result = dialog.showAndWait();
-        if (result.isPresent()) {
-            return result.get();
-        } else {
-            return "";
-        }
-    }
+		Optional<String> result = dialog.showAndWait();
+		if (result.isPresent()) {
+			return result.get();
+		} else {
+			return "";
+		}
+	}
 }

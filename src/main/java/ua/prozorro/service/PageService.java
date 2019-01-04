@@ -84,14 +84,14 @@ public class PageService {
             session.save(page);
             session.flush();
 
-            logger.info("Save page: " + page + "\n");
+            logger.info("Save TenderPage: " + page + "\n");
         } else if (!oldPage.equals(page)) {
             session.update(page);
             session.flush();
 
-            logger.info("Update page: " + page + "\n");
+            logger.info("Update TenderPage: " + page + "\n");
         } else {
-            logger.info("Ignore page: " + page + "\n");
+            logger.info("Ignore TenderPage: " + page + "\n");
             return false;
         }
         return true;

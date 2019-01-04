@@ -64,6 +64,7 @@ public class TenderService {
         session.clear();
 
         saveTenderFunders(tender, session);
+        saveTenderFeatures(tender, session);
         saveTenderDocuments(tender, session);
         saveTenderContracts(tender, session);
         saveTenderAwards(tender, session);
@@ -96,8 +97,34 @@ public class TenderService {
 
     }
 
+    public void saveTenderFeatures(TenderDTO tender, Session session) throws Exception {
+        if (session == null) {
+            throw new Exception("Session did not set");
+        }
+
+        if (tender != null && tender.getFeatures() != null) {
+            for (FeatureDTO featureDTO : tender.getFeatures()) {
+                session.saveOrUpdate(featureDTO);
+                session.saveOrUpdate(new TenderFeatureDTO(tender, featureDTO));
+                session.flush();
+                session.clear();
+
+				/*Query query=session.createQuery("insert into TenderContractDTO value( :tenderId, :organizationId)");
+				query.setParameter("tenderId", tender.getId());
+				query.setParameter("organizationId", organizationDTO.getId());
+				query.executeUpdate();*/
+
+            }
+        }
+
+    }
+
     private void deleteAllTenderDependentRecords(TenderDTO tender, Session session) {
         Query q = session.createQuery("delete from TenderFunderDTO where tender_id=:tenderId");
+        q.setParameter("tenderId", tender.getId());
+        q.executeUpdate();
+
+        q = session.createQuery("delete from TenderFeatureDTO where tender_id=:tenderId");
         q.setParameter("tenderId", tender.getId());
         q.executeUpdate();
 

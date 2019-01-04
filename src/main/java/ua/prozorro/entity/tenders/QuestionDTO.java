@@ -20,6 +20,7 @@ public class QuestionDTO {
     private String description;
     @Column
     private String date;
+
     @Column
     private String dateAnswered;
     //@Column(length = 4000)

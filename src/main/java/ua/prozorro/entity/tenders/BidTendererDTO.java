@@ -29,6 +29,7 @@ public class BidTendererDTO {
     public BidTendererDTO(BidDTO bid, OrganizationDTO organization) {
         this.bid = bid;
         this.organization = organization;
+        //this.id = 31 * bid.getId().hashCode() + organization.getId();
     }
 
     public long getId() {

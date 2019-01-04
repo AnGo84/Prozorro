@@ -15,14 +15,14 @@ public class AddressDTO {
     private int id;
     @Column
     private String postalCode;
-    @Column
+    @Column(length = 2000)
     private String countryName;
     @Column(length = 4000)
 	/*@Lob
 	@Column*/ private String streetAddress;
     @Column
     private String region;
-    @Column
+    @Column(length = 2000)
     private String locality;
 
     public int getId() {

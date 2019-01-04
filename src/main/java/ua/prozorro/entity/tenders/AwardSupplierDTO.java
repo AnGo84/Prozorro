@@ -32,6 +32,7 @@ public class AwardSupplierDTO {
     public AwardSupplierDTO(AwardDTO award, OrganizationDTO organization) {
         this.award = award;
         this.organization = organization;
+        //this.id = 31 * award.getId().hashCode() + organization.getId();
     }
 
     public long getId() {

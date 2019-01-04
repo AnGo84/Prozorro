@@ -32,6 +32,7 @@ public class TenderDocumentDTO {
     public TenderDocumentDTO(TenderDTO tender, DocumentDTO document) {
         this.tender = tender;
         this.document = document;
+        //this.id = 31 * tender.getId().hashCode() + document.getId().hashCode();
     }
 
     public long getId() {

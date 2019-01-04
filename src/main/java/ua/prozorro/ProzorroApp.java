@@ -12,15 +12,11 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import ua.prozorro.controller.MainController;
-import ua.prozorro.controller.SchemeDialogController;
+import ua.prozorro.controller.SchemaExportDialogController;
 import ua.prozorro.fx.DialogText;
 import ua.prozorro.fx.Dialogs;
 import ua.prozorro.properties.PropertiesUtils;
-import ua.prozorro.sql.HibernateDataBaseType;
-import ua.prozorro.sql.HibernateFactory;
 import ua.prozorro.utils.FileUtils;
 
 import java.io.File;
@@ -110,7 +106,7 @@ public class ProzorroApp extends Application {
         try {
 
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/views/SchemeDialog.fxml"));
+            loader.setLocation(getClass().getResource("/views/SchemaExportDialog.fxml"));
 
             AnchorPane page = (AnchorPane) loader.load();
 
@@ -122,7 +118,7 @@ public class ProzorroApp extends Application {
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
 
-            SchemeDialogController controller = loader.getController();
+            SchemaExportDialogController controller = loader.getController();
             controller.setDialogStage(dialogStage);
             controller.setProzorroApp(this);
 

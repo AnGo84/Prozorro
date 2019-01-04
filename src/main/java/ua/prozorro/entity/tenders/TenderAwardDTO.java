@@ -32,6 +32,7 @@ public class TenderAwardDTO {
     public TenderAwardDTO(TenderDTO tender, AwardDTO awardDTO) {
         this.tender = tender;
         this.awardDTO = awardDTO;
+        //this.id = 31 * tender.getId().hashCode() + awardDTO.getId().hashCode();
     }
 
     public TenderDTO getTender() {

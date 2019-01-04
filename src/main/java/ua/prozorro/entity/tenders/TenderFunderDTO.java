@@ -33,6 +33,7 @@ public class TenderFunderDTO {
     public TenderFunderDTO(TenderDTO tender, OrganizationDTO funder) {
         this.tender = tender;
         this.funder = funder;
+        //this.id = 31 * tender.getId().hashCode() + funder.getId();
     }
 
     public long getId() {

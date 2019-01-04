@@ -29,6 +29,7 @@ public class TenderComplaintDTO {
     public TenderComplaintDTO(TenderDTO tender, ComplaintDTO complaintDTO) {
         this.tender = tender;
         this.complaintDTO = complaintDTO;
+        //this.id = 31 * tender.getId().hashCode() + complaintDTO.getId().hashCode();
     }
 
     public long getId() {

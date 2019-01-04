@@ -24,6 +24,7 @@ public class FeatureDTO {
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(name = "Features_FeatureEnums", joinColumns = {@JoinColumn(name = "feature_id")},
             inverseJoinColumns = {@JoinColumn(name = "featureEnum_id")})
+    //@Transient
     private List<FeatureEnumDTO> featureEnums = null;
 
 

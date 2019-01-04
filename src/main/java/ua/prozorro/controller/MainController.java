@@ -19,6 +19,7 @@ import ua.prozorro.ProzorroApp;
 import ua.prozorro.entity.TenderDTOUtils;
 import ua.prozorro.entity.pages.TenderPageDTO;
 import ua.prozorro.entity.tenders.TenderDTO;
+import ua.prozorro.fx.DialogText;
 import ua.prozorro.fx.Dialogs;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertiesUtils;
@@ -43,13 +44,14 @@ import ua.prozorro.utils.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
 public class MainController {
 	private static final Logger logger = LogManager.getRootLogger();
+
+	private static final int LOGGIN_TEXT_LIMIT=10000;
 
 	private Date dateFrom;
 	private Date dateTill;
@@ -110,10 +112,10 @@ public class MainController {
 		textArea.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable,
-								String oldValue, String newValue) {
+			                    String oldValue, String newValue) {
 
-				if (newValue != null && newValue.length() > 2000) {
-					newValue = newValue.substring(newValue.length() - 2001);
+				if (newValue != null && newValue.length() > LOGGIN_TEXT_LIMIT) {
+					newValue = newValue.substring(newValue.length() - (LOGGIN_TEXT_LIMIT+1));
 				}
 				textArea.setText(newValue);
 				/*String[] lines = newValue.split("\n", -1);
@@ -130,9 +132,10 @@ public class MainController {
 		});
 
 		comboBoxDataType.valueProperty().addListener(new ChangeListener<DataType>() {
-			@Override public void changed(ObservableValue ov, DataType t, DataType t1) {
-				if (!t.equals(t1)){
-					resultData= new ParsingResultData();
+			@Override
+			public void changed(ObservableValue ov, DataType t, DataType t1) {
+				if (t != null && t1 != null && !t.equals(t1)) {
+					resultData = new ParsingResultData();
 					buttonGetData.setDisable(true);
 				}
 
@@ -225,9 +228,10 @@ public class MainController {
 					th.start();
 					//th.join();
 				} catch (Exception e) {
-					logger.error("Exception: " + e.getMessage() + "\n");
 					textArea.appendText("Exception: " + e.getMessage() + "\n");
-
+					Dialogs.showErrorDialog(e, new DialogText("Ошибка отбора", "Ошибка при проверке данных за период",
+							"При проверке данных по " + comboBoxDataType.getValue() + " за период c " +
+									DateUtils.dateToString(dateFrom) + " по " + DateUtils.dateToString(dateTill) + " возникла ошибка: " + e.getMessage()), logger);
 					e.printStackTrace();
 				}
 				/*finally {
@@ -258,9 +262,9 @@ public class MainController {
 
 				PageServiceProzorro pageServiceProzorro = new PageServiceProzorro(propertyFields);
 
-				String startPageURL = pageServiceProzorro.getTenderPageURL(dateFrom);
-				logger.info("Start parsing from URL " + startPageURL);
-				textArea.appendText("Start parsing from URL " + startPageURL + "\n");
+				String currentPageURL = pageServiceProzorro.getTenderPageURL(dateFrom);
+				logger.info("Start parsing from URL " + currentPageURL);
+				textArea.appendText("Start parsing from URL " + currentPageURL + "\n");
 
 				TenderPageDTO page = null;
 
@@ -269,12 +273,14 @@ public class MainController {
 
 				String text = "";
 
+				ProzorroPageContent pageContent = null;
+
 				int pageCount = 0;
 				int pageElementCount = 0;
 				try {
 					dateTill = pageServiceProzorro.getDateTill(dateTill);
 
-					ProzorroPageContent pageContent = pageServiceProzorro.getPageContentFromURL(startPageURL);
+					pageContent = pageServiceProzorro.getPageContentFromURL(currentPageURL);
 
 					Date nextOffsetDate = pageServiceProzorro.getDateFromPageOffset(pageContent.getNextPage().getOffset());
 					//logger.info("Get first ProzorroPage: " + pageContent);
@@ -312,23 +318,42 @@ public class MainController {
 							logger.info(
 									"ProzorroPage № " + pageCount + ", " + comboBoxDataType.getValue() + " on page № " + pageElementCount + ", added/updated: " +
 											updatedPage);
-							textArea.appendText("ProzorroPage № " + pageCount + ", " + comboBoxDataType.getValue() + " on page № " + pageElementCount + ", added/updated: " + updatedPage + " \n");
+							textArea.appendText("ProzorroPage № " + pageCount + ", " + comboBoxDataType.getValue() + " on page № " + pageElementCount + " id: " + page.getId() + ", added/updated: " + updatedPage + " \n");
 							session.flush();
 							session.clear();
 							transaction.commit();
+
 						}
+
+						progressBar.setProgress(Double.valueOf(pageCount) / resultData.getListSize());
+						progressIndicator.setProgress(Double.valueOf(pageCount) / resultData.getListSize());
+
 						logger.info("Get next page with URL: " + pageContent.getNextPage().getUri());
 						pageContent = pageServiceProzorro.getPageContentFromURL(pageContent.getNextPage().getUri());
 						nextOffsetDate = pageServiceProzorro.getDateFromPageOffset(pageContent.getNextPage().getOffset());
+
 					}
 
 				} catch (Exception e) {
 					//catch (ParseException | IOException | Exception e){
 					e.printStackTrace();
-					logger.error("Page " + page + " № " + pageCount + ", " + comboBoxDataType.getValue() + " № " + pageElementCount + ", Parse error msg: " +
-							             e.getMessage());
-					logger.error("Tender: " + text);
 
+					setWaitingProcess(false);
+
+					/*
+					logger.error("Page " + page + " № " + pageCount + ", " + comboBoxDataType.getValue() + " № " + pageElementCount + ", Parse error msg: " +
+							             e.getMessage());*/
+
+					Dialogs.showErrorDialog(e, new DialogText("Ошибка импорта", "Ошибка импорта " + comboBoxDataType.getValue(),
+							"Page " + page + " № " + pageCount + ", " + comboBoxDataType.getValue() + " № " + pageElementCount + ", Parse error msg: " +
+									e.getMessage()), logger);
+
+
+					logger.error("URL: " + pageContent);
+					logger.error("Объект: " + text);
+
+					textArea.appendText("Page " + page + " № " + pageCount + ", " + comboBoxDataType.getValue() + " № " + pageElementCount + ", Parse error msg: " +
+							                    e.getMessage());
 					if (transaction != null) {
 						transaction.rollback();
 					}
@@ -336,9 +361,9 @@ public class MainController {
 
 				} finally {
 					session.close();
-					setWaitingProcess(true);
+					setWaitingProcess(false);
 
-					textArea.appendText("Найдено " + pageElementCount + " " + comboBoxDataType.getValue() + "\n");
+					//textArea.appendText("Найдено " + pageElementCount + " " + comboBoxDataType.getValue() + "\n");
 					return pageElementCount;
 				}
 				/*

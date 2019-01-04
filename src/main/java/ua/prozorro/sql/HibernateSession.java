@@ -15,6 +15,7 @@ public class HibernateSession {
 
     public static final String SCRIPT_FILE = "exportScript.sql";
     public static final String HIBERNATE_DIALECT_STORAGE_ENGINE = "hibernate.dialect.storage_engine";
+    public static final String HIBERNATE_DIALECT_STORAGE_ENGINE_NAME = "innodb";
 
 
     private static SessionFactory sessionFactory = null;
