@@ -160,6 +160,7 @@ public class MainController {
 
 					setWaitingProcess(true);
 					try {
+						//https://stackoverflow.com/questions/1970239/in-java-how-do-i-get-the-difference-in-seconds-between-2-dates
 						resultData = ProzorroServiceFactory.getApproximatelyParsingTimeForPeriod(propertyFields, comboBoxDataType.getValue(), dateFrom, dateTill);
 						//System.out.println("Total time: " + totalTime + "sec, " + (totalTime/60)+ "m");
 
@@ -214,6 +215,8 @@ public class MainController {
 	}
 
 	public void onGetData(ActionEvent actionEvent) {
+		progressBar.setProgress(0);
+		progressIndicator.setProgress(0);
 		if (resultData.isHasData()) {
 			dateFrom = Date.from(datePickerFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 			dateTill = Date.from(datePickerTill.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
@@ -223,7 +226,14 @@ public class MainController {
 				try {
 					sessionFactory = getSessionFactoryByDBName(PropertiesUtils.getPropertyString(prozorroApp.getProperties(), "db.type"));
 					printConnectionResult(sessionFactory);
-					Thread th = new Thread(getDataAndSave(sessionFactory, resultData));
+					Task task =getDataAndSave(sessionFactory, resultData);
+
+					progressBar.progressProperty().bind(task.progressProperty());
+					progressIndicator.progressProperty().bind(task.progressProperty());
+
+					//textArea.textProperty().bindBidirectional(task.);
+
+					Thread th = new Thread(task);
 
 					th.start();
 					//th.join();
@@ -247,11 +257,15 @@ public class MainController {
 	}
 
 	private Task getDataAndSave(SessionFactory sessionFactory, ParsingResultData resultData) {
-		progressBar.setProgress(0);
-		progressIndicator.setProgress(0);
+		//https://docs.oracle.com/javase/8/javafx/interoperability-tutorial/concurrency.htm
+		//https://stackoverflow.com/questions/29963542/javafx-show-loading-dialog-for-longer-operations
+
+		/*progressBar.setProgress(0);
+		progressIndicator.setProgress(0);*/
 		Task task = new Task() {
 			@Override
 			protected Integer call() throws Exception {
+
 				setWaitingProcess(true);
 				/*
 				buttonGetData.getParent().getParent().setDisable(true);
@@ -289,6 +303,12 @@ public class MainController {
 					session = sessionFactory.openSession();
 					while (dateTill.compareTo(nextOffsetDate) >= 0 && pageContent.getPageElementList() != null &&
 							       !pageContent.getPageElementList().isEmpty()) {
+
+						if (isCancelled()) {
+							updateMessage("Cancelled");
+							break;
+						}
+
 						pageCount++;
 
 						pageElementCount = 0;
@@ -319,14 +339,18 @@ public class MainController {
 									"ProzorroPage № " + pageCount + ", " + comboBoxDataType.getValue() + " on page № " + pageElementCount + ", added/updated: " +
 											updatedPage);
 							textArea.appendText("ProzorroPage № " + pageCount + ", " + comboBoxDataType.getValue() + " on page № " + pageElementCount + " id: " + page.getId() + ", added/updated: " + updatedPage + " \n");
+
+							updateMessage("Mes: " + "ProzorroPage № " + pageCount + ", " + comboBoxDataType.getValue() + " on page № " + pageElementCount + " id: " + page.getId() + ", added/updated: " + updatedPage + " \n");
 							session.flush();
 							session.clear();
 							transaction.commit();
 
 						}
 
-						progressBar.setProgress(Double.valueOf(pageCount) / resultData.getListSize());
-						progressIndicator.setProgress(Double.valueOf(pageCount) / resultData.getListSize());
+						updateProgress(pageCount, resultData.getListSize());
+
+						/*progressBar.setProgress(Double.valueOf(pageCount) / resultData.getListSize());
+						progressIndicator.setProgress(Double.valueOf(pageCount) / resultData.getListSize());*/
 
 						logger.info("Get next page with URL: " + pageContent.getNextPage().getUri());
 						pageContent = pageServiceProzorro.getPageContentFromURL(pageContent.getNextPage().getUri());
