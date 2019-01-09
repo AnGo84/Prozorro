@@ -53,7 +53,7 @@ public class Dialogs {
 		return showConfirmDialog(dialogText.getTitleText(), dialogText.getHeaderText(), dialogText.getContentText());
 	}
 
-	public static void showErrorDialog(Exception ex, String titleText, String headerText, String contentText) {
+	public static void showErrorDialog(Throwable ex, String titleText, String headerText, String contentText) {
 		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 		alert.setTitle(titleText);
 		alert.setHeaderText(headerText);

@@ -1,6 +1,7 @@
 package ua.prozorro.prozorro;
 
 public class ParsingResultData {
+	//nanoTime
 	private long parsingTime = -1;
 	private int listSize = -1;
 	private boolean hasData = false;
@@ -29,7 +30,7 @@ public class ParsingResultData {
 		this.hasData = hasData;
 	}
 
-	public long getParsingTimeInSecond() {
+	public long getParsingTimeInMilliSeconds() {
 		if (parsingTime>0) {
 			return this.parsingTime / 1000000;
 		}

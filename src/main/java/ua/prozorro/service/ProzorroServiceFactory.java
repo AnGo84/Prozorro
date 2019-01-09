@@ -15,11 +15,11 @@ import java.util.Date;
 import java.util.Properties;
 
 public class ProzorroServiceFactory {
-
+	//https://stackoverflow.com/questions/1970239/in-java-how-do-i-get-the-difference-in-seconds-between-2-dates
 	public static ParsingResultData getApproximatelyParsingTimeForPeriod(PropertyFields propertyFields, DataType dataType, Date dateFrom, Date dateTill) throws IOException, ParseException {
 		if (dataType.equals(DataType.TENDERS)) {
 			PageServiceProzorro pageServiceProzorro = new PageServiceProzorro(propertyFields);
-			return pageServiceProzorro.getApproximatelyParsingTimeForPeriod(dateFrom, dateFrom);
+			return pageServiceProzorro.getApproximatelyParsingTimeForPeriod(dateFrom, dateTill);
 
 		} else if (dataType.equals(DataType.CONTRACTS)) {
 			return null;
