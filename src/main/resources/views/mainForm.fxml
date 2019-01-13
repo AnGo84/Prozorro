@@ -55,7 +55,7 @@
             <bottom>
                 <AnchorPane>
                     <children>
-                        <Button fx:id="buttonGetData" disable="true" layoutX="10.0" layoutY="6.0" mnemonicParsing="false" onAction="#onGetData" prefHeight="25.0" prefWidth="135.0" text="Получить данные">
+                        <Button fx:id="buttonGetData" disable="true" layoutX="10.0" layoutY="6.0" mnemonicParsing="false" onAction="#onGetParseSaveData" prefHeight="25.0" prefWidth="135.0" text="Получить данные">
                             <font>
                                 <Font name="SansSerif Bold" size="12.0" />
                             </font>
@@ -101,7 +101,7 @@
                         <MenuItem fx:id="menuItemSaveLog" mnemonicParsing="false" onAction="#onSaveLogToFile" text="Сохранить в файл" />
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Обработка">
+                <Menu mnemonicParsing="false" text="Обработка" visible="false">
                     <items>
                         <MenuItem fx:id="menuItemParseList" mnemonicParsing="false" onAction="#onParsePage" text="Разобрать лист по URL" />
                         <MenuItem fx:id="menuItemParseTender" mnemonicParsing="false" onAction="#onParseTender" text="Разобрать тендер по ID" />

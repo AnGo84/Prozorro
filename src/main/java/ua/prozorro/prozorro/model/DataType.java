@@ -6,8 +6,8 @@ import ua.prozorro.prozorro.parser.PlanParser;
 import ua.prozorro.prozorro.parser.TenderParser;
 
 public enum DataType {
-    TENDERS("Тендеры", new TenderParser()), CONTRACTS("Контракты", new ContractParser()), PLAN("План",
-                                                                                               new PlanParser());
+    TENDERS("Тендеры", new TenderParser()), CONTRACTS("Контракты", new ContractParser()), PLANS("Планы",
+                                                                                                new PlanParser());
 
     private String typeName;
     private DataParser dataParser;

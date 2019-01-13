@@ -26,11 +26,6 @@ public class HibernateSession {
             if (configureFileName == null || configureFileName.equals("")) {
                 configureFileName = DEFAULT_CONFIGURE_FILE_NAME;
             }
-            /*// Create the ServiceRegistry from hibernate.cfg.xml
-            ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()//
-                    .configure(configureFileName).build();
-            // Create a metadata sources using the specified service registry.
-            Metadata metadata = new MetadataSources(serviceRegistry).getMetadataBuilder().build();*/
 
             Metadata metadata = getMetaData(configureFileName);
 
@@ -45,7 +40,6 @@ public class HibernateSession {
         // Create the ServiceRegistry from hibernate-xxx.cfg.xml
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()//
                                                   .configure(configFileName).build();
-
         // Create a metadata sources using the specified service registry.
         Metadata metadata = new MetadataSources(serviceRegistry).getMetadataBuilder().build();
         return metadata;

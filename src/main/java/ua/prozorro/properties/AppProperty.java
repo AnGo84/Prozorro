@@ -13,7 +13,10 @@ public enum AppProperty {
             "prozorro.tender.page_end"),
     //
     DATE_FORMAT("prozorro.date_formate"), SHORT_DATE_FORMAT(
-            "prozorro.short_date_formate");
+            "prozorro.short_date_formate"),
+
+    //
+    ;
 
     private String propertyName;
 

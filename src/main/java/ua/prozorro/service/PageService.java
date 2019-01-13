@@ -80,14 +80,17 @@ public class PageService {
 
         TenderPageDTO oldPage = session.get(TenderPageDTO.class, page.getId());
         session.flush();
+        session.clear();
         if (oldPage == null) {
             session.save(page);
             session.flush();
+            session.clear();
 
             logger.info("Save TenderPage: " + page + "\n");
         } else if (!oldPage.equals(page)) {
             session.update(page);
             session.flush();
+            session.clear();
 
             logger.info("Update TenderPage: " + page + "\n");
         } else {

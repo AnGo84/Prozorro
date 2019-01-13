@@ -23,7 +23,7 @@ public class ProzorroServiceFactory {
 
 		} else if (dataType.equals(DataType.CONTRACTS)) {
 			return null;
-		} else if (dataType.equals(DataType.PLAN)) {
+		} else if (dataType.equals(DataType.PLANS)) {
 			return null;
 		}
 		return null;

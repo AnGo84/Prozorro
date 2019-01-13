@@ -103,7 +103,7 @@ public class Dialogs {
 		return alert;
 	}
 
-	public static void showErrorDialog(Exception ex, DialogText dialogText, Logger logger) {
+	public static void showErrorDialog(Throwable ex, DialogText dialogText, Logger logger) {
 
 		Alert alert = getAlert(Alert.AlertType.ERROR, dialogText);
 

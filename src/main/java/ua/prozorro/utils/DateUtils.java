@@ -17,22 +17,19 @@ import java.util.Date;
  * Created by AnGo on 08.06.2017.
  */
 public class DateUtils {
-    //    private static final String DATE_PATTERN = "dd.MM.yyyy hh:mm:ss";
-    //"(0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])[/](19|20)\d\d ([0-9]|1[0-1]):[0-5][0-9](:[0-5][0-9])? ?[APap][mM]$"
-    private static final String DATE_PATTERN = "dd.MM.yyyy";
-
     public static final String DATE_PROZORRO_FULL_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX";
     public static final String DATE_PROZORRO_SHORT_FORMAT = "yyyy-MM-dd";
     public static final String DATE_PROZORRO_MAX_DATE_TILL = "3000-01-01";
-
-
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
-    private static final DateFormat DATE_FORMAT = new SimpleDateFormat(DATE_PATTERN);
+    //    private static final String DATE_PATTERN_DD_MM_YYYY = "dd.MM.yyyy hh:mm:ss";
+    //"(0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])[/](19|20)\d\d ([0-9]|1[0-1]):[0-5][0-9](:[0-5][0-9])? ?[APap][mM]$"
+    public static final String DATE_PATTERN_DD_MM_YYYY = "dd.MM.yyyy";
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN_DD_MM_YYYY);
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat(DATE_PATTERN_DD_MM_YYYY);
 
 
     /**
      * Возвращает полученную дату в виде хорошо отформатированной строки.
-     * Используется определённый выше {@link DateUtils#DATE_PATTERN}.
+     * Используется определённый выше {@link DateUtils#DATE_PATTERN_DD_MM_YYYY}.
      *
      * @param date - дата, которая будет возвращена в виде строки
      * @return отформатированную строку
@@ -46,7 +43,7 @@ public class DateUtils {
 
     /**
      * Возвращает полученную дату в виде хорошо отформатированной строки.
-     * Используется определённый выше {@link DateUtils#DATE_PATTERN}.
+     * Используется определённый выше {@link DateUtils#DATE_PATTERN_DD_MM_YYYY}.
      *
      * @param date - дата, которая будет возвращена в виде строки ,
      * @param defaultValue - значение, которое вернуть,
@@ -63,7 +60,7 @@ public class DateUtils {
 
     /**
      * Возвращает полученную дату в виде хорошо отформатированной строки.
-     * Используется определённый выше {@link DateUtils#DATE_PATTERN}.
+     * Используется определённый выше {@link DateUtils#DATE_PATTERN_DD_MM_YYYY}.
      *
      * @param date - дата, которая будет возвращена в виде строки
      * @return отформатированную строку
@@ -77,7 +74,7 @@ public class DateUtils {
 
     /**
      * Преобразует строку, которая отформатирована по правилам
-     * шаблона {@link DateUtils#DATE_PATTERN} в объект {@link LocalDate}.
+     * шаблона {@link DateUtils#DATE_PATTERN_DD_MM_YYYY} в объект {@link LocalDate}.
      * <p>
      * Возвращает null, если строка не может быть преобразована.
      *
@@ -95,7 +92,7 @@ public class DateUtils {
 
     /**
      * Преобразует строку, которая отформатирована по правилам
-     * шаблона {@link DateUtils#DATE_PATTERN} в объект {@link LocalDateTime}.
+     * шаблона {@link DateUtils#DATE_PATTERN_DD_MM_YYYY} в объект {@link LocalDateTime}.
      * <p>
      * Возвращает null, если строка не может быть преобразована.
      *
@@ -156,8 +153,8 @@ public class DateUtils {
 
     }
 
-    public static String getDatePattern() {
-        return DATE_PATTERN;
+    public static String getDatePatternDdMmYyyy() {
+        return DATE_PATTERN_DD_MM_YYYY;
     }
 
     public static DateTimeFormatter getDateTimeFormatter() {
@@ -206,7 +203,6 @@ public class DateUtils {
     public static Date parseDateFromString(String stringDate, String dateFormat) throws java.text.ParseException {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
-
 
         Date date = simpleDateFormat.parse(stringDate);
         return date;
