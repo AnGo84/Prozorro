@@ -149,35 +149,46 @@ public class MainController {
 
     public void onCheckDataForPeriod(ActionEvent actionEvent) {
         String checkDate = DateUtils.checkDatesForPeriod(datePickerFrom.getValue(), datePickerTill.getValue());
-        /*progressBar.setProgress(0);
-        progressIndicator.setProgress(0);*/
+        textArea.clear();
         if (checkDate == null) {
+            progressBar.setProgress(0);
+            progressIndicator.setProgress(0);
+            setWaitingProcess(true);
             //buttonGetData.setDisable(true);
             dateFrom = Date.from(datePickerFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
             dateTill = Date.from(datePickerTill.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-            //checkDataForPeriodMessage();
+            textArea.appendText(checkDataForPeriodMessage());
 
-            Task<ParsingResultData> task = new Task<ParsingResultData>() {
+            /*Task<ParsingResultData> task = new Task<ParsingResultData>() {
                 @Override
                 protected ParsingResultData call() throws IOException, ParseException {
-                    //System.out.println(buttonGetPages.getScene().getClass().toString());
-
                     ParsingResultData resultData = ProzorroServiceFactory
                             .getApproximatelyParsingTimeForPeriod(propertyFields, comboBoxDataType.getValue(), dateFrom,
                                                                   dateTill);
-                    //System.out.println("Total time: " + totalTime + "sec, " + (totalTime/60)+ "m");
-
                     return resultData;
                 }
-            };
+            };*/
+
+            propertyFields.setSearchDateFrom(dateFrom);
+            //dateTill = pageServiceProzorro.getDateTill(dateTill);
+            propertyFields.setSearchDateTill(dateTill);
+            propertyFields.setSearchDateType(comboBoxDataType.getValue());
+
+            Task<ParsingResultData> task = TaskFactory.taskForCalculationParsingTimeForPeriod(propertyFields);
+
             task.setOnRunning(new EventHandler<WorkerStateEvent>() {
                 @Override
                 public void handle(WorkerStateEvent event) {
-                    setWaitingProcess(true);
-                    textArea.clear();
-                    textArea.appendText(checkDataForPeriodMessage());
-                    //textArea.textProperty().bind(task.messageProperty());
+                    //setWaitingProcess(true);
+                    task.messageProperty().addListener(new ChangeListener<String>() {
+                        public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                            /*System.out.println("Old mes: "+oldValue);
+                            System.out.println("New mes: "+newValue);*/
+                            textArea.appendText(newValue);
+                        }
+                    });
+
                 }
             });
 

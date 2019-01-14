@@ -120,7 +120,7 @@ public class Test {
                                                                                                                     .parseDateFromString(
                                                                                                                             "2018-12-10",
                                                                                                                             short_date_formate)));
-                tenderDataServiceProzorro.getTenderDatasFromPageContent(pageContent);
+                tenderDataServiceProzorro.getTendersDataFromPageContent(pageContent);
             }
             endTime = System.nanoTime();
             timeForPageTenders = (endTime - startTime) / 1000000000;

@@ -33,7 +33,7 @@ public class TenderDataServiceProzorro {
         return getTenderDataContentFromStringJSON(genreJson);
     }
 
-    public List<TenderData> getTenderDatasFromPageContent(ProzorroPageContent pageContent) throws IOException {
+    public List<TenderData> getTendersDataFromPageContent(ProzorroPageContent pageContent) throws IOException {
         if (pageContent == null || pageContent.getPageElementList() == null) {
             return null;
         }

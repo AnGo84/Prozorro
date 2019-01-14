@@ -140,7 +140,7 @@ public class PageServiceProzorro {
             TenderDataServiceProzorro tenderDataServiceProzorro = new TenderDataServiceProzorro(
                     propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE) + "/");
             List<TenderData> tenderDataOnPageList =
-                    tenderDataServiceProzorro.getTenderDatasFromPageContent(pageContent);
+                    tenderDataServiceProzorro.getTendersDataFromPageContent(pageContent);
             if(tenderDataOnPageList!=null) {
                 for (TenderData tenderData : tenderDataOnPageList) {
                     TenderDTO tenderDTO = TenderDTOUtils.getTenderDTO(tenderData.getTender());

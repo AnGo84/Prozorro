@@ -19,4 +19,16 @@ public class TaskFactory {
         }
         return null;
     }
+
+    public static Task taskForCalculationParsingTimeForPeriod(PropertyFields propertyFields) {
+        if (propertyFields.getSearchDateType().equals(DataType.TENDERS)) {
+            return new TenderParseTimeTask(propertyFields);
+
+        } else if (propertyFields.getSearchDateType().equals(DataType.CONTRACTS)) {
+            return null;
+        } else if (propertyFields.getSearchDateType().equals(DataType.PLANS)) {
+            return null;
+        }
+        return null;
+    }
 }

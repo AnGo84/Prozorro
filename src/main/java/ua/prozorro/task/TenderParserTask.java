@@ -78,6 +78,7 @@ public class TenderParserTask extends Task<Boolean> {
 
         TenderPageDTO page = null;
 
+
         Session session = null;
         Transaction transaction = null;
 
