@@ -86,8 +86,9 @@ public class HibernateSchemaGenerator {
 		HibernateSession.createDataBase(export, metadata);
 
 		SessionFactory sessionFactory = metadata.getSessionFactoryBuilder().build();
-		sessionFactory.close();
+		//sessionFactory.close();
 
 		//System.setProperty(HibernateSession.HIBERNATE_DIALECT_STORAGE_ENGINE, tempDialectEngine);
+		HibernateSession.closeSession();
 	}
 }

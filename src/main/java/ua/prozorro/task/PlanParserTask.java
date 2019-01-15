@@ -6,38 +6,42 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import ua.prozorro.entity.TenderDTOUtils;
-import ua.prozorro.entity.pages.TenderPageDTO;
-import ua.prozorro.entity.tenders.TenderDTO;
+
+import ua.prozorro.entity.PlanDTOUtils;
+import ua.prozorro.entity.pages.PlanPageDTO;
+import ua.prozorro.entity.plans.PlanDTO;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.prozorro.PageServiceProzorro;
 import ua.prozorro.prozorro.ParsingResultData;
-import ua.prozorro.prozorro.TenderDataServiceProzorro;
+
+import ua.prozorro.prozorro.PlanDataServiceProzorro;
 import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
 import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
-import ua.prozorro.prozorro.model.tenders.TenderData;
+
+import ua.prozorro.prozorro.model.plans.PlanData;
 import ua.prozorro.service.PageService;
-import ua.prozorro.service.TenderService;
+
+import ua.prozorro.service.PlanService;
 import ua.prozorro.utils.DateUtils;
 
 import java.util.Date;
 
-public class TenderParserTask extends Task<Boolean> {
+public class PlanParserTask extends Task<Boolean> {
     private static final Logger logger = LogManager.getRootLogger();
 
     private SessionFactory sessionFactory;
     private PropertyFields propertyFields;
     private ParsingResultData resultData;
 
-    public TenderParserTask() {
+    public PlanParserTask() {
     }
 
-    public TenderParserTask(PropertyFields propertyFields) {
+    public PlanParserTask(PropertyFields propertyFields) {
         this.propertyFields = propertyFields;
     }
 
-    public TenderParserTask(SessionFactory sessionFactory, PropertyFields propertyFields, ParsingResultData resultData) {
+    public PlanParserTask(SessionFactory sessionFactory, PropertyFields propertyFields, ParsingResultData resultData) {
         this.propertyFields = propertyFields;
         this.sessionFactory = sessionFactory;
         this.resultData = resultData;
@@ -71,13 +75,12 @@ public class TenderParserTask extends Task<Boolean> {
     protected Boolean call() throws Exception {
         PageServiceProzorro pageServiceProzorro = new PageServiceProzorro(propertyFields);
 
-        String currentPageURL = pageServiceProzorro.getTenderPageURL(propertyFields.getSearchDateFrom());
+        String currentPageURL = pageServiceProzorro.getPlanPageURL(propertyFields.getSearchDateFrom());
         logger.info("Start parsing from URL " + currentPageURL);
         //textArea.appendText("Start parsing from URL " + currentPageURL + "\n");
         updateMessage("Start parsing from URL " + currentPageURL + "\n");
 
-        TenderPageDTO page = null;
-
+        PlanPageDTO page = null;
 
         Session session = null;
         Transaction transaction = null;
@@ -129,27 +132,27 @@ public class TenderParserTask extends Task<Boolean> {
                         break;
                     }
                     pageElementCount++;
-                    page = TenderDTOUtils.getPageDTO(pageElement);
+                    page = PlanDTOUtils.getPageDTO(pageElement);
                     PageService pageService = new PageService(session);
 
                     transaction = session.beginTransaction();
-                    boolean updatedPage = pageService.saveTenderPage(page, session);
+                    boolean updatedPage = pageService.savePlanPage(page, session);
                     if (updatedPage) {
-                        TenderService tenderService = new TenderService(session);
+                        PlanService planService = new PlanService(session);
 
-                        TenderDataServiceProzorro tenderDataServiceProzorro = new TenderDataServiceProzorro(
-                                propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE) + "/");
+                        PlanDataServiceProzorro planDataServiceProzorro = new PlanDataServiceProzorro(
+                                propertyFields.getPropertiesStringValue(AppProperty.PLAN_START_PAGE) + "/");
 
-                        TenderData tenderData = tenderDataServiceProzorro.getTenderDataFromPageElement(pageElement);
-                        text = tenderData.toString();
-                        TenderDTO tenderDTO = TenderDTOUtils.getTenderDTO(tenderData.getTender());
-                        tenderService.saveTender(tenderDTO, session);
+                        PlanData planData = planDataServiceProzorro.getPlanDataFromPageElement(pageElement);
+                        text = planData.toString();
+                        PlanDTO planDTO = PlanDTOUtils.getPlanDTO(planData.getPlan());
+                        planService.savePlan(planDTO, session);
                     }
                     logger.info(propertyFields.getSearchDateType().getTypeName() + ": Страница № " + pageCount +
                                 "/"+resultData.getListSize()+", текущий № " + pageElementCount + " c id: " + pageElement.getId() + ", date: " +
                                 pageElement.getDateModified() + ". added/updated: " + updatedPage + " \n");
-                    updateMessage(propertyFields.getSearchDateType().getTypeName() + ": Страница № " + pageCount +
-                                  "/"+resultData.getListSize()+", текущий № " + pageElementCount + " c id: " + pageElement.getId() + ", date: " +
+                    updateMessage(propertyFields.getSearchDateType().getTypeName() + ": Страница № " + pageCount +"/"+resultData.getListSize()+
+                                  ", текущий № " + pageElementCount + " c id: " + pageElement.getId() + ", date: " +
                                   pageElement.getDateModified() + ". added/updated: " + updatedPage + " \n");
                     session.flush();
                     session.clear();

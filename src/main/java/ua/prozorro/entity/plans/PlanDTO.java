@@ -3,7 +3,6 @@ package ua.prozorro.entity.plans;
 import ua.prozorro.entity.tenders.ClassificationDTO;
 import ua.prozorro.entity.tenders.DocumentDTO;
 import ua.prozorro.entity.tenders.ItemDTO;
-import ua.prozorro.prozorro.model.tenders.Classification;
 
 import javax.persistence.*;
 import java.util.List;
@@ -21,9 +20,10 @@ public class PlanDTO {
 	@Column
 	private String planID;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+	/*@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	@JoinTable(name = "Plans_Documents", joinColumns = {@JoinColumn(name = "plan_id")}, inverseJoinColumns = {
-			@JoinColumn(name = "document_id")})
+			@JoinColumn(name = "document_id")})*/
+	@Transient
 	private List<DocumentDTO> documents = null;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
@@ -31,9 +31,10 @@ public class PlanDTO {
 	//@Cascade({org.hibernate.annotations.CascadeType.ALL})
 	private ClassificationDTO classification;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+	/*@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	@JoinTable(name = "Plans_Items", joinColumns = {@JoinColumn(name = "plan_id")}, inverseJoinColumns = {
-			@JoinColumn(name = "item_id")})
+			@JoinColumn(name = "item_id")})*/
+	@Transient
 	private List<ItemDTO> items = null;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
@@ -41,9 +42,10 @@ public class PlanDTO {
 	private BudgetDTO budget;
 
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+	/*@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	@JoinTable(name = "Plans_AdditionalClassifications", joinColumns = {@JoinColumn(name = "plan_id")},
-			inverseJoinColumns = {@JoinColumn(name = "classification_id")})
+			inverseJoinColumns = {@JoinColumn(name = "classification_id")})*/
+	@Transient
 	private List<ClassificationDTO> additionalClassifications = null;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})

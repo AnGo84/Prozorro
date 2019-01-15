@@ -1,7 +1,6 @@
 package ua.prozorro.entity;
 
 import ua.prozorro.entity.pages.PlanPageDTO;
-import ua.prozorro.entity.pages.TenderPageDTO;
 import ua.prozorro.entity.plans.*;
 import ua.prozorro.entity.tenders.*;
 import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
@@ -83,24 +82,6 @@ public class PlanDTOUtils {
         return documentDTO;
     }
 
-    public static OrganizationDTO getOrganizationDTO(Organization organization) {
-        if (organization == null) {
-            return null;
-        }
-        OrganizationDTO organizationDTO = new OrganizationDTO();
-
-        organizationDTO.setName(organization.getName());
-        if (organization.getContactPoint() != null) {
-            organizationDTO.setTelephone(organization.getContactPoint().getTelephone());
-            organizationDTO.setContactPointName(organization.getContactPoint().getName());
-            organizationDTO.setEmail(organization.getContactPoint().getEmail());
-        }
-        organizationDTO.setIdentifier(getIdentifierDTO(organization.getIdentifier()));
-        organizationDTO.setId(organizationDTO.getIdentifier().getId());
-        organizationDTO.setAddress(getAddressDTO(organization.getAddress()));
-
-        return organizationDTO;
-    }
 
     public static ClassificationDTO getClassificationDTO(Classification classification) {
         if (classification == null) {
@@ -114,6 +95,7 @@ public class PlanDTOUtils {
         classificationDTO.setDescription(classification.getDescription());
         return classificationDTO;
     }
+
     public static List<ClassificationDTO> getClassificationDTOList(List<Classification> classificationList) {
         if (classificationList == null || classificationList.isEmpty()) {
             return null;
@@ -185,6 +167,7 @@ public class PlanDTOUtils {
 
         return projectDTO;
     }
+
     public static ProcuringEntityDTO getProcuringEntityDTO(ProcuringEntity procuringEntity) {
         if (procuringEntity == null) {
             return null;
@@ -211,19 +194,6 @@ public class PlanDTOUtils {
         return unitDTO;
     }
 
-    public static List<OrganizationDTO> getOrganizationDTOList(List<Organization> organizationList) {
-        if (organizationList == null || organizationList.isEmpty()) {
-            return null;
-        }
-        List<OrganizationDTO> organizationDTOList = new ArrayList<>();
-
-        for (Organization organization : organizationList) {
-            OrganizationDTO organizationDTO = getOrganizationDTO(organization);
-            organizationDTOList.add(organizationDTO);
-        }
-
-        return organizationDTOList;
-    }
 
     public static List<DocumentDTO> getDocumentDTOList(List<Document> documentList) {
         if (documentList == null || documentList.isEmpty()) {
@@ -298,6 +268,9 @@ public class PlanDTOUtils {
         planDTO.setProcuringEntity(getProcuringEntityDTO(plan.getProcuringEntity()));
 
         planDTO.setTender(getPlanTenderDTO(plan.getTender()));
+        if (planDTO.getTender() != null) {
+            planDTO.getTender().setId(planDTO.getId());
+        }
 
         planDTO.setDatePublished(plan.getDatePublished());
         planDTO.setOwner(plan.getOwner());

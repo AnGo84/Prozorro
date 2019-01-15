@@ -82,6 +82,18 @@
         <!--Additional for features-->
         <mapping class="ua.prozorro.entity.tenders.FeatureEnumsDTO"/>
         <!--/Tenders-->
+        <!--Plans-->
+        <mapping class="ua.prozorro.entity.pages.PlanPageDTO"/>
+        <mapping class="ua.prozorro.entity.plans.BudgetDTO"/>
+        <mapping class="ua.prozorro.entity.plans.PlanDTO"/>
+        <mapping class="ua.prozorro.entity.plans.PlanTenderDTO"/>
+        <mapping class="ua.prozorro.entity.plans.ProcuringEntityDTO"/>
+        <mapping class="ua.prozorro.entity.plans.ProjectDTO"/>
+        <!--Additional for plan-->
+        <mapping class="ua.prozorro.entity.plans.PlanDocumentDTO"/>
+        <mapping class="ua.prozorro.entity.plans.PlanItemDTO"/>
+        <mapping class="ua.prozorro.entity.plans.Plan"/>
+        <!--/Plans-->
 
 
     </session-factory>

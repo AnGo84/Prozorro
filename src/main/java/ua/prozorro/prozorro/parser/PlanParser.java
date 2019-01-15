@@ -14,6 +14,7 @@ import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
 import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
 import ua.prozorro.prozorro.model.plans.PlanData;
 import ua.prozorro.service.PageService;
+import ua.prozorro.service.PlanService;
 import ua.prozorro.utils.DateUtils;
 
 import java.util.Date;
@@ -94,11 +95,11 @@ public class PlanParser implements DataParser {
 
                     boolean updatedPage = pageService.savePlanPage(page, session);
                     if (updatedPage) {
-                        //PlanService planService = new PlanService(session);
+                        PlanService planService = new PlanService(session);
                         PlanData planData = planDataServiceProzorro.getPlanDataFromPageElement(pageElement);
                         text = planData.toString();
                         PlanDTO planDTO = PlanDTOUtils.getPlanDTO(planData.getPlan());
-                        //planService.saveTender(planDTO, session);
+                        planService.savePlan(planDTO, session);
                     }
                     logger.info(
                             "ProzorroPage № " + pageCount + ", tender on page № " + pageElementCount + ", added/updated: " +
@@ -116,9 +117,9 @@ public class PlanParser implements DataParser {
         } catch (Exception e) {
             //catch (ParseException | IOException | Exception e){
             e.printStackTrace();
-            logger.error("Page № " + pageCount + ", tender № " + pageElementCount + ", Parse error: " + page + ", msg: " +
+            logger.error("Page № " + pageCount + ", plan № " + pageElementCount + ", Parse error: " + page + ", msg: " +
                                  e.getMessage());
-            logger.error("Tender: " + text);
+            logger.error("Plan: " + text);
 
             if (transaction != null) {
                 transaction.rollback();
