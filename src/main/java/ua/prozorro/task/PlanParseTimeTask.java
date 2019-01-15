@@ -9,19 +9,21 @@ import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.prozorro.PageServiceProzorro;
 import ua.prozorro.prozorro.ParsingResultData;
+import ua.prozorro.prozorro.PlanDataServiceProzorro;
 import ua.prozorro.prozorro.TenderDataServiceProzorro;
 import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
+import ua.prozorro.prozorro.model.plans.PlanData;
 import ua.prozorro.prozorro.model.tenders.TenderData;
 
 import java.util.Date;
 import java.util.List;
 
 
-public class TenderParseTimeTask extends Task<ParsingResultData> {
+public class PlanParseTimeTask extends Task<ParsingResultData> {
     private static final Logger logger = LogManager.getRootLogger();
     private PropertyFields propertyFields;
 
-    public TenderParseTimeTask(PropertyFields propertyFields) {
+    public PlanParseTimeTask(PropertyFields propertyFields) {
         this.propertyFields = propertyFields;
     }
 
@@ -36,7 +38,6 @@ public class TenderParseTimeTask extends Task<ParsingResultData> {
         Date finish = new Date();
 
         long timeForPages = finish.getTime() - start.getTime();
-        //System.out.println("Time for page without data: " + timeForPages);
 
         start = new Date();
         if (list != null && !list.isEmpty()) {
@@ -45,16 +46,16 @@ public class TenderParseTimeTask extends Task<ParsingResultData> {
             ProzorroPageContent pageContent = pageServiceProzorro
                     .getPageContentFromURL(pageServiceProzorro.getTenderPageURL(propertyFields.getSearchDateFrom()));
 
-            TenderDataServiceProzorro tenderDataServiceProzorro = new TenderDataServiceProzorro(
+            PlanDataServiceProzorro planDataServiceProzorro = new PlanDataServiceProzorro(
                     propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE) + "/");
             logger.info("Start getting Tenders from page \n");
             updateMessage("Start getting Tenders from page \n");
-            List<TenderData> tenderDataOnPageList =
-                    tenderDataServiceProzorro.getTendersDataFromPageContent(pageContent);
+            List<PlanData> planDataOnPageList =
+                    planDataServiceProzorro.getPlansDataFromPageContent(pageContent);
 
-            if (tenderDataOnPageList != null) {
+            if (planDataOnPageList != null) {
                 int i = 0;
-                for (TenderData tenderData : tenderDataOnPageList) {
+                for (PlanData planData : planDataOnPageList) {
                     i++;
 
                     /*logger.info("Get Tender № " + i + "\n");
@@ -67,22 +68,21 @@ public class TenderParseTimeTask extends Task<ParsingResultData> {
                             break;
                         }
                     }
-                    updateMessage("Get Tender № " + i + "\n");*/
+                    */
+                    updateMessage("Get Plan № " + i + "\n");
 
-                    TenderDTO tenderDTO = TenderDTOUtils.getTenderDTO(tenderData.getTender());
+                    //TenderDTO tenderDTO = TenderDTOUtils.getTenderDTO(planData.getPlan());
                 }
             }
         }else{
-            updateMessage("Tenders not found! \n");
+            updateMessage("'" + propertyFields.getSearchDateType().name() + "' not found! \n");
         }
-        //long timeForPageTenders = (System.nanoTime() - startTime);
-        //System.out.println("Time for ProzorroPage Tenders: " + timeForPageTenders/ 1000000000);
+
         finish = new Date();
         long timeForPageTenders = finish.getTime() - start.getTime();
 
-        //100- tenders on page
-        //2000- approximately time in milliseconds for saving one tender to database
-        //long totalTime = timeForPages + list.size() * (timeForPageTenders + 100 * 2000 * 1000000);
+        //100- plans on page
+        //1000- approximately time in milliseconds for saving one plan to database
         long totalTime = timeForPages + list.size() * (timeForPageTenders + 100 * 2000);
         logger.info("Finished. Total Time: " + totalTime + "\n");
         updateMessage("Finished Total Time: " + totalTime + "ms \n");

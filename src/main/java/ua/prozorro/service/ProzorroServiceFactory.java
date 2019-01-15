@@ -19,7 +19,7 @@ public class ProzorroServiceFactory {
 	public static ParsingResultData getApproximatelyParsingTimeForPeriod(PropertyFields propertyFields, DataType dataType, Date dateFrom, Date dateTill) throws IOException, ParseException {
 		if (dataType.equals(DataType.TENDERS)) {
 			PageServiceProzorro pageServiceProzorro = new PageServiceProzorro(propertyFields);
-			return pageServiceProzorro.getApproximatelyParsingTimeForPeriod(dateFrom, dateTill);
+			return pageServiceProzorro.getApproximatelyParsingTimeForPeriod(propertyFields.getSearchDateType(), dateFrom, dateTill);
 
 		} else if (dataType.equals(DataType.CONTRACTS)) {
 			return null;

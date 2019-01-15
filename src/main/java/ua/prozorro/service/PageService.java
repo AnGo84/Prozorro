@@ -3,6 +3,7 @@ package ua.prozorro.service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
+import ua.prozorro.entity.pages.PlanPageDTO;
 import ua.prozorro.entity.pages.TenderPageDTO;
 
 import java.util.List;
@@ -48,7 +49,7 @@ public class PageService {
         }
     }
 
-    public boolean savePage(TenderPageDTO page) throws Exception {
+    public boolean saveTenderPage(TenderPageDTO page) throws Exception {
         session = session.getSessionFactory().getCurrentSession();
 
         if (session.getSessionFactory() == null || !session.isOpen()) {
@@ -72,7 +73,7 @@ public class PageService {
         return true;
     }
 
-    public boolean savePage(TenderPageDTO page, Session session) throws Exception {
+    public boolean saveTenderPage(TenderPageDTO page, Session session) throws Exception {
 
         if (session == null || !session.isOpen()) {
             throw new Exception("Session did not set");
@@ -95,6 +96,34 @@ public class PageService {
             logger.info("Update TenderPage: " + page + "\n");
         } else {
             logger.info("Ignore TenderPage: " + page + "\n");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean savePlanPage(PlanPageDTO page, Session session) throws Exception {
+
+        if (session == null || !session.isOpen()) {
+            throw new Exception("Session did not set");
+        }
+
+        PlanPageDTO oldPage = session.get(PlanPageDTO.class, page.getId());
+        session.flush();
+        session.clear();
+        if (oldPage == null) {
+            session.save(page);
+            session.flush();
+            session.clear();
+
+            logger.info("Save PlanPage: " + page + "\n");
+        } else if (!oldPage.equals(page)) {
+            session.update(page);
+            session.flush();
+            session.clear();
+
+            logger.info("Update PlanPage: " + page + "\n");
+        } else {
+            logger.info("Ignore PlanPage: " + page + "\n");
             return false;
         }
         return true;

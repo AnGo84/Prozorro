@@ -92,7 +92,7 @@ public class TenderParser implements DataParser {
 					transaction = session.beginTransaction();
 					page = TenderDTOUtils.getPageDTO(pageElement);
 
-					boolean updatedPage = pageService.savePage(page, session);
+					boolean updatedPage = pageService.saveTenderPage(page, session);
 					if (updatedPage) {
 						TenderService tenderService = new TenderService(session);
 						TenderData tenderData = tenderDataServiceProzorro.getTenderDataFromPageElement(pageElement);

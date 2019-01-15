@@ -8,6 +8,7 @@ import ua.prozorro.entity.TenderDTOUtils;
 import ua.prozorro.entity.tenders.TenderDTO;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
+import ua.prozorro.prozorro.model.DataType;
 import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
 import ua.prozorro.prozorro.model.tenders.TenderData;
 import ua.prozorro.utils.DateUtils;
@@ -40,17 +41,19 @@ public class PageServiceProzorro {
     }
 
 
-    public List<ProzorroPageContent> getPagesList(Date dateFrom, Date dateTill)
+    public List<ProzorroPageContent> getPagesList(DataType dataType, Date dateFrom, Date dateTill)
             throws IOException, java.text.ParseException {
-        return getPagesList(dateFrom, dateTill, true);
+        return getPagesList(dataType, dateFrom, dateTill, true);
     }
 
-    public List<ProzorroPageContent> getPagesList(Date dateFrom, Date dateTill, boolean withPageElements)
+    public List<ProzorroPageContent> getPagesList(DataType dataType, Date dateFrom, Date dateTill, boolean withPageElements)
             throws IOException, java.text.ParseException {
         if (propertyFields == null || propertyFields.getProperties() == null) {
             return null;
         }
-        String startPageURL = getTenderPageURL(dateFrom);
+        String startPageURL = getPageURL(dataType, dateFrom);
+
+        logger.info("Plan startPageURL: " + startPageURL);
 
         dateTill = getDateTill(dateTill);
 
@@ -76,6 +79,18 @@ public class PageServiceProzorro {
         return pageContentList;
     }
 
+    public String getPageURL(DataType dataType, Date date){
+        if (dataType.equals(DataType.TENDERS)) {
+            return getTenderPageURL(date);
+
+        } else if (dataType.equals(DataType.CONTRACTS)) {
+            return null;
+        } else if (dataType.equals(DataType.PLANS)) {
+            return getPlanPageURL(date);
+        }
+        return null;
+    }
+
     public Date getDateFromPageOffset(String offset) throws ParseException {
         return DateUtils
                 .parseDateFromString(offset, propertyFields.getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT));
@@ -94,35 +109,61 @@ public class PageServiceProzorro {
             return propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE);
         }
         String pageURL = propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE) + "?" +
-                         propertyFields.getPropertiesStringValue(AppProperty.TENDER_SPAGE_OFFSET) + "=" + DateUtils
+                         propertyFields.getPropertiesStringValue(AppProperty.TENDER_PAGE_OFFSET) + "=" + DateUtils
                                  .parseDateToString(date, propertyFields
                                          .getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT)) +
-                         propertyFields.getPropertiesStringValue(AppProperty.TENDER_SPAGE_END);
+                         propertyFields.getPropertiesStringValue(AppProperty.TENDER_PAGE_END);
+        //logger.info("Get page from date "+ DateUtils.dateToString(date) +" with URL: " + pageURL);
+        return pageURL;
+    }
+    public String getPlanPageURL(Date date) {
+        if (date == null) {
+            return propertyFields.getPropertiesStringValue(AppProperty.PLAN_START_PAGE);
+        }
+        String pageURL = propertyFields.getPropertiesStringValue(AppProperty.PLAN_START_PAGE) + "?" +
+                         propertyFields.getPropertiesStringValue(AppProperty.PLAN_PAGE_OFFSET) + "=" + DateUtils
+                                 .parseDateToString(date, propertyFields
+                                         .getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT)) +
+                         propertyFields.getPropertiesStringValue(AppProperty.PLAN_PAGE_END);
         //logger.info("Get page from date "+ DateUtils.dateToString(date) +" with URL: " + pageURL);
         return pageURL;
     }
 
-    public String getPageURLWithLimit(Date date) {
+    public String getTenderPageURLWithLimit(Date date) {
         if (date == null) {
             return propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE);
         }
         String pageURL = propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE) + "?" +
-                         propertyFields.getPropertiesStringValue(AppProperty.TENDER_SPAGE_LIMIT) + "=" +
-                         propertyFields.getPropertiesStringValue(AppProperty.TENDER_SPAGE_LIMIT_VALUE) + "&" +
-                         propertyFields.getPropertiesStringValue(AppProperty.TENDER_SPAGE_OFFSET) + "=" + DateUtils
+                         propertyFields.getPropertiesStringValue(AppProperty.TENDER_PAGE_LIMIT) + "=" +
+                         propertyFields.getPropertiesStringValue(AppProperty.TENDER_PAGE_LIMIT_VALUE) + "&" +
+                         propertyFields.getPropertiesStringValue(AppProperty.TENDER_PAGE_OFFSET) + "=" + DateUtils
                                  .parseDateToString(date, propertyFields
                                          .getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT)) +
-                         propertyFields.getPropertiesStringValue(AppProperty.TENDER_SPAGE_END);
+                         propertyFields.getPropertiesStringValue(AppProperty.TENDER_PAGE_END);
+        logger.info("Get page from date " + DateUtils.dateToString(date) + " with URL: " + pageURL);
+        return pageURL;
+    }
+    public String getPlanPageURLWithLimit(Date date) {
+        if (date == null) {
+            return propertyFields.getPropertiesStringValue(AppProperty.PLAN_START_PAGE);
+        }
+        String pageURL = propertyFields.getPropertiesStringValue(AppProperty.PLAN_START_PAGE) + "?" +
+                         propertyFields.getPropertiesStringValue(AppProperty.PLAN_PAGE_LIMIT) + "=" +
+                         propertyFields.getPropertiesStringValue(AppProperty.PLAN_PAGE_LIMIT_VALUE) + "&" +
+                         propertyFields.getPropertiesStringValue(AppProperty.PLAN_PAGE_OFFSET) + "=" + DateUtils
+                                 .parseDateToString(date, propertyFields
+                                         .getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT)) +
+                         propertyFields.getPropertiesStringValue(AppProperty.PLAN_PAGE_END);
         logger.info("Get page from date " + DateUtils.dateToString(date) + " with URL: " + pageURL);
         return pageURL;
     }
 
-    public ParsingResultData getApproximatelyParsingTimeForPeriod(Date dateFrom, Date dateTill)
+    public ParsingResultData getApproximatelyParsingTimeForPeriod(DataType dataType,Date dateFrom, Date dateTill)
             throws IOException, ParseException {
 
         long startTime = System.nanoTime();
         Date start = new Date();
-        List<ProzorroPageContent> list = getPagesList(dateFrom, dateTill, false);
+        List<ProzorroPageContent> list = getPagesList(dataType, dateFrom, dateTill, false);
         //System.out.println("Pages list size: " + list.size());
         Date finish = new Date();
         //long timeForPages = (System.nanoTime() - startTime);

@@ -9,6 +9,7 @@ import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.prozorro.PageServiceProzorro;
 import ua.prozorro.prozorro.TenderDataServiceProzorro;
+import ua.prozorro.prozorro.model.DataType;
 import ua.prozorro.prozorro.model.pages.PageContentURL;
 import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
 import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
@@ -97,7 +98,7 @@ public class Test {
             long startTime = System.nanoTime();
 
             List<ProzorroPageContent> list = pageServiceProzorro
-                    .getPagesList(DateUtils.parseDateFromString("2018-12-10", short_date_formate),
+                    .getPagesList(DataType.TENDERS,  DateUtils.parseDateFromString("2018-12-10", short_date_formate),
                                   DateUtils.parseDateFromString("2018-12-10", short_date_formate), false);
             System.out.println("Pages list size: " + list.size());
             long endTime = System.nanoTime();
@@ -222,10 +223,10 @@ public class Test {
     private static Properties getStartProperties() {
         Properties properties = new Properties();
         properties.setProperty(AppProperty.TENDER_START_PAGE.getPropertyName(), start_page);
-        properties.setProperty(AppProperty.TENDER_SPAGE_LIMIT.getPropertyName(), page_limit);
-        properties.setProperty(AppProperty.TENDER_SPAGE_LIMIT_VALUE.getPropertyName(), page_limit_value);
-        properties.setProperty(AppProperty.TENDER_SPAGE_OFFSET.getPropertyName(), page_offset);
-        properties.setProperty(AppProperty.TENDER_SPAGE_END.getPropertyName(), page_end);
+        properties.setProperty(AppProperty.TENDER_PAGE_LIMIT.getPropertyName(), page_limit);
+        properties.setProperty(AppProperty.TENDER_PAGE_LIMIT_VALUE.getPropertyName(), page_limit_value);
+        properties.setProperty(AppProperty.TENDER_PAGE_OFFSET.getPropertyName(), page_offset);
+        properties.setProperty(AppProperty.TENDER_PAGE_END.getPropertyName(), page_end);
         properties.setProperty(AppProperty.DATE_FORMAT.getPropertyName(), date_formate);
         properties.setProperty(AppProperty.SHORT_DATE_FORMAT.getPropertyName(), short_date_formate);
 

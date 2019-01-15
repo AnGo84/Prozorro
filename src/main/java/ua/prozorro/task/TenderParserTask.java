@@ -133,7 +133,7 @@ public class TenderParserTask extends Task<Boolean> {
                     PageService pageService = new PageService(session);
 
                     transaction = session.beginTransaction();
-                    boolean updatedPage = pageService.savePage(page, session);
+                    boolean updatedPage = pageService.saveTenderPage(page, session);
                     if (updatedPage) {
                         TenderService tenderService = new TenderService(session);
 

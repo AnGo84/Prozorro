@@ -107,7 +107,8 @@ public class MainController {
         datePickerFrom.setValue(LocalDate.now());
         datePickerTill.setValue(LocalDate.now());
 
-        comboBoxDataType.getItems().setAll(DataType.values());
+        //comboBoxDataType.getItems().setAll(DataType.values());
+        comboBoxDataType.getItems().setAll(DataType.TENDERS,DataType.PLANS);
         comboBoxDataType.setValue(DataType.TENDERS);
 
     }
@@ -194,6 +195,7 @@ public class MainController {
 
             task.setOnFailed((e) -> {
                 String errorHeaderText;
+                task.getException().printStackTrace();
                 if (task.getException() instanceof ParseException) {
                     errorHeaderText = "Parsing error";
                 } else if (task.getException() instanceof IOException) {

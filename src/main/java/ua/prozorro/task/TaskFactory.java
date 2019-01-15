@@ -27,7 +27,7 @@ public class TaskFactory {
         } else if (propertyFields.getSearchDateType().equals(DataType.CONTRACTS)) {
             return null;
         } else if (propertyFields.getSearchDateType().equals(DataType.PLANS)) {
-            return null;
+            return new PlanParseTimeTask(propertyFields);
         }
         return null;
     }
