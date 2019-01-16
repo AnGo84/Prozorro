@@ -16,13 +16,20 @@ keytool -import -noprompt -trustcacerts -alias public.api.openprocurement.org -f
 Work with JSON online: https://jsoneditoronline.org/
                         http://jsonparseronline.com/
 
+Tutorial with API:
+http://api-docs.openprocurement.org/uk_UA/latest/standard/index.html
+http://planning.api-docs.openprocurement.org/uk/latest/standard/contract.html
+http://contracting.api-docs.openprocurement.org/uk/latest/tutorial.html
+
 Start page: 
 https://public.api.openprocurement.org/api/<VERSION>/tenders
 https://public.api.openprocurement.org/api/<VERSION>/plans
+https://public.api.openprocurement.org/api/<VERSION>/contracts
 
 
 Get Tender: https://public.api.openprocurement.org/api/<VERSION>/tenders/<TenderID>
 Example TENDERID: 67403dc828034b2eb3c12b40674da3ad
+
 
 Good example:  https://public.api.openprocurement.org/api/<VERSION>/tenders/55e20be09f3544deace53f5a9019f800
 

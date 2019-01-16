@@ -77,6 +77,7 @@
         <mapping class="ua.prozorro.entity.tenders.AwardDocumentDTO"/>
         <mapping class="ua.prozorro.entity.tenders.AwardSupplierDTO"/>
         <!--Additional for contracts-->
+        <mapping class="ua.prozorro.entity.pages.ContractPageDTO"/>
         <mapping class="ua.prozorro.entity.tenders.ContractDocumentDTO"/>
         <mapping class="ua.prozorro.entity.tenders.ContractItemDTO"/>
         <mapping class="ua.prozorro.entity.tenders.ContractSupplierDTO"/>

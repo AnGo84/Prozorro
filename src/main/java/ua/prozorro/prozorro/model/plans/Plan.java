@@ -10,7 +10,7 @@ import ua.prozorro.prozorro.model.tenders.Classification;
 import ua.prozorro.prozorro.model.tenders.Document;
 import ua.prozorro.prozorro.model.tenders.Item;
 import ua.prozorro.prozorro.model.tenders.Tender;
-
+//http://planning.api-docs.openprocurement.org/uk/latest/standard/contract.html
 public class Plan {
 
     @SerializedName("id")

@@ -120,12 +120,16 @@ public class TenderParserTask extends Task<Boolean> {
                     if (propertyFields.getSearchDateTill().
                             compareTo(DateUtils.parseDateToFormate(pageDate, propertyFields
                                     .getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT))) < 0) {
-                        logger.info(propertyFields.getSearchDateType().getTypeName() + ": Страница № " + pageCount +
-                                    "/"+resultData.getListSize()+", текущий № " + pageElementCount+1 + " c id: " + pageElement.getId() + ", date: " +
-                                    pageElement.getDateModified() + ". Отклонён по дате \n");
-                        updateMessage(propertyFields.getSearchDateType().getTypeName() + ": Страница № " + pageCount +
-                                      "/"+resultData.getListSize()+", текущий № " + pageElementCount+1 + " c id: " + pageElement.getId() + ", date:" +
-                                      " " + pageElement.getDateModified() + ". Отклонён по дате \n");
+                        logger.info(
+                                propertyFields.getSearchDateType().getTypeName() + ": Страница № " + pageCount + "/" +
+                                resultData.getListSize() + ", текущий № " + (pageElementCount + 1) + " c id: " +
+                                pageElement.getId() + ", date: " + pageElement.getDateModified() +
+                                ". Отклонён по дате \n");
+                        updateMessage(
+                                propertyFields.getSearchDateType().getTypeName() + ": Страница № " + pageCount + "/" +
+                                resultData.getListSize() + ", текущий № " + (pageElementCount + 1) + " c id: " +
+                                pageElement.getId() + ", date:" + " " + pageElement.getDateModified() +
+                                ". Отклонён по дате \n");
                         break;
                     }
                     pageElementCount++;
@@ -145,12 +149,14 @@ public class TenderParserTask extends Task<Boolean> {
                         TenderDTO tenderDTO = TenderDTOUtils.getTenderDTO(tenderData.getTender());
                         tenderService.saveTender(tenderDTO, session);
                     }
-                    logger.info(propertyFields.getSearchDateType().getTypeName() + ": Страница № " + pageCount +
-                                "/"+resultData.getListSize()+", текущий № " + pageElementCount + " c id: " + pageElement.getId() + ", date: " +
-                                pageElement.getDateModified() + ". added/updated: " + updatedPage + " \n");
-                    updateMessage(propertyFields.getSearchDateType().getTypeName() + ": Страница № " + pageCount +
-                                  "/"+resultData.getListSize()+", текущий № " + pageElementCount + " c id: " + pageElement.getId() + ", date: " +
-                                  pageElement.getDateModified() + ". added/updated: " + updatedPage + " \n");
+                    logger.info(propertyFields.getSearchDateType().getTypeName() + ": Страница № " + pageCount + "/" +
+                                resultData.getListSize() + ", текущий № " + pageElementCount + " c id: " +
+                                pageElement.getId() + ", date: " + pageElement.getDateModified() + ". added/updated: " +
+                                updatedPage + " \n");
+                    updateMessage(propertyFields.getSearchDateType().getTypeName() + ": Страница № " + pageCount + "/" +
+                                  resultData.getListSize() + ", текущий № " + pageElementCount + " c id: " +
+                                  pageElement.getId() + ", date: " + pageElement.getDateModified() +
+                                  ". added/updated: " + updatedPage + " \n");
                     session.flush();
                     session.clear();
                     transaction.commit();
@@ -163,9 +169,8 @@ public class TenderParserTask extends Task<Boolean> {
                 pageContent = pageServiceProzorro.getPageContentFromURL(pageContent.getNextPage().getUri());
                 updateProgress(pageCount, resultData.getListSize());
 
-                updateMessage(
-                        "Найдено " + ((pageCount-1)*100+ pageElementCount) + " " + propertyFields.getSearchDateType().getTypeName() +
-                        "\n");
+                updateMessage("Найдено " + ((pageCount - 1) * 100 + pageElementCount) + " " +
+                              propertyFields.getSearchDateType().getTypeName() + "\n");
             }
         } catch (Exception e) {
             //catch (ParseException | IOException | Exception e){

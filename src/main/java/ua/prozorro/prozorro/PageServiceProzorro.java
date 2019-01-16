@@ -79,12 +79,12 @@ public class PageServiceProzorro {
         return pageContentList;
     }
 
-    public String getPageURL(DataType dataType, Date date){
+    public String getPageURL(DataType dataType, Date date) {
         if (dataType.equals(DataType.TENDERS)) {
             return getTenderPageURL(date);
 
         } else if (dataType.equals(DataType.CONTRACTS)) {
-            return null;
+            return getContractPageURL(date);
         } else if (dataType.equals(DataType.PLANS)) {
             return getPlanPageURL(date);
         }
@@ -116,6 +116,20 @@ public class PageServiceProzorro {
         //logger.info("Get page from date "+ DateUtils.dateToString(date) +" with URL: " + pageURL);
         return pageURL;
     }
+
+    public String getContractPageURL(Date date) {
+        if (date == null) {
+            return propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_START_PAGE);
+        }
+        String pageURL = propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_START_PAGE) + "?" +
+                         propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_PAGE_OFFSET) + "=" + DateUtils
+                                 .parseDateToString(date, propertyFields
+                                         .getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT)) +
+                         propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_PAGE_END);
+        //logger.info("Get page from date "+ DateUtils.dateToString(date) +" with URL: " + pageURL);
+        return pageURL;
+    }
+
     public String getPlanPageURL(Date date) {
         if (date == null) {
             return propertyFields.getPropertiesStringValue(AppProperty.PLAN_START_PAGE);
@@ -143,6 +157,22 @@ public class PageServiceProzorro {
         logger.info("Get page from date " + DateUtils.dateToString(date) + " with URL: " + pageURL);
         return pageURL;
     }
+
+    public String getTenderContractURLWithLimit(Date date) {
+        if (date == null) {
+            return propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_START_PAGE);
+        }
+        String pageURL = propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_START_PAGE) + "?" +
+                         propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_PAGE_LIMIT) + "=" +
+                         propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_PAGE_LIMIT_VALUE) + "&" +
+                         propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_PAGE_OFFSET) + "=" + DateUtils
+                                 .parseDateToString(date, propertyFields
+                                         .getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT)) +
+                         propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_PAGE_END);
+        logger.info("Get page from date " + DateUtils.dateToString(date) + " with URL: " + pageURL);
+        return pageURL;
+    }
+
     public String getPlanPageURLWithLimit(Date date) {
         if (date == null) {
             return propertyFields.getPropertiesStringValue(AppProperty.PLAN_START_PAGE);
@@ -158,7 +188,7 @@ public class PageServiceProzorro {
         return pageURL;
     }
 
-    public ParsingResultData getApproximatelyParsingTimeForPeriod(DataType dataType,Date dateFrom, Date dateTill)
+    public ParsingResultData getApproximatelyParsingTimeForPeriod(DataType dataType, Date dateFrom, Date dateTill)
             throws IOException, ParseException {
 
         long startTime = System.nanoTime();
@@ -182,7 +212,7 @@ public class PageServiceProzorro {
                     propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE) + "/");
             List<TenderData> tenderDataOnPageList =
                     tenderDataServiceProzorro.getTendersDataFromPageContent(pageContent);
-            if(tenderDataOnPageList!=null) {
+            if (tenderDataOnPageList != null) {
                 for (TenderData tenderData : tenderDataOnPageList) {
                     TenderDTO tenderDTO = TenderDTOUtils.getTenderDTO(tenderData.getTender());
                 }
@@ -196,7 +226,7 @@ public class PageServiceProzorro {
         //100- tenders on page
         //2000- approximately time in milliseconds for saving one tender to database
         //long totalTime = timeForPages + list.size() * (timeForPageTenders + 100 * 2000 * 1000000);
-        long totalTime = timeForPages + list.size() * (timeForPageTenders + 100 * 2000 );
+        long totalTime = timeForPages + list.size() * (timeForPageTenders + 100 * 2000);
         System.out.println("Total Time: " + totalTime);
 
         //long totalTime = timeForPages + timeForPageTender * 100;

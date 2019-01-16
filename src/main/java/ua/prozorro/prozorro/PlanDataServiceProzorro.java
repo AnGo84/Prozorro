@@ -22,7 +22,7 @@ public class PlanDataServiceProzorro {
 		this.planURL = planURL;
 	}
 
-	public PlanData getTenderDataContentFromStringJSON(String stringJSON) throws JsonParseException {
+	public PlanData getPlanDataContentFromStringJSON(String stringJSON) throws JsonParseException {
 		Gson gson = new Gson();
 
 		return gson.fromJson(stringJSON, PlanData.class);
@@ -30,7 +30,7 @@ public class PlanDataServiceProzorro {
 
 	public PlanData getPageContentFromURL(String url) throws JsonParseException, IOException {
 		String genreJson = FileUtils.getStringFromURL(url);
-		return getTenderDataContentFromStringJSON(genreJson);
+		return getPlanDataContentFromStringJSON(genreJson);
 	}
 
 	public List<PlanData> getPlansDataFromPageContent(ProzorroPageContent pageContent) throws IOException {
@@ -39,9 +39,9 @@ public class PlanDataServiceProzorro {
 		}
 		List<PlanData> planDataList = new ArrayList<>();
 		for (ProzorroPageElement element : pageContent.getPageElementList()) {
-			String currentTenderURL = planURL + element.getId();
+			String currentURL = planURL + element.getId();
 
-			PlanData planData = getPageContentFromURL(currentTenderURL);
+			PlanData planData = getPageContentFromURL(currentURL);
 			planDataList.add(planData);
 		}
 

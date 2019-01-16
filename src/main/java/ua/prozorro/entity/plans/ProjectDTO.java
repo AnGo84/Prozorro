@@ -16,7 +16,7 @@ public class ProjectDTO {
     @Column
     private String id;
 
-    @Column
+    @Column(length = 2000)
     private String name;
 
 

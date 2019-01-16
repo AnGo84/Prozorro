@@ -3,6 +3,7 @@ package ua.prozorro.service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
+import ua.prozorro.entity.pages.ContractPageDTO;
 import ua.prozorro.entity.pages.PlanPageDTO;
 import ua.prozorro.entity.pages.TenderPageDTO;
 
@@ -124,6 +125,34 @@ public class PageService {
             logger.info("Update PlanPage: " + page + "\n");
         } else {
             logger.info("Ignore PlanPage: " + page + "\n");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean saveContractPage(ContractPageDTO page, Session session) throws Exception {
+
+        if (session == null || !session.isOpen()) {
+            throw new Exception("Session did not set");
+        }
+
+        ContractPageDTO oldPage = session.get(ContractPageDTO.class, page.getId());
+        session.flush();
+        session.clear();
+        if (oldPage == null) {
+            session.save(page);
+            session.flush();
+            session.clear();
+
+            logger.info("Save ContractPage: " + page + "\n");
+        } else if (!oldPage.equals(page)) {
+            session.update(page);
+            session.flush();
+            session.clear();
+
+            logger.info("Update ContractPage: " + page + "\n");
+        } else {
+            logger.info("Ignore ContractPage: " + page + "\n");
             return false;
         }
         return true;

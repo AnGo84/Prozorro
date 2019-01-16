@@ -6,38 +6,38 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import ua.prozorro.entity.PlanDTOUtils;
-import ua.prozorro.entity.pages.PlanPageDTO;
-import ua.prozorro.entity.plans.PlanDTO;
+import ua.prozorro.entity.ContractDTOUtils;
+import ua.prozorro.entity.pages.ContractPageDTO;
+import ua.prozorro.entity.tenders.ContractDTO;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
+import ua.prozorro.prozorro.ContractDataServiceProzorro;
 import ua.prozorro.prozorro.PageServiceProzorro;
 import ua.prozorro.prozorro.ParsingResultData;
-import ua.prozorro.prozorro.PlanDataServiceProzorro;
+import ua.prozorro.prozorro.model.contracts.ContractData;
 import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
 import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
-import ua.prozorro.prozorro.model.plans.PlanData;
+import ua.prozorro.service.ContractService;
 import ua.prozorro.service.PageService;
-import ua.prozorro.service.PlanService;
 import ua.prozorro.utils.DateUtils;
 
 import java.util.Date;
 
-public class PlanParserTask extends Task<Boolean> {
+public class ContractParserTask extends Task<Boolean> {
     private static final Logger logger = LogManager.getRootLogger();
 
     private SessionFactory sessionFactory;
     private PropertyFields propertyFields;
     private ParsingResultData resultData;
 
-    public PlanParserTask() {
+    public ContractParserTask() {
     }
 
-    public PlanParserTask(PropertyFields propertyFields) {
+    public ContractParserTask(PropertyFields propertyFields) {
         this.propertyFields = propertyFields;
     }
 
-    public PlanParserTask(SessionFactory sessionFactory, PropertyFields propertyFields, ParsingResultData resultData) {
+    public ContractParserTask(SessionFactory sessionFactory, PropertyFields propertyFields, ParsingResultData resultData) {
         this.propertyFields = propertyFields;
         this.sessionFactory = sessionFactory;
         this.resultData = resultData;
@@ -71,12 +71,11 @@ public class PlanParserTask extends Task<Boolean> {
     protected Boolean call() throws Exception {
         PageServiceProzorro pageServiceProzorro = new PageServiceProzorro(propertyFields);
 
-        String currentPageURL = pageServiceProzorro.getPlanPageURL(propertyFields.getSearchDateFrom());
+        String currentPageURL = pageServiceProzorro.getContractPageURL(propertyFields.getSearchDateFrom());
         logger.info("Start parsing from URL " + currentPageURL);
-        //textArea.appendText("Start parsing from URL " + currentPageURL + "\n");
         updateMessage("Start parsing from URL " + currentPageURL + "\n");
 
-        PlanPageDTO page = null;
+        ContractPageDTO page = null;
 
         Session session = null;
         Transaction transaction = null;
@@ -109,8 +108,8 @@ public class PlanParserTask extends Task<Boolean> {
                 pageCount++;
 
                 pageElementCount = 0;
-                logger.info("Start parsing page №" + pageCount + ": ");
-                updateMessage("Start parsing page №" + pageCount + ": \n");
+                logger.info("Start parsing page №" + pageCount + "from " + resultData.getListSize() + ": ");
+                updateMessage("Start parsing page №" + pageCount + "from " + resultData.getListSize() + ":  \n");
 
                 for (ProzorroPageElement pageElement : pageContent.getPageElementList()) {
 
@@ -122,9 +121,8 @@ public class PlanParserTask extends Task<Boolean> {
                         logger.info(
                                 propertyFields.getSearchDateType().getTypeName() + ": Страница № " + pageCount + "/" +
                                 resultData.getListSize() + ", текущий № " + (pageElementCount + 1) + " c id: " +
-                                pageElement.getId() + ", date: " +
-
-                                pageElement.getDateModified() + ". Отклонён по дате \n");
+                                pageElement.getId() + ", date: " + pageElement.getDateModified() +
+                                ". Отклонён по дате \n");
                         updateMessage(
                                 propertyFields.getSearchDateType().getTypeName() + ": Страница № " + pageCount + "/" +
                                 resultData.getListSize() + ", текущий № " + (pageElementCount + 1) + " c id: " +
@@ -133,21 +131,22 @@ public class PlanParserTask extends Task<Boolean> {
                         break;
                     }
                     pageElementCount++;
-                    page = PlanDTOUtils.getPageDTO(pageElement);
+                    page = ContractDTOUtils.getPageDTO(pageElement);
                     PageService pageService = new PageService(session);
 
                     transaction = session.beginTransaction();
-                    boolean updatedPage = pageService.savePlanPage(page, session);
+                    boolean updatedPage = pageService.saveContractPage(page, session);
                     if (updatedPage) {
-                        PlanService planService = new PlanService(session);
+                        ContractService planService = new ContractService(session);
 
-                        PlanDataServiceProzorro planDataServiceProzorro = new PlanDataServiceProzorro(
-                                propertyFields.getPropertiesStringValue(AppProperty.PLAN_START_PAGE) + "/");
+                        ContractDataServiceProzorro contractDataServiceProzorro = new ContractDataServiceProzorro(
+                                propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_START_PAGE) + "/");
 
-                        PlanData planData = planDataServiceProzorro.getPlanDataFromPageElement(pageElement);
-                        text = planData.toString();
-                        PlanDTO planDTO = PlanDTOUtils.getPlanDTO(planData.getPlan());
-                        planService.savePlan(planDTO, session);
+                        ContractData contractData =
+                                contractDataServiceProzorro.getContractDataFromPageElement(pageElement);
+                        text = contractData.toString();
+                        ContractDTO planDTO = ContractDTOUtils.getContractDTO(contractData.getContract());
+                        planService.saveContract(planDTO, session);
                     }
                     logger.info(propertyFields.getSearchDateType().getTypeName() + ": Страница № " + pageCount + "/" +
                                 resultData.getListSize() + ", текущий № " + pageElementCount + " c id: " +

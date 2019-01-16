@@ -5,7 +5,7 @@ import ua.prozorro.prozorro.model.plans.ProcuringEntity;
 import ua.prozorro.prozorro.model.tenders.*;
 
 import java.util.List;
-
+//http://contracting.api-docs.openprocurement.org/uk/latest/tutorial.html
 public class Contract {
 
     @SerializedName("id")

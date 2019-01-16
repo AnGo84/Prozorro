@@ -13,7 +13,7 @@ public class TaskFactory {
             return new TenderParserTask(sessionFactory, propertyFields, resultData);
 
         } else if (propertyFields.getSearchDateType().equals(DataType.CONTRACTS)) {
-            return null;
+            return new ContractParserTask(sessionFactory, propertyFields, resultData);
         } else if (propertyFields.getSearchDateType().equals(DataType.PLANS)) {
             return new PlanParserTask(sessionFactory, propertyFields, resultData);
         }
@@ -25,7 +25,7 @@ public class TaskFactory {
             return new TenderParseTimeTask(propertyFields);
 
         } else if (propertyFields.getSearchDateType().equals(DataType.CONTRACTS)) {
-            return null;
+            return new ContractParseTimeTask(propertyFields);
         } else if (propertyFields.getSearchDateType().equals(DataType.PLANS)) {
             return new PlanParseTimeTask(propertyFields);
         }

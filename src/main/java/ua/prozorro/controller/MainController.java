@@ -107,8 +107,8 @@ public class MainController {
         datePickerFrom.setValue(LocalDate.now());
         datePickerTill.setValue(LocalDate.now());
 
-        //comboBoxDataType.getItems().setAll(DataType.values());
-        comboBoxDataType.getItems().setAll(DataType.TENDERS,DataType.PLANS);
+        comboBoxDataType.getItems().setAll(DataType.values());
+        //comboBoxDataType.getItems().setAll(DataType.TENDERS,DataType.PLANS);
         comboBoxDataType.setValue(DataType.TENDERS);
 
     }
