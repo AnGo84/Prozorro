@@ -10,6 +10,7 @@ import ua.prozorro.prozorro.model.plans.ProcuringEntity;
 import ua.prozorro.prozorro.model.plans.Project;
 import ua.prozorro.prozorro.model.tenders.*;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -178,6 +179,15 @@ public class PlanDTOUtils {
 
         procuringEntityDTO.setIdentifier(getIdentifierDTO(procuringEntity.getIdentifier()));
         procuringEntityDTO.setName(procuringEntity.getName());
+
+        if (procuringEntity.getContactPoint() != null) {
+            procuringEntityDTO.setTelephone(procuringEntity.getContactPoint().getTelephone());
+            procuringEntityDTO.setContactPointName(procuringEntity.getContactPoint().getName());
+            procuringEntityDTO.setEmail(procuringEntity.getContactPoint().getEmail());
+            procuringEntityDTO.setContactUrl(procuringEntity.getContactPoint().getUrl());
+        }
+        procuringEntityDTO.setKind(procuringEntity.getKind());
+        procuringEntityDTO.setAddress(getAddressDTO(procuringEntity.getAddress()));
 
         return procuringEntityDTO;
     }

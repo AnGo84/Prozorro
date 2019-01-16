@@ -87,6 +87,7 @@ public class TenderDTOUtils {
             organizationDTO.setTelephone(organization.getContactPoint().getTelephone());
             organizationDTO.setContactPointName(organization.getContactPoint().getName());
             organizationDTO.setEmail(organization.getContactPoint().getEmail());
+            organizationDTO.setUrl(organization.getContactPoint().getUrl());
         }
         organizationDTO.setIdentifier(getIdentifierDTO(organization.getIdentifier()));
         organizationDTO.setId(organizationDTO.getIdentifier().getId());
@@ -189,7 +190,6 @@ public class TenderDTOUtils {
 
         ContractDTO contractDTO = new ContractDTO();
 
-
         contractDTO.setId(contract.getId());
         contractDTO.setStatus(contract.getStatus());
         contractDTO.setItems(getItemDTOList(contract.getItems()));
@@ -202,6 +202,18 @@ public class TenderDTOUtils {
         contractDTO.setAwardID(contract.getAwardID());
         contractDTO.setContractID(contract.getContractID());
 
+        contractDTO.setDocuments(getDocumentDTOList(contract.getDocuments()));
+
+        contractDTO.setDescription(contract.getDescription());
+        contractDTO.setTitle(contract.getTitle());
+        contractDTO.setContractNumber(contract.getContractNumber());
+
+        if (contract.getPeriod() != null) {
+            contractDTO.setContractPeriodStartDate(contract.getPeriod().getStartDate());
+            contractDTO.setContractPeriodClarificationsUntil(contract.getPeriod().getClarificationsUntil());
+            contractDTO.setContractPeriodEndDate(contract.getPeriod().getEndDate());
+            contractDTO.setContractPeriodInvalidationDate(contract.getPeriod().getInvalidationDate());
+        }
 
         return contractDTO;
     }

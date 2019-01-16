@@ -1,5 +1,11 @@
 package ua.prozorro.entity.tenders;
 
+import com.google.gson.annotations.SerializedName;
+import ua.prozorro.entity.plans.ProcuringEntityDTO;
+import ua.prozorro.prozorro.model.plans.ProcuringEntity;
+import ua.prozorro.prozorro.model.tenders.Document;
+import ua.prozorro.prozorro.model.tenders.Period;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -38,6 +44,45 @@ public class ContractDTO {
 
     @Column(name = "contract_id")
     private String contractID;
+
+    @Transient
+    private List<DocumentDTO> documents = null;
+
+    @Column
+    private String tenderId;
+
+    @Lob
+    @Column
+    private String description;
+
+    @Column(length = 4000)
+    private String title;
+
+    @Column
+    private String contractNumber;
+
+    @Column
+    private String contractPeriodStartDate;
+    @Column
+    private String contractPeriodClarificationsUntil;
+    @Column
+    private String contractPeriodEndDate;
+    @Column
+    private String contractPeriodInvalidationDate;
+
+    @Column
+    private String dateSigned;
+
+    @Column
+    private String dateModified;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @JoinColumn(name = "procuringEntity_id")
+    private ProcuringEntityDTO procuringEntity;
+
+    @Column
+    private String owner;
+
 
     public String getStatus() {
         return status;
@@ -111,33 +156,146 @@ public class ContractDTO {
         this.valueAddedTaxIncluded = valueAddedTaxIncluded;
     }
 
+    public List<DocumentDTO> getDocuments() {
+        return documents;
+    }
+
+    public void setDocuments(List<DocumentDTO> documents) {
+        this.documents = documents;
+    }
+
+    public String getTenderId() {
+        return tenderId;
+    }
+
+    public void setTenderId(String tenderId) {
+        this.tenderId = tenderId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContractNumber() {
+        return contractNumber;
+    }
+
+    public void setContractNumber(String contractNumber) {
+        this.contractNumber = contractNumber;
+    }
+
+    public String getContractPeriodStartDate() {
+        return contractPeriodStartDate;
+    }
+
+    public void setContractPeriodStartDate(String contractPeriodStartDate) {
+        this.contractPeriodStartDate = contractPeriodStartDate;
+    }
+
+    public String getContractPeriodClarificationsUntil() {
+        return contractPeriodClarificationsUntil;
+    }
+
+    public void setContractPeriodClarificationsUntil(String contractPeriodClarificationsUntil) {
+        this.contractPeriodClarificationsUntil = contractPeriodClarificationsUntil;
+    }
+
+    public String getContractPeriodEndDate() {
+        return contractPeriodEndDate;
+    }
+
+    public void setContractPeriodEndDate(String contractPeriodEndDate) {
+        this.contractPeriodEndDate = contractPeriodEndDate;
+    }
+
+    public String getContractPeriodInvalidationDate() {
+        return contractPeriodInvalidationDate;
+    }
+
+    public void setContractPeriodInvalidationDate(String contractPeriodInvalidationDate) {
+        this.contractPeriodInvalidationDate = contractPeriodInvalidationDate;
+    }
+
+    public String getDateSigned() {
+        return dateSigned;
+    }
+
+    public void setDateSigned(String dateSigned) {
+        this.dateSigned = dateSigned;
+    }
+
+    public String getDateModified() {
+        return dateModified;
+    }
+
+    public void setDateModified(String dateModified) {
+        this.dateModified = dateModified;
+    }
+
+    public ProcuringEntityDTO getProcuringEntity() {
+        return procuringEntity;
+    }
+
+    public void setProcuringEntity(ProcuringEntityDTO procuringEntity) {
+        this.procuringEntity = procuringEntity;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         ContractDTO that = (ContractDTO) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null)
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (status != null ? !status.equals(that.status) : that.status != null) return false;
+        if (items != null ? !items.equals(that.items) : that.items != null) return false;
+        if (suppliers != null ? !suppliers.equals(that.suppliers) : that.suppliers != null) return false;
+        if (currency != null ? !currency.equals(that.currency) : that.currency != null) return false;
+        if (amount != null ? !amount.equals(that.amount) : that.amount != null) return false;
+        if (valueAddedTaxIncluded != null ? !valueAddedTaxIncluded.equals(that.valueAddedTaxIncluded) : that.valueAddedTaxIncluded != null)
             return false;
-        if (status != null ? !status.equals(that.status) : that.status != null)
+        if (awardID != null ? !awardID.equals(that.awardID) : that.awardID != null) return false;
+        if (contractID != null ? !contractID.equals(that.contractID) : that.contractID != null) return false;
+        if (documents != null ? !documents.equals(that.documents) : that.documents != null) return false;
+        if (tenderId != null ? !tenderId.equals(that.tenderId) : that.tenderId != null) return false;
+        if (description != null ? !description.equals(that.description) : that.description != null) return false;
+        if (title != null ? !title.equals(that.title) : that.title != null) return false;
+        if (contractNumber != null ? !contractNumber.equals(that.contractNumber) : that.contractNumber != null)
             return false;
-        if (items != null ? !items.equals(that.items) : that.items != null)
+        if (contractPeriodStartDate != null ? !contractPeriodStartDate.equals(that.contractPeriodStartDate) : that.contractPeriodStartDate != null)
             return false;
-        if (suppliers != null ? !suppliers.equals(that.suppliers) : that.suppliers != null)
+        if (contractPeriodClarificationsUntil != null ? !contractPeriodClarificationsUntil.equals(that.contractPeriodClarificationsUntil) : that.contractPeriodClarificationsUntil != null)
             return false;
-        if (currency != null ? !currency.equals(that.currency) : that.currency != null)
+        if (contractPeriodEndDate != null ? !contractPeriodEndDate.equals(that.contractPeriodEndDate) : that.contractPeriodEndDate != null)
             return false;
-        if (amount != null ? !amount.equals(that.amount) : that.amount != null)
+        if (contractPeriodInvalidationDate != null ? !contractPeriodInvalidationDate.equals(that.contractPeriodInvalidationDate) : that.contractPeriodInvalidationDate != null)
             return false;
-        if (valueAddedTaxIncluded != null ? !valueAddedTaxIncluded.equals(that.valueAddedTaxIncluded) :
-                that.valueAddedTaxIncluded != null)
+        if (dateSigned != null ? !dateSigned.equals(that.dateSigned) : that.dateSigned != null) return false;
+        if (dateModified != null ? !dateModified.equals(that.dateModified) : that.dateModified != null) return false;
+        if (procuringEntity != null ? !procuringEntity.equals(that.procuringEntity) : that.procuringEntity != null)
             return false;
-        if (awardID != null ? !awardID.equals(that.awardID) : that.awardID != null)
-            return false;
-        return contractID != null ? contractID.equals(that.contractID) : that.contractID == null;
+        return owner != null ? owner.equals(that.owner) : that.owner == null;
     }
 
     @Override
@@ -151,6 +309,19 @@ public class ContractDTO {
         result = 31 * result + (valueAddedTaxIncluded != null ? valueAddedTaxIncluded.hashCode() : 0);
         result = 31 * result + (awardID != null ? awardID.hashCode() : 0);
         result = 31 * result + (contractID != null ? contractID.hashCode() : 0);
+        result = 31 * result + (documents != null ? documents.hashCode() : 0);
+        result = 31 * result + (tenderId != null ? tenderId.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (contractNumber != null ? contractNumber.hashCode() : 0);
+        result = 31 * result + (contractPeriodStartDate != null ? contractPeriodStartDate.hashCode() : 0);
+        result = 31 * result + (contractPeriodClarificationsUntil != null ? contractPeriodClarificationsUntil.hashCode() : 0);
+        result = 31 * result + (contractPeriodEndDate != null ? contractPeriodEndDate.hashCode() : 0);
+        result = 31 * result + (contractPeriodInvalidationDate != null ? contractPeriodInvalidationDate.hashCode() : 0);
+        result = 31 * result + (dateSigned != null ? dateSigned.hashCode() : 0);
+        result = 31 * result + (dateModified != null ? dateModified.hashCode() : 0);
+        result = 31 * result + (procuringEntity != null ? procuringEntity.hashCode() : 0);
+        result = 31 * result + (owner != null ? owner.hashCode() : 0);
         return result;
     }
 
@@ -166,6 +337,19 @@ public class ContractDTO {
         sb.append(", valueAddedTaxIncluded='").append(valueAddedTaxIncluded).append('\'');
         sb.append(", awardID='").append(awardID).append('\'');
         sb.append(", contractID='").append(contractID).append('\'');
+        sb.append(", documents=").append(documents);
+        sb.append(", tenderId='").append(tenderId).append('\'');
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", title='").append(title).append('\'');
+        sb.append(", contractNumber='").append(contractNumber).append('\'');
+        sb.append(", contractPeriodStartDate='").append(contractPeriodStartDate).append('\'');
+        sb.append(", contractPeriodClarificationsUntil='").append(contractPeriodClarificationsUntil).append('\'');
+        sb.append(", contractPeriodEndDate='").append(contractPeriodEndDate).append('\'');
+        sb.append(", contractPeriodInvalidationDate='").append(contractPeriodInvalidationDate).append('\'');
+        sb.append(", dateSigned='").append(dateSigned).append('\'');
+        sb.append(", dateModified='").append(dateModified).append('\'');
+        sb.append(", procuringEntity=").append(procuringEntity);
+        sb.append(", owner='").append(owner).append('\'');
         sb.append('}');
         return sb.toString();
     }

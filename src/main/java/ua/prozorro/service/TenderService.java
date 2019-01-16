@@ -195,6 +195,10 @@ public class TenderService {
         q.setParameter("contractId", contractDTO.getId());
         q.executeUpdate();
 
+        q = session.createQuery("delete from ContractDocumentDTO where contract_id=:contractId");
+        q.setParameter("contractId", contractDTO.getId());
+        q.executeUpdate();
+
         session.flush();
         session.clear();
     }
@@ -264,6 +268,7 @@ public class TenderService {
 
                 saveContractItems(contractDTO, session);
                 saveContractSuppliers(contractDTO, session);
+                saveContractDocuments(contractDTO, session);
 
                 session.flush();
                 session.clear();
@@ -365,6 +370,23 @@ public class TenderService {
                 session.clear();
 
                 session.saveOrUpdate(new ContractSupplierDTO(contractDTO, organizationDTO));
+                session.flush();
+                session.clear();
+            }
+        }
+    }
+
+    public void saveContractDocuments(ContractDTO contractDTO, Session session) throws Exception {
+        if (session == null) {
+            throw new Exception("Session did not set");
+        }
+        if (contractDTO != null && contractDTO.getDocuments() != null) {
+            for (DocumentDTO documentDTO : contractDTO.getDocuments()) {
+                session.saveOrUpdate(documentDTO);
+                session.flush();
+                session.clear();
+
+                session.saveOrUpdate(new ContractDocumentDTO(contractDTO, documentDTO));
                 session.flush();
                 session.clear();
             }

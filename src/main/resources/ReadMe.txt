@@ -13,13 +13,19 @@ FOR JRE(client only):
 keytool -import -noprompt -trustcacerts -alias public.api.openprocurement.org -file d:/1/public.api.openprocurement.org.cer -keystore "C:\Program Files\Java\jre1.8.0_121\lib\security\cacerts" -storepass changeit
 
 
-Work with JSON online:
-http://www.jsoneditoronline.org/
+Work with JSON online: https://jsoneditoronline.org/
+                        http://jsonparseronline.com/
 
 Start page: 
-https://public.api.openprocurement.org/api/0/tenders
+https://public.api.openprocurement.org/api/<VERSION>/tenders
+https://public.api.openprocurement.org/api/<VERSION>/plans
 
-Get Tender: https://public.api.openprocurement.org/api/0/tenders/<TenderID>
+
+Get Tender: https://public.api.openprocurement.org/api/<VERSION>/tenders/<TenderID>
 Example TENDERID: 67403dc828034b2eb3c12b40674da3ad
 
-Good example:  https://public.api.openprocurement.org/api/0/tenders/55e20be09f3544deace53f5a9019f800
+Good example:  https://public.api.openprocurement.org/api/<VERSION>/tenders/55e20be09f3544deace53f5a9019f800
+
+Tested for <VERSION> = 2.4
+
+Create classes from JSON: http://www.jsonschema2pojo.org/
