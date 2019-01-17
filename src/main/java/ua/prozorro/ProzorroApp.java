@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
@@ -19,6 +20,7 @@ import ua.prozorro.fx.Dialogs;
 import ua.prozorro.properties.PropertiesUtils;
 import ua.prozorro.utils.FileUtils;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
@@ -93,6 +95,8 @@ public class ProzorroApp extends Application {
 
         primaryStage.setTitle("Данные из портала Prozorro.gov.ua");
         primaryStage.setScene(new Scene(root));
+        //primaryStage.getIcons().add(ImageResources.getAppIcon());
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/prozorro_favicon.png")));
 
         MainController controller = loader.getController();
 

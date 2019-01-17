@@ -69,7 +69,7 @@ public class TenderParseTimeTask extends Task<ParsingResultData> {
                     }
                     updateMessage("Get Tender № " + i + "\n");*/
 
-                    TenderDTO tenderDTO = TenderDTOUtils.getTenderDTO(tenderData.getTender());
+                    //TenderDTO tenderDTO = TenderDTOUtils.getTenderDTO(tenderData.getTender());
                 }
             }
         }else{

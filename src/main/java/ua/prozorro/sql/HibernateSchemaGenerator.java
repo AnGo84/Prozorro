@@ -1,13 +1,10 @@
 package ua.prozorro.sql;
 //https://o7planning.org/en/11223/generate-tables-from-entity-classes-in-hibernate
 
-import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
-import org.hibernate.tool.schema.TargetType;
 
 import java.io.File;
-import java.util.EnumSet;
 
 public class HibernateSchemaGenerator {
 /*	public static final String SCRIPT_FILE = "exportScript.sql";
@@ -63,32 +60,32 @@ public class HibernateSchemaGenerator {
     }*/
 
 
-	public static void main(String[] args) {
-		// Using Oracle Database.
-		String configFileName = "hibernate_mysql.cfg.xml";
+    public static void main(String[] args) {
+        // Using Oracle Database.
+        String configFileName = "hibernate_mysql.cfg.xml";
 
-		String tempDialectEngine = System.getProperty(HibernateSession.HIBERNATE_DIALECT_STORAGE_ENGINE);
-		System.setProperty(HibernateSession.HIBERNATE_DIALECT_STORAGE_ENGINE, "innodb");
+        String tempDialectEngine = System.getProperty(HibernateSession.HIBERNATE_DIALECT_STORAGE_ENGINE);
+        System.setProperty(HibernateSession.HIBERNATE_DIALECT_STORAGE_ENGINE, HibernateSession.HIBERNATE_DIALECT_STORAGE_ENGINE_NAME);
 
-		Metadata metadata = HibernateSession.getMetaData(configFileName);
+        Metadata metadata = HibernateSession.getMetaData(configFileName);
 
-		// Script file.
-		File outputFile = new File("MySQL_" + HibernateSession.SCRIPT_FILE);
-		String outputFilePath = outputFile.getAbsolutePath();
-		SchemaExport export = HibernateSession.getSchemaExport(outputFilePath);
+        // Script file.
+        File outputFile = new File("MySQL_" + HibernateSession.SCRIPT_FILE);
+        String outputFilePath = outputFile.getAbsolutePath();
+        SchemaExport export = HibernateSession.getSchemaExport(outputFilePath);
 
-		System.out.println("Drop Database...");
-		// Drop Database
-		HibernateSession.dropDataBase(export, metadata);
+        System.out.println("Drop Database...");
+        // Drop Database
+        HibernateSession.dropDataBase(export, metadata);
 
-		System.out.println("Create Database...");
-		// Create tables
-		HibernateSession.createDataBase(export, metadata);
+        System.out.println("Create Database...");
+        // Create tables
+        HibernateSession.createDataBase(export, metadata);
 
-		//SessionFactory sessionFactory = metadata.getSessionFactoryBuilder().build();
-		//sessionFactory.close();
+        //SessionFactory sessionFactory = metadata.getSessionFactoryBuilder().build();
+        //sessionFactory.close();
 
-		//System.setProperty(HibernateSession.HIBERNATE_DIALECT_STORAGE_ENGINE, tempDialectEngine);
-		//HibernateSession.closeSession();
-	}
+        //System.setProperty(HibernateSession.HIBERNATE_DIALECT_STORAGE_ENGINE, tempDialectEngine);
+        //HibernateSession.closeSession();
+    }
 }
