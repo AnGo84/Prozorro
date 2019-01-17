@@ -16,6 +16,8 @@ public class TaskFactory {
             return new ContractParserTask(sessionFactory, propertyFields, resultData);
         } else if (propertyFields.getSearchDateType().equals(DataType.PLANS)) {
             return new PlanParserTask(sessionFactory, propertyFields, resultData);
+        } else if (propertyFields.getSearchDateType().equals(DataType.NBU_RATES)) {
+            return new NBURatesParserTask(sessionFactory, propertyFields, resultData);
         }
         return null;
     }
@@ -28,6 +30,8 @@ public class TaskFactory {
             return new ContractParseTimeTask(propertyFields);
         } else if (propertyFields.getSearchDateType().equals(DataType.PLANS)) {
             return new PlanParseTimeTask(propertyFields);
+        } else if (propertyFields.getSearchDateType().equals(DataType.NBU_RATES)) {
+            return new NBURatesParseTimeTask(propertyFields);
         }
         return null;
     }

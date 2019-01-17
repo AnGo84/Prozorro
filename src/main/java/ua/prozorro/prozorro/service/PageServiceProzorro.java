@@ -1,4 +1,4 @@
-package ua.prozorro.prozorro;
+package ua.prozorro.prozorro.service;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
@@ -8,6 +8,7 @@ import ua.prozorro.entity.TenderDTOUtils;
 import ua.prozorro.entity.tenders.TenderDTO;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
+import ua.prozorro.prozorro.ParsingResultData;
 import ua.prozorro.prozorro.model.DataType;
 import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
 import ua.prozorro.prozorro.model.tenders.TenderData;

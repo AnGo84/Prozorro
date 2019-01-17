@@ -23,15 +23,15 @@ public class OrganizationDTO {
     @Column
     private String email;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     /*(cascade = {CascadeType.ALL})*/
     @JoinColumn(name = "identifier_id")
-    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    //@Cascade({org.hibernate.annotations.CascadeType.ALL})
     private IdentifierDTO identifier;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinColumn(name = "address_id")
-    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    //@Cascade({org.hibernate.annotations.CascadeType.ALL})
     private AddressDTO address;
 
 

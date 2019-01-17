@@ -96,7 +96,9 @@
         <mapping class="ua.prozorro.entity.plans.PlanItemDTO"/>
         <mapping class="ua.prozorro.entity.plans.PlanAdditionalClassificationDTO"/>
         <!--/Plans-->
-
+        <!-- ExchangeRateNBU -->
+        <mapping class="ua.prozorro.entity.exchangeRates.ExchangeRateNBUDTO"/>
+        <!-- /ExchangeRateNBU -->
 
     </session-factory>
 

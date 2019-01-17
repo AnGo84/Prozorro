@@ -3,9 +3,9 @@ package ua.prozorro.service;
 import org.hibernate.SessionFactory;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
-import ua.prozorro.prozorro.PageServiceProzorro;
+import ua.prozorro.prozorro.service.PageServiceProzorro;
 import ua.prozorro.prozorro.ParsingResultData;
-import ua.prozorro.prozorro.TenderDataServiceProzorro;
+import ua.prozorro.prozorro.service.TenderDataServiceProzorro;
 import ua.prozorro.prozorro.model.DataType;
 import ua.prozorro.prozorro.parser.TenderParser;
 
