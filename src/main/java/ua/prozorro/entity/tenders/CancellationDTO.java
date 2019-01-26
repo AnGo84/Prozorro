@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name = "cancellations")
 public class CancellationDTO {
     @Id
     //@GeneratedValue(strategy= GenerationType.AUTO)
@@ -23,7 +23,7 @@ public class CancellationDTO {
     private String reason;
     @Column
     private String reasonType;
-    @Column
+    @Column(name = "arcdate")
     private String date;
     @Column
     private String cancellationOf;

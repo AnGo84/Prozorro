@@ -4,10 +4,12 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.schema.TargetType;
 
+import java.io.File;
 import java.util.EnumSet;
 
 public class HibernateSession {
@@ -22,14 +24,20 @@ public class HibernateSession {
 
     // Hibernate 5:
     private static SessionFactory buildSessionFactory(String configureFileName) {
+        System.out.println("ConfigFile: " + configureFileName);
         try {
             if (configureFileName == null || configureFileName.equals("")) {
                 configureFileName = DEFAULT_CONFIGURE_FILE_NAME;
             }
 
-            Metadata metadata = getMetaData(configureFileName);
+            //Metadata metadata = getMetaData(configureFileName);
+            //return metadata.getSessionFactoryBuilder().build();
 
-            return metadata.getSessionFactoryBuilder().build();
+            //new Configuration().configure(new File("/home/visruth/config/hibernate.cfg.xml)) ")
+            SessionFactory sessionFactory =
+                    new Configuration().configure(new File(configureFileName)).buildSessionFactory();
+              return sessionFactory;
+
         } catch (Throwable ex) {
             System.err.println("Initial SessionFactory creation failed. " + ex);
             throw new ExceptionInInitializerError(ex);

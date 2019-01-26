@@ -23,6 +23,7 @@ import ua.prozorro.utils.FileUtils;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Properties;
 
 public class ProzorroApp extends Application {
@@ -169,5 +170,8 @@ public class ProzorroApp extends Application {
 
     public Properties getProperties() {
         return properties;
+    }
+    public URL getURL() {
+        return FileUtils.getLocation(this.getClass());
     }
 }

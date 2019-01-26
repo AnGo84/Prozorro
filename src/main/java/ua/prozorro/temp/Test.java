@@ -5,6 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.json.simple.parser.ParseException;
 import ua.prozorro.Prozorro;
+import ua.prozorro.ProzorroApp;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.prozorro.service.PageServiceProzorro;
@@ -18,6 +19,7 @@ import ua.prozorro.prozorro.parser.TenderParser;
 import ua.prozorro.sql.HibernateDataBaseType;
 import ua.prozorro.sql.HibernateFactory;
 import ua.prozorro.utils.DateUtils;
+import ua.prozorro.utils.FileUtils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -87,7 +89,9 @@ public class Test {
         }
         HibernateDataBaseType baseType = HibernateDataBaseType.valueOf(dbName.toUpperCase());
         System.out.println("HibernateDataBaseType = " + baseType);
-        SessionFactory factory = HibernateFactory.getHibernateSession(baseType);
+        URL url = FileUtils.getLocation(ProzorroApp.class);
+        SessionFactory factory = HibernateFactory.getHibernateSession(url, baseType);
+
         return factory;
     }
 

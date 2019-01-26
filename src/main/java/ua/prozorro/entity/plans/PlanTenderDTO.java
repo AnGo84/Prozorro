@@ -17,13 +17,13 @@ public class PlanTenderDTO {
 	@Column
 	private String procurementMethodType;
 
-	@Column
+	@Column(name = "tenderStartDate")
 	private String tenderPeriodStartDate;
-	@Column
+	@Column(name = "tenderClarificationsUntil")
 	private String tenderPeriodClarificationsUntil;
-	@Column
+	@Column(name = "tenderEndDate")
 	private String tenderPeriodEndDate;
-	@Column
+	@Column(name = "tenderInvalidationDate")
 	private String tenderPeriodInvalidationDate;
 
 	public String getId() {

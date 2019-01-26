@@ -138,6 +138,10 @@ public class FileUtils {
         File f = new File(FileUtils.getDirectory(FileUtils.urlToFile(url)) + File.separator + fileName);
         return f;
     }
+    public static File getFileWithName(final URL url, String fileName) {
+        File f = new File(FileUtils.getDirectory(FileUtils.urlToFile(url)) + File.separator + fileName);
+        return f;
+    }
 
 
     public static void openDirectory(String path) throws IOException {

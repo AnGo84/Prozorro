@@ -8,7 +8,7 @@ import javax.persistence.*;
 	@JoinTable(name = "Awards_Documents", joinColumns = {@JoinColumn(name = "award_id")}, inverseJoinColumns = {
 			@JoinColumn(name = "document_id")})*/
 @Entity
-@Table(name = "Plans_AdditionalClassifications")
+@Table(name = "Plans_AddClassifications")
 public class PlanAdditionalClassificationDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

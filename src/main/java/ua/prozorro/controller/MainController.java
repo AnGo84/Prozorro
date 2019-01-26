@@ -83,7 +83,7 @@ public class MainController {
         buttonGetPages.setTooltip(new Tooltip("Выбрать страницы за указанный период"));
         buttonGetData.setTooltip(new Tooltip("Выбрать тендеры с отобранных страниц"));
 
-        resultData=new ParsingResultData();
+        resultData = new ParsingResultData();
 
         initListeners();
 
@@ -298,7 +298,11 @@ public class MainController {
                     });
 
                     task.setOnFailed((e) -> {
+                        Throwable throwable = task.getException();
                         textArea.appendText("Error: " + task.getException().getMessage() + "\n");
+
+                        logger.error("Exception type: " + throwable.getClass());
+                        logger.error(throwable.getStackTrace());
 
                         Dialogs.showErrorDialog(task.getException(),
                                                 new DialogText("Ошибка отбора", "Ошибка при проверке данных за период",
@@ -445,8 +449,16 @@ public class MainController {
             return null;
         }
         HibernateDataBaseType baseType = HibernateDataBaseType.valueOf(dbName.toUpperCase());
-        logger.info("HibernateDataBaseType = " + baseType);
-        SessionFactory factory = HibernateFactory.getHibernateSession(baseType);
+        logger.info("HibernateDataBaseType: " + baseType);
+        textArea.appendText("Data Base Type: " + baseType + "\n");
+        URL url = FileUtils.getLocation(ProzorroApp.class);
+
+        logger.info("Path to config files: " + url.getPath());
+        textArea.appendText("Path to config files: " + url.getPath() + "\n");
+
+        SessionFactory factory = HibernateFactory.getHibernateSession(url, baseType);
+
+        //SessionFactory factory = HibernateFactory.getHibernateSession(baseType);
         return factory;
     }
 

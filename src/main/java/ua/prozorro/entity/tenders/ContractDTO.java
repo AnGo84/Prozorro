@@ -61,13 +61,13 @@ public class ContractDTO {
     @Column
     private String contractNumber;
 
-    @Column
+    @Column(name = "start_date")
     private String contractPeriodStartDate;
-    @Column
+    @Column(name = "clarifications_until")
     private String contractPeriodClarificationsUntil;
-    @Column
+    @Column(name = "end_date")
     private String contractPeriodEndDate;
-    @Column
+    @Column(name = "invalidation_date")
     private String contractPeriodInvalidationDate;
 
     @Column

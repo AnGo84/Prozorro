@@ -23,7 +23,7 @@ public class ComplaintDTO {
     @Lob
     @Column
     private String description;
-    @Column
+    @Column(name = "arcdate")
     private String date;
     @Column
     private String dateSubmitted;

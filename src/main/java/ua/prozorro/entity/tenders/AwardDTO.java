@@ -20,7 +20,7 @@ public class AwardDTO {
     @Transient
     private List<DocumentDTO> documents = null;
 
-    @Column
+    @Column(name = "arcdate")
     private String date;
 
     @Column(name = "bid_id")
@@ -33,13 +33,13 @@ public class AwardDTO {
     @Column
     private String valueAddedTaxIncluded;
 
-    @Column
+    @Column(name = "start_date")
     private String complaintPeriodStartDate;
-    @Column
+    @Column(name = "clarifications_until")
     private String complaintPeriodClarificationsUntil;
-    @Column
+    @Column(name = "end_date")
     private String complaintPeriodEndDate;
-    @Column
+    @Column(name = "invalidation_date")
     private String complaintPeriodInvalidationDate;
 
     /*@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})

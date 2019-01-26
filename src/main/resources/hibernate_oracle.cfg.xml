@@ -5,16 +5,86 @@
 <hibernate-configuration>
     <session-factory>
         <!--ORACLE-->
-            <property name="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</property>
-            <property name="hibernate.connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
-            <property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:db11g</property>
-            <property name="hibernate.connection.username">USERNAME</property>
-            <property name="hibernate.connection.password">PASSWORD</property>
-            <property name="hibernate.show_sql">true</property>
-            <property name="hibernate.connection.release_mode">auto</property>
-            <property name="current_session_context_class">thread</property>
-            <property name="hibernate.connection.autoReconnect">true</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</property>
+
+        <property name="hibernate.connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
+
+        <property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:ORCL</property>
+
+        <property name="hibernate.connection.username">PROZORRO</property>
+        <!--<property name="hibernate.connection.password">orrozorp</property>-->
+        <property name="hibernate.connection.password">123321</property>
+        <property name="hibernate.default_schema">PROZORRO</property>
+
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.use_sql_comments">true</property>
+        <property name="hibernate.connection.release_mode">auto</property>
+        <!--<property name="current_session_context_class">thread</property>-->
+        <property name="hibernate.connection.autoReconnect">true</property>
         <!--END ORACLE-->
+
+        <!-- Mapping With Model Class Containing Annotations -->
+        <!--Tenders-->
+        <mapping class="ua.prozorro.entity.pages.TenderPageDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.AddressDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.AwardDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.BidDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.CancellationDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.ClassificationDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.ComplaintDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.ContractDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.DocumentDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.FeatureDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.FeatureEnumDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.IdentifierDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.ItemDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.LotDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.OrganizationDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.QuestionDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.UnitDTO"/>
+
+        <mapping class="ua.prozorro.entity.tenders.TenderDTO"/>
+        <!--Additional for tender-->
+        <mapping class="ua.prozorro.entity.tenders.TenderAwardDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.TenderBidDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.TenderComplaintDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.TenderContractDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.TenderDocumentDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.TenderFeatureDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.TenderFunderDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.TenderItemDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.TenderQuestionDTO"/>
+        <!--Additional for bid-->
+        <mapping class="ua.prozorro.entity.tenders.BidDocumentDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.BidTendererDTO"/>
+        <!--Additional for award-->
+        <mapping class="ua.prozorro.entity.tenders.AwardDocumentDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.AwardSupplierDTO"/>
+        <!--Additional for contracts-->
+        <mapping class="ua.prozorro.entity.pages.ContractPageDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.ContractDocumentDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.ContractItemDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.ContractSupplierDTO"/>
+        <!--Additional for features-->
+        <mapping class="ua.prozorro.entity.tenders.FeatureEnumsDTO"/>
+        <!--/Tenders-->
+        <!--Plans-->
+        <mapping class="ua.prozorro.entity.pages.PlanPageDTO"/>
+        <mapping class="ua.prozorro.entity.plans.BudgetDTO"/>
+        <mapping class="ua.prozorro.entity.plans.PlanDTO"/>
+        <mapping class="ua.prozorro.entity.plans.PlanTenderDTO"/>
+        <mapping class="ua.prozorro.entity.plans.ProcuringEntityDTO"/>
+        <mapping class="ua.prozorro.entity.plans.ProjectDTO"/>
+        <!--Additional for plan-->
+        <mapping class="ua.prozorro.entity.plans.PlanDocumentDTO"/>
+        <mapping class="ua.prozorro.entity.plans.PlanItemDTO"/>
+        <mapping class="ua.prozorro.entity.plans.PlanAdditionalClassificationDTO"/>
+        <!--/Plans-->
+        <!-- ExchangeRateNBU -->
+        <mapping class="ua.prozorro.entity.exchangeRates.ExchangeRateNBUDTO"/>
+        <!-- /ExchangeRateNBU -->
+
 
     </session-factory>
 

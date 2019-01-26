@@ -8,7 +8,7 @@ import java.io.Serializable;
 @IdClass(RateNBUPK.class)
 public class ExchangeRateNBUDTO implements Serializable {
 	@Id
-	@Column
+	@Column(name = "arcdate")
 	private String date;
 
 	@Id

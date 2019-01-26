@@ -158,9 +158,10 @@ public class PlanDTOUtils {
 
 
     public static ProjectDTO getProjectDTO(Project project) {
-        if (project == null) {
+        if (project == null || project.getId()==null || project.getId().equals("")) {
             return null;
         }
+
         ProjectDTO projectDTO = new ProjectDTO();
 
         projectDTO.setId(project.getId());
@@ -193,7 +194,7 @@ public class PlanDTOUtils {
     }
 
     public static UnitDTO getUnitDTO(Unit unit) {
-        if (unit == null || unit.getCode() == null) {
+        if (unit == null || unit.getCode() == null || unit.getCode().equals("")) {
             return null;
         }
         UnitDTO unitDTO = new UnitDTO();

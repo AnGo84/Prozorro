@@ -18,7 +18,7 @@ public class QuestionDTO {
     @Lob
     @Column
     private String description;
-    @Column
+    @Column(name = "arcdate")
     private String date;
 
     @Column

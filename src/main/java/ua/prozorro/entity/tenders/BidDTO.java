@@ -12,7 +12,7 @@ public class BidDTO {
     private String id;
     @Column
     private String status;
-    @Column
+    @Column(name = "arcdate")
     private String date;
     @Column(length = 2000)
     private String participationUrl;

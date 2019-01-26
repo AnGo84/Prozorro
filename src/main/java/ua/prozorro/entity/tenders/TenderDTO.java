@@ -19,41 +19,41 @@ public class TenderDTO {
     public String guaranteeCurrency;
     @Column
     public String guaranteeAmount;
-    @Column(length = 36)
+    @Column(name = "arcdate",length = 36)
     public String date;
     @Column
     private String procurementMethod;
     @Column
     private int numberOfBids;
 
-    @Column
+    @Column(name = "awardStartDate")
     private String awardPeriodStartDate;
-    @Column
+    @Column(name = "awardClarificationsUntil")
     private String awardPeriodClarificationsUntil;
-    @Column
+    @Column(name = "awardEndDate")
     private String awardPeriodEndDate;
-    @Column
+    @Column(name = "awardInvalidationDate")
     private String awardPeriodInvalidationDate;
 
-    @Column
+    @Column(name="complaintStartDate")
     private String complaintPeriodStartDate;
-    @Column
+    @Column(name="complaintClarificationsUntil")
     private String complaintPeriodClarificationsUntil;
-    @Column
+    @Column(name="complaintEndDate")
     private String complaintPeriodEndDate;
-    @Column
+    @Column(name="complaintInvalidationDate")
     private String complaintPeriodInvalidationDate;
 
     @Column(length = 2000)
     private String auctionUrl;
 
-    @Column
+    @Column(name="enquiryStartDate")
     private String enquiryPeriodStartDate;
-    @Column
+    @Column(name="enquiryClarificationsUnti")
     private String enquiryPeriodClarificationsUntil;
-    @Column
+    @Column(name="enquiryEndDate")
     private String enquiryPeriodEndDate;
-    @Column
+    @Column(name="enquiryInvalidationDate")
     private String enquiryPeriodInvalidationDate;
 
     @Column
@@ -93,13 +93,13 @@ public class TenderDTO {
     @Column
     private String status;
 
-    @Column
+    @Column(name="tenderStartDate")
     private String tenderPeriodStartDate;
-    @Column
+    @Column(name="tenderClarificationsUntil")
     private String tenderPeriodClarificationsUntil;
-    @Column
+    @Column(name="tenderPeriodEndDate")
     private String tenderPeriodEndDate;
-    @Column
+    @Column(name="tenderInvalidationDate")
     private String tenderPeriodInvalidationDate;
 
     /*@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
@@ -108,13 +108,13 @@ public class TenderDTO {
     @Transient
     private List<ContractDTO> contracts = null;
 
-    @Column
+    @Column(name="auctionStartDate")
     private String auctionPeriodStartDate;
-    @Column
+    @Column(name="auctionClarificationsUntil")
     private String auctionPeriodClarificationsUntil;
-    @Column
+    @Column(name="auctionEndDate")
     private String auctionPeriodEndDate;
-    @Column
+    @Column(name="auctionInvalidationDate")
     private String auctionPeriodInvalidationDate;
 
     @Column
@@ -130,7 +130,7 @@ public class TenderDTO {
     private String minimalStepCurrency;
     @Column
     private String minimalStepAmount;
-    @Column
+    @Column(name="minimalStepAddedTax")
     private String minimalStepValueAddedTaxIncluded;
 
     /*@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})

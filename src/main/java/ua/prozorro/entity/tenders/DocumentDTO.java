@@ -17,7 +17,7 @@ public class DocumentDTO {
     private String description;
     @Column(length = 4000)
     private String title;
-    @Column
+    @Column(length = 2000)
     private String url;
     @Column
     private String format;

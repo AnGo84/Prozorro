@@ -28,26 +28,26 @@ public class LotDTO {
     @Column
     public String guaranteeAmount;
 
-    @Column
+    @Column(name = "arcdate")
     private String date;
 
     @Column
     private String minimalStepCurrency;
     @Column
     private String minimalStepAmount;
-    @Column
+    @Column(name = "minimalStepAddedTax")
     private String minimalStepValueAddedTaxIncluded;
 
-    @Column
+    @Column(name = "auctionStartDate")
     private String auctionPeriodStartDate;
-    @Column
+    @Column(name ="auctionClarificationsUntil" )
     private String auctionPeriodClarificationsUntil;
-    @Column
+    @Column(name = "auctionEndDate")
     private String auctionPeriodEndDate;
-    @Column
+    @Column(name = "auctionInvalidationDate")
     private String auctionPeriodInvalidationDate;
 
-    @Column(length = 1000)
+    @Column(length = 2000)
     private String auctionUrl;
     @Column
     private String status;

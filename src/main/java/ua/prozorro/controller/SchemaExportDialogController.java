@@ -12,6 +12,7 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.boot.registry.classloading.spi.ClassLoadingException;
 import org.hibernate.service.spi.ServiceException;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.schema.TargetType;
 import ua.prozorro.ProzorroApp;
 import ua.prozorro.fx.DialogText;
 import ua.prozorro.fx.Dialogs;
@@ -21,6 +22,7 @@ import ua.prozorro.sql.HibernateDataBaseType;
 import ua.prozorro.sql.HibernateSession;
 
 import java.io.File;
+import java.util.EnumSet;
 
 public class SchemaExportDialogController {
     private static final Logger logger = LogManager.getRootLogger();
@@ -104,32 +106,21 @@ public class SchemaExportDialogController {
             Metadata metadata = null;
 
             try {
+                logger.info("Choose file: " + comboBoxDB.getValue().getConfigFileName());
                 metadata = HibernateSession.getMetaData(comboBoxDB.getValue().getConfigFileName());
-
-                SchemaExport export = HibernateSession.getSchemaExport(file.getAbsolutePath());
-                logger.info("Schema was export to file: " + file.getAbsolutePath());
-
-                Dialogs.showMessage(Alert.AlertType.INFORMATION, new DialogText("Экспорт схемы БД",
-                                                                                "Схема БД сохранена в файл '" +
-                                                                                file.getName() + "'", "Схема для БД '" +
-                                                                                                      comboBoxDB
-                                                                                                              .getValue() +
-                                                                                                      "' сохранена в файл '" +
-                                                                                                      file.getAbsolutePath() +
-                                                                                                      "'"), logger);
 
                 if (checkBoxSaveScheme.isSelected()) {
                     if (Dialogs.showConfirmDialog(
                             new DialogText("Создать схему БД", "Создать схему БД " + comboBoxDB.getValue(),
                                            "Все данные будут удалены! Продолжить?"))) {
-
+                        SchemaExport schemaExport = HibernateSession.getSchemaExport(file.getAbsolutePath());
                         logger.info("Drop Database...");
                         // Drop Database
-                        HibernateSession.dropDataBase(export, metadata);
+                        HibernateSession.dropDataBase(schemaExport, metadata);
 
                         logger.info("Create Database...");
                         // Create tables
-                        HibernateSession.createDataBase(export, metadata);
+                        HibernateSession.createDataBase(schemaExport, metadata);
 
                         Dialogs.showMessage(Alert.AlertType.INFORMATION,
                                             new DialogText("Создание схемы БД", "Схема БД создана",
@@ -137,6 +128,20 @@ public class SchemaExportDialogController {
                                             logger);
                     }
 
+                } else {
+                    new SchemaExport().setOutputFile(file.getAbsolutePath()).setFormat(false)
+                            .createOnly(EnumSet.of(TargetType.SCRIPT), metadata);
+
+                    logger.info("Schema was export to file: " + file.getAbsolutePath());
+
+                    Dialogs.showMessage(Alert.AlertType.INFORMATION, new DialogText("Экспорт схемы БД",
+                                                                                    "Схема БД сохранена в файл '" +
+                                                                                    file.getName() + "'",
+                                                                                    "Схема для БД '" +
+                                                                                    comboBoxDB.getValue() +
+                                                                                    "' сохранена в файл '" +
+                                                                                    file.getAbsolutePath() + "'"),
+                                        logger);
                 }
             } catch (ServiceException | ClassLoadingException e) {
                 Dialogs.showErrorDialog(e, new DialogText("Ошибка экспорта", "Ошибка файла конфигураци",
