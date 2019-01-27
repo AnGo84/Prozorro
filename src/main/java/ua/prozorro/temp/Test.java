@@ -41,13 +41,12 @@ public class Test {
 
     public static void main(String[] args) {
         String url = "https://public.api.openprocurement.org/api/2.4/tenders";
-        String url2 = "https://public.api.openprocurement.org/api/2.4/tenders?offset=2018-11-30T21%3A00%3A03" +
-                      ".340891%2B03%3A00";
+        String url2 = "https://public.api.openprocurement.org//api/2.4/tenders?offset=2016-10-10T10%3A42%3A04.250983%2B03%3A00";
         //"https://public.api.openprocurement.org/api/2.4/tenders?descending=1&offset=2018-11-30T21%3A00%3A03.340891%2B03%3A00";
 
         //JSONParser(url);
         //GSONPareser(url2);
-        checkDataForPeriod();
+        //checkDataForPeriod();
         parseAndSaveData();
 
     }
@@ -67,8 +66,8 @@ public class Test {
         tenderParser.setTenderDataServiceProzorro(tenderDataServiceProzorro);
 
         try {
-            tenderParser.parseAndSave(DateUtils.parseDateFromString("2018-12-11", short_date_formate),
-                                      DateUtils.parseDateFromString("2018-12-11", short_date_formate));
+            tenderParser.parseAndSave(DateUtils.parseDateFromString("2016-10-06", short_date_formate),
+                                      DateUtils.parseDateFromString("2016-10-11", short_date_formate));
         } catch (Exception e) {
 
             e.printStackTrace();
@@ -102,8 +101,8 @@ public class Test {
             long startTime = System.nanoTime();
 
             List<ProzorroPageContent> list = pageServiceProzorro
-                    .getPagesList(DataType.TENDERS,  DateUtils.parseDateFromString("2018-12-10", short_date_formate),
-                                  DateUtils.parseDateFromString("2018-12-10", short_date_formate), false);
+                    .getPagesList(DataType.TENDERS,  DateUtils.parseDateFromString("2016-10-06", short_date_formate),
+                                  DateUtils.parseDateFromString("2016-10-11", short_date_formate), false);
             System.out.println("Pages list size: " + list.size());
             long endTime = System.nanoTime();
             long timeForPages = (endTime - startTime) / 1000000000;

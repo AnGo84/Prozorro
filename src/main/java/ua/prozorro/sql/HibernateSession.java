@@ -23,7 +23,7 @@ public class HibernateSession {
     private static SessionFactory sessionFactory = null;
 
     // Hibernate 5:
-    private static SessionFactory buildSessionFactory(String configureFileName) {
+    private static SessionFactory buildSessionFactory(String configureFileName) throws ExceptionInInitializerError{
         System.out.println("ConfigFile: " + configureFileName);
         try {
             if (configureFileName == null || configureFileName.equals("")) {
@@ -92,7 +92,7 @@ public class HibernateSession {
 
     }
 
-    public static SessionFactory instance(String configureFileName) {
+    public static SessionFactory instance(String configureFileName) throws ExceptionInInitializerError {
         if (sessionFactory == null || sessionFactory.isClosed()) {
             sessionFactory = buildSessionFactory(configureFileName);
         }

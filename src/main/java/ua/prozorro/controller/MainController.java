@@ -169,13 +169,7 @@ public class MainController {
                 @Override
                 public void handle(WorkerStateEvent event) {
                     //setWaitingProcess(true);
-                    task.messageProperty().addListener(new ChangeListener<String>() {
-                        public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                            /*System.out.println("Old mes: "+oldValue);
-                            System.out.println("New mes: "+newValue);*/
-                            textArea.appendText(newValue);
-                        }
-                    });
+                    task.messageProperty().addListener(getTextAreaListener());
 
                 }
             });
@@ -223,6 +217,17 @@ public class MainController {
         }
     }
 
+    private ChangeListener<String> getTextAreaListener() {
+        return new ChangeListener<String>() {
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                            /*System.out.println("Old mes: "+oldValue);
+                            System.out.println("New mes: "+newValue);*/
+                //String[] lineArray = textArea.getText().split("\n");
+                textArea.appendText(newValue);
+            }
+        };
+    }
+
     private void setWaitingProcess(boolean isWaiting) {
         progressBar.progressProperty().unbind();
         progressIndicator.progressProperty().unbind();
@@ -260,10 +265,16 @@ public class MainController {
                 setWaitingProcess(true);
                 textArea.clear();
                 textArea.appendText(checkDataForPeriodMessage());
-
-                SessionFactory sessionFactory = getSessionFactoryByDBName(
-                        PropertiesUtils.getPropertyString(propertyFields.getProperties(), "db.type"));
-
+                SessionFactory sessionFactory = null;
+                try {
+                    sessionFactory = getSessionFactoryByDBName(
+                            PropertiesUtils.getPropertyString(propertyFields.getProperties(), "db.type"));
+                } catch (ExceptionInInitializerError e) {
+                    Dialogs.showErrorDialog(e, new DialogText("Ошибка подключения", "Ошибка при подключении к БД",
+                                                              "При подключении к БД возникла ошибка: " +
+                                                              e.getMessage()), logger);
+                    setWaitingProcess(false);
+                }
                 //printConnectionResult(sessionFactory);
 
                 if (sessionFactory != null) {
@@ -282,13 +293,7 @@ public class MainController {
                         //setWaitingProcess(true);
 
                         //textArea.textProperty().bind(task.messageProperty());
-                        task.messageProperty().addListener(new ChangeListener<String>() {
-                            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                            /*System.out.println("Old mes: "+oldValue);
-                            System.out.println("New mes: "+newValue);*/
-                                textArea.appendText(newValue);
-                            }
-                        });
+                        task.messageProperty().addListener(getTextAreaListener());
 
                         progressBar.progressProperty().bind(task.progressProperty());
                         progressIndicator.progressProperty().bind(task.progressProperty());
@@ -442,7 +447,7 @@ public class MainController {
         this.propertyFields = new PropertyFields(prozorroApp.getProperties());
     }
 
-    private SessionFactory getSessionFactoryByDBName(String dbName) {
+    private SessionFactory getSessionFactoryByDBName(String dbName) throws ExceptionInInitializerError {
         //logger.info("DBName = " + dbName);
         //String dbName = PropertiesUtils.getPropertyString(prozorroApp.getProperties(), "db.type");
         if (dbName == null || dbName.equals("")) {

@@ -95,6 +95,9 @@ public class TenderParserTask extends Task<Boolean> {
             pageContent = pageServiceProzorro.getPageContentFromURL(currentPageURL);
 
             Date nextOffsetDate = pageServiceProzorro.getDateFromPageOffset(pageContent.getNextPage().getOffset());
+            if(nextOffsetDate.compareTo(propertyFields.getSearchDateTill())>0){
+                nextOffsetDate=propertyFields.getSearchDateTill();
+            }
             //logger.info("Get first ProzorroPage: " + pageContent);
             logger.info("Get first ProzorroPage");
 

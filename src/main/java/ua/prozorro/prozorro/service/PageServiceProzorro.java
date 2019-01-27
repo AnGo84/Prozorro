@@ -49,6 +49,8 @@ public class PageServiceProzorro {
 
     public List<ProzorroPageContent> getPagesList(DataType dataType, Date dateFrom, Date dateTill, boolean withPageElements)
             throws IOException, java.text.ParseException {
+        //logger.info("DataType:" + dataType + ", DateFrom: " + dateFrom + ", DateTill: " + dateTill);
+
         if (propertyFields == null || propertyFields.getProperties() == null) {
             return null;
         }
@@ -64,14 +66,17 @@ public class PageServiceProzorro {
 
         String nextOffset = pageContent.getNextPage().getOffset();
         Date nextOffsetDate = getDateFromPageOffset(nextOffset);
-
+        if (nextOffsetDate.compareTo(dateTill) > 0) {
+            nextOffsetDate = dateTill;
+        }
+        //logger.info("nextOffsetDate: " + nextOffsetDate + ", nextOffset: " + nextOffset);
         while (dateTill.compareTo(nextOffsetDate) >= 0 && pageContent.getPageElementList() != null &&
                !pageContent.getPageElementList().isEmpty()) {
             if (!withPageElements) {
                 pageContent.getPageElementList().clear();
             }
             pageContentList.add(pageContent);
-            //logger.info("Get next page with URL: " + pageContent.getNextPage().getUri());
+            logger.info("Get next page with URL: " + pageContent.getNextPage().getUri());
             nextOffset = pageContent.getNextPage().getOffset();
             pageContent = getPageContentFromURL(pageContent.getNextPage().getUri());
             //nextOffsetDate = DateUtils.parseDateFromString(pageContent.getNextPage().getOffset(), propertyFields.getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT));

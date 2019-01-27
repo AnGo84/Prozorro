@@ -282,7 +282,11 @@ public class TenderDTOUtils {
         LotDTO lotDTO = new LotDTO();
 
         lotDTO.setId(lot.getId());
-        lotDTO.setTitle(lot.getTitle());
+        if (lot.getTitle().length()<=4000) {
+            lotDTO.setTitle(lot.getTitle());
+        }else{
+            lotDTO.setTitle(lot.getTitle().substring(0,4000));
+        }
         lotDTO.setDescription(lot.getDescription());
         if (lot.getValue() != null) {
             lotDTO.setCurrency(lot.getValue().getCurrency());
