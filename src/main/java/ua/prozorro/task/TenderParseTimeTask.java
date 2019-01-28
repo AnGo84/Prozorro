@@ -39,7 +39,7 @@ public class TenderParseTimeTask extends Task<ParsingResultData> {
         //System.out.println("Time for page without data: " + timeForPages);
 
         start = new Date();
-        if (list != null && !list.isEmpty()) {
+        /*if (list != null && !list.isEmpty()) {
             logger.info("Found pages: " + list.size() + " \n");
             updateMessage("Found pages: " + list.size() + " \n");
             ProzorroPageContent pageContent = pageServiceProzorro
@@ -57,7 +57,7 @@ public class TenderParseTimeTask extends Task<ParsingResultData> {
                 for (TenderData tenderData : tenderDataOnPageList) {
                     i++;
 
-                    /*logger.info("Get Tender № " + i + "\n");
+                    *//*logger.info("Get Tender № " + i + "\n");
 
                     try {
                         Thread.sleep(10);
@@ -67,14 +67,14 @@ public class TenderParseTimeTask extends Task<ParsingResultData> {
                             break;
                         }
                     }
-                    updateMessage("Get Tender № " + i + "\n");*/
+                    updateMessage("Get Tender № " + i + "\n");*//*
 
                     //TenderDTO tenderDTO = TenderDTOUtils.getTenderDTO(tenderData.getTender());
                 }
             }
         }else{
             updateMessage("Tenders not found! \n");
-        }
+        }*/
         //long timeForPageTenders = (System.nanoTime() - startTime);
         //System.out.println("Time for ProzorroPage Tenders: " + timeForPageTenders/ 1000000000);
         finish = new Date();
