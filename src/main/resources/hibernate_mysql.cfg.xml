@@ -82,6 +82,7 @@
         <mapping class="ua.prozorro.entity.tenders.ContractSupplierDTO"/>
         <!--Additional for features-->
         <mapping class="ua.prozorro.entity.tenders.FeatureEnumsDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.FeatureFeatureEnumDTO"/>
         <!--/Tenders-->
         <!--Plans-->
         <mapping class="ua.prozorro.entity.pages.PlanPageDTO"/>

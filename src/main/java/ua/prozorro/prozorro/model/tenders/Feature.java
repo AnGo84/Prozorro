@@ -10,6 +10,10 @@ public class Feature {
     private String relatedItem;
     private String title;
     private String description;
+    @SerializedName("title_en")
+    private String  titleEn;
+    @SerializedName("description_en")
+    private String  descriptionEn;
 
     @SerializedName("enum")
     //@Expose
@@ -64,15 +68,32 @@ public class Feature {
         this.featureEnums = featureEnums;
     }
 
+    public String getTitleEn() {
+        return titleEn;
+    }
+
+    public void setTitleEn(String titleEn) {
+        this.titleEn = titleEn;
+    }
+
+    public String getDescriptionEn() {
+        return descriptionEn;
+    }
+
+    public void setDescriptionEn(String descriptionEn) {
+        this.descriptionEn = descriptionEn;
+    }
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("FeatureDTO{");
+        final StringBuffer sb = new StringBuffer("Feature{");
         sb.append("code='").append(code).append('\'');
         sb.append(", featureOf='").append(featureOf).append('\'');
         sb.append(", relatedItem='").append(relatedItem).append('\'');
         sb.append(", title='").append(title).append('\'');
         sb.append(", description='").append(description).append('\'');
+        sb.append(", titleEn='").append(titleEn).append('\'');
+        sb.append(", descriptionEn='").append(descriptionEn).append('\'');
         sb.append(", featureEnums=").append(featureEnums);
         sb.append('}');
         return sb.toString();

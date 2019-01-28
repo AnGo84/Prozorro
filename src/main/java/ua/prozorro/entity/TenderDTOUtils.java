@@ -6,7 +6,9 @@ import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
 import ua.prozorro.prozorro.model.tenders.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TenderDTOUtils {
     public static TenderPageDTO getPageDTO(ProzorroPageElement pageElement) {
@@ -346,6 +348,9 @@ public class TenderDTOUtils {
         featureEnumDTO.setDescription(featureEnum.getDescription());
         featureEnumDTO.setValue(featureEnum.getValue());
 
+        featureEnumDTO.setTitleEn(featureEnum.getTitleEn());
+        featureEnumDTO.setDescriptionEn(featureEnum.getDescriptionEn());
+
         return featureEnumDTO;
     }
 
@@ -360,6 +365,8 @@ public class TenderDTOUtils {
         featureDTO.setRelatedItem(feature.getRelatedItem());
         featureDTO.setTitle(feature.getTitle());
         featureDTO.setDescription(feature.getDescription());
+        featureDTO.setTitleEn(feature.getTitleEn());
+        featureDTO.setDescriptionEn(feature.getDescriptionEn());
 
         featureDTO.setFeatureEnums(getFeatureEnumList(feature.getFeatureEnums()));
 
@@ -396,12 +403,22 @@ public class TenderDTOUtils {
         if (documentList == null || documentList.isEmpty()) {
             return null;
         }
+
+        Map<String, Document> documentsMap = new HashMap<>();
+        for (Document document : documentList) {
+            documentsMap.put(document.getId(), document);
+        }
+
         List<DocumentDTO> documentDTOList = new ArrayList<>();
 
-        for (Document document : documentList) {
-            DocumentDTO documentDTO = getDocumentDTO(document);
+        for (Map.Entry<String,Document> entry: documentsMap.entrySet()){
+            DocumentDTO documentDTO = getDocumentDTO(entry.getValue());
             documentDTOList.add(documentDTO);
         }
+        /*for (Document document : documentList) {
+            DocumentDTO documentDTO = getDocumentDTO(document);
+            documentDTOList.add(documentDTO);
+        }*/
 
         return documentDTOList;
     }

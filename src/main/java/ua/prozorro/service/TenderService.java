@@ -104,15 +104,19 @@ public class TenderService {
 
         if (tender != null && tender.getFeatures() != null) {
             for (FeatureDTO featureDTO : tender.getFeatures()) {
+
+                deleteAllFeatureDependentRecords(featureDTO, session);
                 session.saveOrUpdate(featureDTO);
-                session.saveOrUpdate(new TenderFeatureDTO(tender, featureDTO));
+
+
+                saveFeatureFeatureEnums(featureDTO, session);
+
                 session.flush();
                 session.clear();
 
-				/*Query query=session.createQuery("insert into TenderContractDTO value( :tenderId, :organizationId)");
-				query.setParameter("tenderId", tender.getId());
-				query.setParameter("organizationId", organizationDTO.getId());
-				query.executeUpdate();*/
+                session.saveOrUpdate(new TenderFeatureDTO(tender, featureDTO));
+                session.flush();
+                session.clear();
 
             }
         }
@@ -197,6 +201,15 @@ public class TenderService {
 
         q = session.createQuery("delete from ContractDocumentDTO where contract_id=:contractId");
         q.setParameter("contractId", contractDTO.getId());
+        q.executeUpdate();
+
+        session.flush();
+        session.clear();
+    }
+
+    private void deleteAllFeatureDependentRecords(FeatureDTO featureDTO, Session session) {
+        Query q = session.createQuery("delete from FeatureFeatureEnumDTO where feature_id=:featureId");
+        q.setParameter("featureId", featureDTO.getCode());
         q.executeUpdate();
 
         session.flush();
@@ -470,6 +483,25 @@ public class TenderService {
             }
         }
     }
+
+
+    public void saveFeatureFeatureEnums(FeatureDTO featureDTO, Session session) throws Exception {
+        if (session == null) {
+            throw new Exception("Session did not set");
+        }
+        if (featureDTO != null && featureDTO.getFeatureEnums() != null) {
+            for (FeatureEnumDTO featureEnumDTO : featureDTO.getFeatureEnums()) {
+                session.saveOrUpdate(featureEnumDTO);
+                session.flush();
+                session.clear();
+
+                session.saveOrUpdate(new FeatureFeatureEnumDTO(featureDTO.getCode(), featureEnumDTO.getId()));
+                session.flush();
+                session.clear();
+            }
+        }
+    }
+
 
 
 }
