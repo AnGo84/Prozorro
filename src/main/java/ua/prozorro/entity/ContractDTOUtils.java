@@ -9,7 +9,9 @@ import ua.prozorro.prozorro.model.plans.ProcuringEntity;
 import ua.prozorro.prozorro.model.tenders.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ContractDTOUtils {
 
@@ -247,12 +249,23 @@ public class ContractDTOUtils {
         if (documentList == null || documentList.isEmpty()) {
             return null;
         }
+        Map<String, Document> documentsMap = new HashMap<>();
+        for (Document document : documentList) {
+            documentsMap.put(document.getId(), document);
+        }
+
         List<DocumentDTO> documentDTOList = new ArrayList<>();
 
+        for (Map.Entry<String,Document> entry: documentsMap.entrySet()){
+            DocumentDTO documentDTO = getDocumentDTO(entry.getValue());
+            documentDTOList.add(documentDTO);
+        }
+        /*
+        List<DocumentDTO> documentDTOList = new ArrayList<>();
         for (Document document : documentList) {
             DocumentDTO documentDTO = getDocumentDTO(document);
             documentDTOList.add(documentDTO);
-        }
+        }*/
 
         return documentDTOList;
     }
