@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.prozorro.model.DataType;
-import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
 import ua.prozorro.utils.DateUtils;
 import ua.prozorro.utils.FileUtils;
 
@@ -35,8 +34,7 @@ public class ExchangeRateServiceNBU {
 		Gson gson = new Gson();
 		//ExchangeRateNBU[] nbus =gson.fromJson(stringJSON, ExchangeRateNBU[].class);
 
-		Type founderListType = new TypeToken<ArrayList<ExchangeRateNBU>>() {
-		}.getType();
+		Type founderListType = new TypeToken<ArrayList<ExchangeRateNBU>>() {}.getType();
 
 		List<ExchangeRateNBU> rateNBUList = gson.fromJson(stringJSON, founderListType);
 
@@ -73,9 +71,9 @@ public class ExchangeRateServiceNBU {
 		Calendar endCalendar = new GregorianCalendar();
 		endCalendar.setTime(dateTill);
 
-		while (calendar.before(endCalendar)||calendar.equals(endCalendar)) {
+		while (calendar.before(endCalendar) || calendar.equals(endCalendar)) {
 			ratesURLList.add(startPageURL);
-			if (withPageElements){
+			if (withPageElements) {
 				List<ExchangeRateNBU> pageContentList = getRateContentFromURL(startPageURL);
 			}
 			calendar.add(Calendar.DATE, 1);

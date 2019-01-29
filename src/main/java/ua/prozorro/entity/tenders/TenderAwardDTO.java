@@ -1,85 +1,70 @@
 package ua.prozorro.entity.tenders;
 
-/*@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-	@JoinTable(name = "Tenders_Awards", joinColumns = {@JoinColumn(name = "tender_id")}, inverseJoinColumns = {
-			@JoinColumn(name = "award_id")})*/
+import ua.prozorro.entity.tenders.pk.TenderAwardPK;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "Tenders_Awards")
+@IdClass(TenderAwardPK.class)
 public class TenderAwardDTO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
-    private long id;
+    @Column(name = "tender_id")
+    private String tenderId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tender_id")
-    //@Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private TenderDTO tender;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "award_id")
-    //@Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private AwardDTO awardDTO;
+    @Id
+    @Column(name = "award_id")
+    private String awardId;
 
     public TenderAwardDTO() {
     }
 
-    public TenderAwardDTO(TenderDTO tender, AwardDTO awardDTO) {
-        this.tender = tender;
-        this.awardDTO = awardDTO;
-        //this.id = 31 * tender.getId().hashCode() + awardDTO.getId().hashCode();
+    public TenderAwardDTO(String tenderId, String awardId) {
+        this.tenderId = tenderId;
+        this.awardId = awardId;
     }
 
-    public TenderDTO getTender() {
-        return tender;
+    public String getTenderId() {
+        return tenderId;
     }
 
-    public void setTender(TenderDTO tender) {
-        this.tender = tender;
+    public void setTenderId(String tenderId) {
+        this.tenderId = tenderId;
     }
 
-    public AwardDTO getAwardDTO() {
-        return awardDTO;
+    public String getAwardId() {
+        return awardId;
     }
 
-    public void setAwardDTO(AwardDTO awardDTO) {
-        this.awardDTO = awardDTO;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+    public void setAwardId(String awardId) {
+        this.awardId = awardId;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof TenderAwardDTO))
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
         TenderAwardDTO that = (TenderAwardDTO) o;
-        return id == that.id && Objects.equals(tender, that.tender) && Objects.equals(awardDTO, that.awardDTO);
+
+        if (tenderId != null ? !tenderId.equals(that.tenderId) : that.tenderId != null) return false;
+        return awardId != null ? awardId.equals(that.awardId) : that.awardId == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, tender, awardDTO);
+        int result = tenderId != null ? tenderId.hashCode() : 0;
+        result = 31 * result + (awardId != null ? awardId.hashCode() : 0);
+        return result;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("TenderAwardDTO{");
-        sb.append("id=").append(id);
-        sb.append(", tender=").append(tender);
-        sb.append(", awardDTO=").append(awardDTO);
+        final StringBuffer sb = new StringBuffer("TenderAwardDTO{");
+        sb.append("tenderId='").append(tenderId).append('\'');
+        sb.append(", awardId='").append(awardId).append('\'');
         sb.append('}');
         return sb.toString();
     }

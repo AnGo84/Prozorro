@@ -83,7 +83,7 @@ public class TenderService {
         if (tender != null && tender.getFunders() != null) {
             for (OrganizationDTO organizationDTO : tender.getFunders()) {
                 session.saveOrUpdate(organizationDTO);
-                session.saveOrUpdate(new TenderFunderDTO(tender, organizationDTO));
+                session.saveOrUpdate(new TenderFunderDTO(tender.getId(), organizationDTO.getId()));
                 session.flush();
                 session.clear();
 
@@ -114,7 +114,7 @@ public class TenderService {
                 session.flush();
                 session.clear();
 
-                session.saveOrUpdate(new TenderFeatureDTO(tender, featureDTO));
+                session.saveOrUpdate(new TenderFeatureDTO(tender.getId(), featureDTO.getCode()));
                 session.flush();
                 session.clear();
 
@@ -226,7 +226,7 @@ public class TenderService {
                 session.flush();
                 session.clear();
 
-                session.saveOrUpdate(new TenderDocumentDTO(tender, documentDTO));
+                session.saveOrUpdate(new TenderDocumentDTO(tender.getId(), documentDTO.getId()));
                 session.flush();
                 session.clear();
             }
@@ -243,7 +243,7 @@ public class TenderService {
                 session.flush();
                 session.clear();
 
-                session.saveOrUpdate(new BidDocumentDTO(bidDTO, documentDTO));
+                session.saveOrUpdate(new BidDocumentDTO(bidDTO.getId(), documentDTO.getId()));
                 session.flush();
                 session.clear();
             }
@@ -260,7 +260,7 @@ public class TenderService {
                 session.flush();
                 session.clear();
 
-                session.saveOrUpdate(new BidTendererDTO(bidDTO, organizationDTO));
+                session.saveOrUpdate(new BidTendererDTO(bidDTO.getId(), organizationDTO.getId()));
                 session.flush();
                 session.clear();
             }
@@ -312,7 +312,7 @@ public class TenderService {
                 session.flush();
                 session.clear();
 
-                session.saveOrUpdate(new TenderAwardDTO(tender, awardDTO));
+                session.saveOrUpdate(new TenderAwardDTO(tender.getId(), awardDTO.getId()));
                 session.flush();
                 session.clear();
             }
@@ -330,7 +330,7 @@ public class TenderService {
                 session.flush();
                 session.clear();
 
-                session.saveOrUpdate(new AwardDocumentDTO(awardDTO, documentDTO));
+                session.saveOrUpdate(new AwardDocumentDTO(awardDTO.getId(), documentDTO.getId()));
                 session.flush();
                 session.clear();
             }
@@ -347,7 +347,7 @@ public class TenderService {
                 session.flush();
                 session.clear();
 
-                session.saveOrUpdate(new AwardSupplierDTO(awardDTO, organizationDTO));
+                session.saveOrUpdate(new AwardSupplierDTO(awardDTO.getId(), organizationDTO.getId()));
                 session.flush();
                 session.clear();
             }
@@ -365,7 +365,7 @@ public class TenderService {
                 session.flush();
                 session.clear();
 
-                session.saveOrUpdate(new ContractItemDTO(contractDTO, itemDTO));
+                session.saveOrUpdate(new ContractItemDTO(contractDTO.getId(), itemDTO.getId()));
                 session.flush();
                 session.clear();
             }
@@ -382,7 +382,7 @@ public class TenderService {
                 session.flush();
                 session.clear();
 
-                session.saveOrUpdate(new ContractSupplierDTO(contractDTO, organizationDTO));
+                session.saveOrUpdate(new ContractSupplierDTO(contractDTO.getId(), organizationDTO.getId()));
                 session.flush();
                 session.clear();
             }
@@ -399,7 +399,7 @@ public class TenderService {
                 session.flush();
                 session.clear();
 
-                session.saveOrUpdate(new ContractDocumentDTO(contractDTO, documentDTO));
+                session.saveOrUpdate(new ContractDocumentDTO(contractDTO.getId(), documentDTO.getId()));
                 session.flush();
                 session.clear();
             }
@@ -418,7 +418,7 @@ public class TenderService {
                 session.flush();
                 session.clear();
 
-                session.saveOrUpdate(new TenderItemDTO(tender, itemDTO));
+                session.saveOrUpdate(new TenderItemDTO(tender.getId(), itemDTO.getId()));
                 session.flush();
                 session.clear();
             }
@@ -441,7 +441,7 @@ public class TenderService {
                 session.flush();
                 session.clear();
 
-                session.saveOrUpdate(new TenderBidDTO(tender, bidDTO));
+                session.saveOrUpdate(new TenderBidDTO(tender.getId(), bidDTO.getId()));
                 session.flush();
                 session.clear();
             }
@@ -459,7 +459,7 @@ public class TenderService {
                 session.flush();
                 session.clear();
 
-                session.saveOrUpdate(new TenderQuestionDTO(tender, questionDTO));
+                session.saveOrUpdate(new TenderQuestionDTO(tender.getId(), questionDTO.getId()));
                 session.flush();
                 session.clear();
             }
@@ -477,7 +477,7 @@ public class TenderService {
                 session.flush();
                 session.clear();
 
-                session.saveOrUpdate(new TenderComplaintDTO(tender, complaintDTO));
+                session.saveOrUpdate(new TenderComplaintDTO(tender.getId(), complaintDTO.getId()));
                 session.flush();
                 session.clear();
             }

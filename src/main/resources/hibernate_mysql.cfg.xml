@@ -20,6 +20,7 @@
         <property name="hibernate.dialect.storage_engine">InnoDB</property>
 
         <!-- Database Scheme Auto Update -->
+        <!--Hibernate ddl auto (create, create-drop, validate, update)-->
         <property name="hbm2ddl.auto">update</property>
         <!--<property name="hibernate.connection.CharSet">utf8</property>
         <property name="hibernate.connection.characterEncoding">utf8</property>

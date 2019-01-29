@@ -1,61 +1,45 @@
 package ua.prozorro.entity.tenders;
 
 import org.hibernate.annotations.Cascade;
+import ua.prozorro.entity.tenders.pk.TenderFeaturePK;
 
 import javax.persistence.*;
 
-/*@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-@JoinTable(name = "Tenders_Features", joinColumns = {@JoinColumn(name = "tender_id")},
-		inverseJoinColumns = {@JoinColumn(name = "feature_id")})*/
 @Entity
 @Table(name = "Tenders_Features")
+@IdClass(TenderFeaturePK.class)
 public class TenderFeatureDTO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column
-	private long id;
+	@Column(name = "tender_id")
+	private String tenderId;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "tender_id")
-	@Cascade({org.hibernate.annotations.CascadeType.ALL})
-	private TenderDTO tender;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "feature_id")
-	@Cascade({org.hibernate.annotations.CascadeType.ALL})
-	private FeatureDTO feature;
+	@Id
+	@Column(name = "feature_id")
+	private String featureId;
 
 	public TenderFeatureDTO() {
 	}
 
-	public TenderFeatureDTO(TenderDTO tender, FeatureDTO feature) {
-		this.tender = tender;
-		this.feature = feature;
+	public TenderFeatureDTO(String tenderId, String featureId) {
+		this.tenderId = tenderId;
+		this.featureId = featureId;
 	}
 
-	public long getId() {
-		return id;
+	public String getTenderId() {
+		return tenderId;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public void setTenderId(String tenderId) {
+		this.tenderId = tenderId;
 	}
 
-	public TenderDTO getTender() {
-		return tender;
+	public String getFeatureId() {
+		return featureId;
 	}
 
-	public void setTender(TenderDTO tender) {
-		this.tender = tender;
-	}
-
-	public FeatureDTO getFeature() {
-		return feature;
-	}
-
-	public void setFeature(FeatureDTO feature) {
-		this.feature = feature;
+	public void setFeatureId(String featureId) {
+		this.featureId = featureId;
 	}
 
 	@Override
@@ -65,25 +49,22 @@ public class TenderFeatureDTO {
 
 		TenderFeatureDTO that = (TenderFeatureDTO) o;
 
-		if (id != that.id) return false;
-		if (tender != null ? !tender.equals(that.tender) : that.tender != null) return false;
-		return feature != null ? feature.equals(that.feature) : that.feature == null;
+		if (tenderId != null ? !tenderId.equals(that.tenderId) : that.tenderId != null) return false;
+		return featureId != null ? featureId.equals(that.featureId) : that.featureId == null;
 	}
 
 	@Override
 	public int hashCode() {
-		int result = (int) (id ^ (id >>> 32));
-		result = 31 * result + (tender != null ? tender.hashCode() : 0);
-		result = 31 * result + (feature != null ? feature.hashCode() : 0);
+		int result = tenderId != null ? tenderId.hashCode() : 0;
+		result = 31 * result + (featureId != null ? featureId.hashCode() : 0);
 		return result;
 	}
 
 	@Override
 	public String toString() {
 		final StringBuffer sb = new StringBuffer("TenderFeatureDTO{");
-		sb.append("id=").append(id);
-		sb.append(", tender=").append(tender);
-		sb.append(", feature=").append(feature);
+		sb.append("tenderId='").append(tenderId).append('\'');
+		sb.append(", featureId='").append(featureId).append('\'');
 		sb.append('}');
 		return sb.toString();
 	}

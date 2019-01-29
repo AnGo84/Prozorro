@@ -1,91 +1,68 @@
 package ua.prozorro.entity.tenders;
 
+import ua.prozorro.entity.tenders.pk.ContractSupplierPK;
+
 import javax.persistence.*;
 
-/*@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-    @JoinTable(name = "Contracts_Organizations", joinColumns = { @JoinColumn(name = "contract_id") }, inverseJoinColumns = {
-            @JoinColumn(name = "organization_id") })*/
 @Entity
 @Table(name = "Contracts_Suppliers")
+@IdClass(ContractSupplierPK.class)
 public class ContractSupplierDTO {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
-    private long id;
+    @Column(name = "contract_id")
+    private String contractId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "contract_id")
-    //@Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private ContractDTO contract;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "supplier_id")
-    //@Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private OrganizationDTO organization;
+    @Id
+    @Column(name = "supplier_id")
+    private int supplierId;
 
     public ContractSupplierDTO() {
     }
 
-    public ContractSupplierDTO(ContractDTO contract, OrganizationDTO organization) {
-        this.contract = contract;
-        this.organization = organization;
-        //this.id = 31 * contract.getId().hashCode() + organization.getId();
+    public ContractSupplierDTO(String contractId, int supplierId) {
+        this.contractId = contractId;
+        this.supplierId = supplierId;
     }
 
-    public long getId() {
-        return id;
+    public String getContractId() {
+        return contractId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setContractId(String contractId) {
+        this.contractId = contractId;
     }
 
-    public ContractDTO getContract() {
-        return contract;
+    public int getSupplierId() {
+        return supplierId;
     }
 
-    public void setContract(ContractDTO contract) {
-        this.contract = contract;
-    }
-
-    public OrganizationDTO getOrganization() {
-        return organization;
-    }
-
-    public void setOrganization(OrganizationDTO organization) {
-        this.organization = organization;
+    public void setSupplierId(int supplierId) {
+        this.supplierId = supplierId;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof ContractSupplierDTO))
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         ContractSupplierDTO that = (ContractSupplierDTO) o;
 
-        if (id != that.id)
-            return false;
-        if (contract != null ? !contract.equals(that.contract) : that.contract != null)
-            return false;
-        return organization != null ? organization.equals(that.organization) : that.organization == null;
+        if (supplierId != that.supplierId) return false;
+        return contractId != null ? contractId.equals(that.contractId) : that.contractId == null;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (contract != null ? contract.hashCode() : 0);
-        result = 31 * result + (organization != null ? organization.hashCode() : 0);
+        int result = contractId != null ? contractId.hashCode() : 0;
+        result = 31 * result + supplierId;
         return result;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ContractSupplierDTO{");
-        sb.append("id=").append(id);
-        sb.append(", contract=").append(contract);
-        sb.append(", organization=").append(organization);
+        final StringBuffer sb = new StringBuffer("ContractSupplierDTO{");
+        sb.append("contractId='").append(contractId).append('\'');
+        sb.append(", supplierId=").append(supplierId);
         sb.append('}');
         return sb.toString();
     }

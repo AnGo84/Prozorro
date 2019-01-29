@@ -1,94 +1,69 @@
 package ua.prozorro.entity.plans;
 
+import ua.prozorro.entity.plans.pk.PlanDocumentPK;
 import ua.prozorro.entity.tenders.AwardDTO;
 import ua.prozorro.entity.tenders.DocumentDTO;
 
 import javax.persistence.*;
 
-/*@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-	@JoinTable(name = "Awards_Documents", joinColumns = {@JoinColumn(name = "award_id")}, inverseJoinColumns = {
-			@JoinColumn(name = "document_id")})*/
 @Entity
 @Table(name = "Plans_Documents")
+@IdClass(PlanDocumentPK.class)
 public class PlanDocumentDTO {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
-    private long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "plan_id")
-    //@Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private PlanDTO plan;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "document_id")
-    //@Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private DocumentDTO document;
+    @Column(name = "plan_id")
+    private String planId;
+    @Id
+    @Column(name = "document_id")
+    private String documentId;
 
     public PlanDocumentDTO() {
     }
 
-    public PlanDocumentDTO(PlanDTO plan, DocumentDTO document) {
-        this.plan = plan;
-        this.document = document;
-        //this.id = 31 * award.getId().hashCode() + document.getId().hashCode();
+    public PlanDocumentDTO(String planId, String documentId) {
+        this.planId = planId;
+        this.documentId = documentId;
     }
 
-    public long getId() {
-        return id;
+    public String getPlanId() {
+        return planId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setPlanId(String planId) {
+        this.planId = planId;
     }
 
-    public PlanDTO getPlan() {
-        return plan;
+    public String getDocumentId() {
+        return documentId;
     }
 
-    public void setPlan(PlanDTO plan) {
-        this.plan = plan;
-    }
-
-    public DocumentDTO getDocument() {
-        return document;
-    }
-
-    public void setDocument(DocumentDTO document) {
-        this.document = document;
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof PlanDocumentDTO))
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         PlanDocumentDTO that = (PlanDocumentDTO) o;
 
-        if (id != that.id)
-            return false;
-        if (plan != null ? !plan.equals(that.plan) : that.plan != null)
-            return false;
-        return document != null ? document.equals(that.document) : that.document == null;
+        if (planId != null ? !planId.equals(that.planId) : that.planId != null) return false;
+        return documentId != null ? documentId.equals(that.documentId) : that.documentId == null;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (plan != null ? plan.hashCode() : 0);
-        result = 31 * result + (document != null ? document.hashCode() : 0);
+        int result = planId != null ? planId.hashCode() : 0;
+        result = 31 * result + (documentId != null ? documentId.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("PlanDocumentDTO{");
-        sb.append("id=").append(id);
-        sb.append(", plan=").append(plan);
-        sb.append(", document=").append(document);
+        final StringBuffer sb = new StringBuffer("PlanDocumentDTO{");
+        sb.append("planId='").append(planId).append('\'');
+        sb.append(", documentId='").append(documentId).append('\'');
         sb.append('}');
         return sb.toString();
     }

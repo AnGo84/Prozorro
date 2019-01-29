@@ -1,91 +1,68 @@
 package ua.prozorro.entity.tenders;
 
+import ua.prozorro.entity.tenders.pk.TenderComplaintPK;
+
 import javax.persistence.*;
 
-/*@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-	@JoinTable(name = "Tenders_Complaints", joinColumns = {@JoinColumn(name = "tender_id")}, inverseJoinColumns = {
-			@JoinColumn(name = "complaint_id")})*/
 @Entity
 @Table(name = "Tenders_Complaints")
+@IdClass(TenderComplaintPK.class)
 public class TenderComplaintDTO {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
-    private long id;
+    @Column(name = "tender_id")
+    private String tenderId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tender_id")
-    //@Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private TenderDTO tender;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "complaint_id")
-    //@Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private ComplaintDTO complaintDTO;
+    @Id
+    @Column(name = "complaint_id")
+    private String complaintId;
 
     public TenderComplaintDTO() {
     }
 
-    public TenderComplaintDTO(TenderDTO tender, ComplaintDTO complaintDTO) {
-        this.tender = tender;
-        this.complaintDTO = complaintDTO;
-        //this.id = 31 * tender.getId().hashCode() + complaintDTO.getId().hashCode();
+    public TenderComplaintDTO(String tenderId, String complaintId) {
+        this.tenderId = tenderId;
+        this.complaintId = complaintId;
     }
 
-    public long getId() {
-        return id;
+    public String getTenderId() {
+        return tenderId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setTenderId(String tenderId) {
+        this.tenderId = tenderId;
     }
 
-    public TenderDTO getTender() {
-        return tender;
+    public String getComplaintId() {
+        return complaintId;
     }
 
-    public void setTender(TenderDTO tender) {
-        this.tender = tender;
-    }
-
-    public ComplaintDTO getComplaintDTO() {
-        return complaintDTO;
-    }
-
-    public void setComplaintDTO(ComplaintDTO complaintDTO) {
-        this.complaintDTO = complaintDTO;
+    public void setComplaintId(String complaintId) {
+        this.complaintId = complaintId;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof TenderComplaintDTO))
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         TenderComplaintDTO that = (TenderComplaintDTO) o;
 
-        if (id != that.id)
-            return false;
-        if (tender != null ? !tender.equals(that.tender) : that.tender != null)
-            return false;
-        return complaintDTO != null ? complaintDTO.equals(that.complaintDTO) : that.complaintDTO == null;
+        if (tenderId != null ? !tenderId.equals(that.tenderId) : that.tenderId != null) return false;
+        return complaintId != null ? complaintId.equals(that.complaintId) : that.complaintId == null;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (tender != null ? tender.hashCode() : 0);
-        result = 31 * result + (complaintDTO != null ? complaintDTO.hashCode() : 0);
+        int result = tenderId != null ? tenderId.hashCode() : 0;
+        result = 31 * result + (complaintId != null ? complaintId.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("TenderComplaintDTO{");
-        sb.append("id=").append(id);
-        sb.append(", tender=").append(tender);
-        sb.append(", complaintDTO=").append(complaintDTO);
+        final StringBuffer sb = new StringBuffer("TenderComplaintDTO{");
+        sb.append("tenderId='").append(tenderId).append('\'');
+        sb.append(", complaintId='").append(complaintId).append('\'');
         sb.append('}');
         return sb.toString();
     }

@@ -36,3 +36,5 @@ Good example:  https://public.api.openprocurement.org/api/<VERSION>/tenders/55e2
 Tested for <VERSION> = 2.4
 
 Create classes from JSON: http://www.jsonschema2pojo.org/
+
+Get NBU rates: https://bank.gov.ua/control/uk/publish/article?art_id=38441973

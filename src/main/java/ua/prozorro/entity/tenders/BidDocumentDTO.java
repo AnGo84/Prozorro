@@ -1,92 +1,68 @@
 package ua.prozorro.entity.tenders;
 
-/*@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-    @JoinTable(name = "Bids_Documents", joinColumns = {@JoinColumn(name = "bid_id")},
-            inverseJoinColumns = {@JoinColumn(name = "document_id")})*/
+import ua.prozorro.entity.tenders.pk.BidDocumentPK;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "Bids_Documents")
+@IdClass(BidDocumentPK.class)
 public class BidDocumentDTO {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
-    private long id;
+    @Column(name = "bid_id")
+    private String bidId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bid_id")
-    //@Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private BidDTO bid;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "document_id")
-    //@Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private DocumentDTO document;
+    @Id
+    @Column(name = "document_id")
+    private String documentId;
 
     public BidDocumentDTO() {
     }
 
-    public BidDocumentDTO(BidDTO bid, DocumentDTO document) {
-        this.bid = bid;
-        this.document = document;
-        //this.id = 31 * bid.getId().hashCode() + document.getId().hashCode();
+    public BidDocumentDTO(String bidId, String documentId) {
+        this.bidId = bidId;
+        this.documentId = documentId;
     }
 
-    public long getId() {
-        return id;
+    public String getBidId() {
+        return bidId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setBidId(String bidId) {
+        this.bidId = bidId;
     }
 
-    public BidDTO getBid() {
-        return bid;
+    public String getDocumentId() {
+        return documentId;
     }
 
-    public void setBid(BidDTO bid) {
-        this.bid = bid;
-    }
-
-    public DocumentDTO getDocument() {
-        return document;
-    }
-
-    public void setDocument(DocumentDTO document) {
-        this.document = document;
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof BidDocumentDTO))
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         BidDocumentDTO that = (BidDocumentDTO) o;
 
-        if (id != that.id)
-            return false;
-        if (bid != null ? !bid.equals(that.bid) : that.bid != null)
-            return false;
-        return document != null ? document.equals(that.document) : that.document == null;
+        if (bidId != null ? !bidId.equals(that.bidId) : that.bidId != null) return false;
+        return documentId != null ? documentId.equals(that.documentId) : that.documentId == null;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (bid != null ? bid.hashCode() : 0);
-        result = 31 * result + (document != null ? document.hashCode() : 0);
+        int result = bidId != null ? bidId.hashCode() : 0;
+        result = 31 * result + (documentId != null ? documentId.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("BidDocumentDTO{");
-        sb.append("id=").append(id);
-        sb.append(", bid=").append(bid);
-        sb.append(", document=").append(document);
+        final StringBuffer sb = new StringBuffer("BidDocumentDTO{");
+        sb.append("bidId='").append(bidId).append('\'');
+        sb.append(", documentId='").append(documentId).append('\'');
         sb.append('}');
         return sb.toString();
     }

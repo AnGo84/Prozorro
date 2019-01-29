@@ -1,17 +1,17 @@
 package ua.prozorro.entity.tenders;
 
-/*@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-@JoinTable(name = "Tenders_Documents", joinColumns = {@JoinColumn(name = "tender_id")}, inverseJoinColumns = {
-        @JoinColumn(name = "document_id")})*/
+import ua.prozorro.entity.tenders.pk.ContractDocumentPK;
+import ua.prozorro.entity.tenders.pk.FeatureFeatureEnumPK;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "Contracts_Documents")
+@IdClass(ContractDocumentPK.class)
 public class ContractDocumentDTO {
 
-    @Id
+    /*@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
     private long id;
@@ -24,39 +24,37 @@ public class ContractDocumentDTO {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "document_id")
     //@Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private DocumentDTO document;
+    private DocumentDTO document;*/
+
+    @Id
+    @Column(name = "contract_id")
+    private String contractId;
+    @Id
+    @Column(name = "document_id")
+    private String documentId;
 
     public ContractDocumentDTO() {
     }
 
-    public ContractDocumentDTO(ContractDTO contract, DocumentDTO document) {
-        this.contract = contract;
-        this.document = document;
-        //this.id = 31 * tender.getId().hashCode() + document.getId().hashCode();
+    public ContractDocumentDTO(String contractId, String documentId) {
+        this.contractId = contractId;
+        this.documentId = documentId;
     }
 
-    public long getId() {
-        return id;
+    public String getContractId() {
+        return contractId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setContractId(String contractId) {
+        this.contractId = contractId;
     }
 
-    public ContractDTO getContract() {
-        return contract;
+    public String getDocumentId() {
+        return documentId;
     }
 
-    public void setContract(ContractDTO contract) {
-        this.contract = contract;
-    }
-
-    public DocumentDTO getDocument() {
-        return document;
-    }
-
-    public void setDocument(DocumentDTO document) {
-        this.document = document;
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
     @Override
@@ -66,25 +64,22 @@ public class ContractDocumentDTO {
 
         ContractDocumentDTO that = (ContractDocumentDTO) o;
 
-        if (id != that.id) return false;
-        if (contract != null ? !contract.equals(that.contract) : that.contract != null) return false;
-        return document != null ? document.equals(that.document) : that.document == null;
+        if (contractId != null ? !contractId.equals(that.contractId) : that.contractId != null) return false;
+        return documentId != null ? documentId.equals(that.documentId) : that.documentId == null;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (contract != null ? contract.hashCode() : 0);
-        result = 31 * result + (document != null ? document.hashCode() : 0);
+        int result = contractId != null ? contractId.hashCode() : 0;
+        result = 31 * result + (documentId != null ? documentId.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("ContractDocumentDTO{");
-        sb.append("id=").append(id);
-        sb.append(", contract=").append(contract);
-        sb.append(", document=").append(document);
+        sb.append("contractId='").append(contractId).append('\'');
+        sb.append(", documentId='").append(documentId).append('\'');
         sb.append('}');
         return sb.toString();
     }

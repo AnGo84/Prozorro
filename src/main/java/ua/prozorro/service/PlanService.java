@@ -70,7 +70,7 @@ public class PlanService {
                 session.flush();
                 session.clear();
 
-                session.saveOrUpdate(new PlanDocumentDTO(planDTO, documentDTO));
+                session.saveOrUpdate(new PlanDocumentDTO(planDTO.getId(), documentDTO.getId()));
                 session.flush();
                 session.clear();
             }
@@ -86,7 +86,7 @@ public class PlanService {
                 session.flush();
                 session.clear();
 
-                session.saveOrUpdate(new PlanItemDTO(planDTO, itemsDTO));
+                session.saveOrUpdate(new PlanItemDTO(planDTO.getId(), itemsDTO.getId()));
                 session.flush();
                 session.clear();
             }
@@ -102,7 +102,7 @@ public class PlanService {
                 session.flush();
                 session.clear();
 
-                session.saveOrUpdate(new PlanAdditionalClassificationDTO(planDTO, classificationDTO));
+                session.saveOrUpdate(new PlanAdditionalClassificationDTO(planDTO.getId(), classificationDTO.getId()));
                 session.flush();
                 session.clear();
             }

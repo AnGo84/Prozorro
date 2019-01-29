@@ -41,7 +41,6 @@ public class PlanDTO {
 	@JoinColumn(name = "budget_id")
 	private BudgetDTO budget;
 
-
 	/*@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	@JoinTable(name = "Plans_AdditionalClassifications", joinColumns = {@JoinColumn(name = "plan_id")},
 			inverseJoinColumns = {@JoinColumn(name = "classification_id")})*/

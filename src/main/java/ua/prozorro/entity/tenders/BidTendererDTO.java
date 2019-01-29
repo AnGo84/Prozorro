@@ -1,5 +1,7 @@
 package ua.prozorro.entity.tenders;
 
+import ua.prozorro.entity.tenders.pk.BidTendererPK;
+
 import javax.persistence.*;
 
 /*@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
@@ -7,85 +9,63 @@ import javax.persistence.*;
             inverseJoinColumns = {@JoinColumn(name = "organization_id")})*/
 @Entity
 @Table(name = "Bids_Organizations")
+@IdClass(BidTendererPK.class)
 public class BidTendererDTO {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
-    private long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bid_id")
-    //@Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private BidDTO bid;
+    private String bidId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "document_id")
-    //@Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private OrganizationDTO organization;
+    @Id
+    @Column(name = "organization_id")
+    private int tendererId;
 
     public BidTendererDTO() {
     }
 
-    public BidTendererDTO(BidDTO bid, OrganizationDTO organization) {
-        this.bid = bid;
-        this.organization = organization;
-        //this.id = 31 * bid.getId().hashCode() + organization.getId();
+    public BidTendererDTO(String bidId, int tendererId) {
+        this.bidId = bidId;
+        this.tendererId = tendererId;
     }
 
-    public long getId() {
-        return id;
+    public String getBidId() {
+        return bidId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setBidId(String bidId) {
+        this.bidId = bidId;
     }
 
-    public BidDTO getBid() {
-        return bid;
+    public int getTendererId() {
+        return tendererId;
     }
 
-    public void setBid(BidDTO bid) {
-        this.bid = bid;
-    }
-
-    public OrganizationDTO getOrganization() {
-        return organization;
-    }
-
-    public void setOrganization(OrganizationDTO organization) {
-        this.organization = organization;
+    public void setTendererId(int tendererId) {
+        this.tendererId = tendererId;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof BidTendererDTO))
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         BidTendererDTO that = (BidTendererDTO) o;
 
-        if (id != that.id)
-            return false;
-        if (bid != null ? !bid.equals(that.bid) : that.bid != null)
-            return false;
-        return organization != null ? organization.equals(that.organization) : that.organization == null;
+        if (tendererId != that.tendererId) return false;
+        return bidId != null ? bidId.equals(that.bidId) : that.bidId == null;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (bid != null ? bid.hashCode() : 0);
-        result = 31 * result + (organization != null ? organization.hashCode() : 0);
+        int result = bidId != null ? bidId.hashCode() : 0;
+        result = 31 * result + tendererId;
         return result;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("BidTendererDTO{");
-        sb.append("id=").append(id);
-        sb.append(", bid=").append(bid);
-        sb.append(", organization=").append(organization);
+        final StringBuffer sb = new StringBuffer("BidTendererDTO{");
+        sb.append("bidId='").append(bidId).append('\'');
+        sb.append(", tendererId=").append(tendererId);
         sb.append('}');
         return sb.toString();
     }

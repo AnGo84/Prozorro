@@ -14,6 +14,7 @@ import javafx.stage.WindowEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ua.prozorro.controller.MainController;
+import ua.prozorro.controller.ParseURLController;
 import ua.prozorro.controller.SchemaExportDialogController;
 import ua.prozorro.fx.DialogText;
 import ua.prozorro.fx.Dialogs;
@@ -133,8 +134,40 @@ public class ProzorroApp extends Application {
         } catch (IOException e) {
             e.printStackTrace();
 
-            Dialogs.showErrorDialog(e, new DialogText("Application start error", "Error with resource's file",
-                                                      "Can't find resource's file '" + CONFIG_FILE_NAME + "'"), logger);
+            Dialogs.showErrorDialog(e, new DialogText("Application start error", "Error with dialog showing",
+                                                      "Can't show dialog 'SchemaExportDialog'"), logger);
+            return false;
+        }
+    }
+
+    public boolean showParseURLDialog() {
+        try {
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/views/ParseURLDialog.fxml"));
+
+            AnchorPane page = (AnchorPane) loader.load();
+
+            // Создаём диалоговое окно Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Проверка данных по URL");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            ParseURLController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setProzorroApp(this);
+
+            dialogStage.showAndWait();
+
+            return controller.isOkClicked();
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            Dialogs.showErrorDialog(e, new DialogText("Application start error", "Error with dialog showing",
+                    "Can't show dialog 'ParseURLDialog'"), logger);
             return false;
         }
     }

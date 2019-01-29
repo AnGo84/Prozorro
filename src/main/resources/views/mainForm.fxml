@@ -101,10 +101,11 @@
                         <MenuItem fx:id="menuItemSaveLog" mnemonicParsing="false" onAction="#onSaveLogToFile" text="Сохранить в файл" />
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Обработка" visible="false">
+                <Menu mnemonicParsing="false" text="Обработка">
                     <items>
-                        <MenuItem fx:id="menuItemParseList" mnemonicParsing="false" onAction="#onParsePage" text="Разобрать лист по URL" />
-                        <MenuItem fx:id="menuItemParseTender" mnemonicParsing="false" onAction="#onParseTender" text="Разобрать тендер по ID" />
+                  <MenuItem fx:id="menuItemParseURL" mnemonicParsing="false" onAction="#onMenuItemParseURL" text="Проверка данных" />
+                        <MenuItem fx:id="menuItemParseList" mnemonicParsing="false" onAction="#onParsePage" text="Разобрать лист по URL" visible="false" />
+                        <MenuItem fx:id="menuItemParseTender" mnemonicParsing="false" onAction="#onParseTender" text="Разобрать тендер по ID" visible="false" />
                     </items>
                 </Menu>
             </menus>

@@ -1,91 +1,68 @@
 package ua.prozorro.entity.tenders;
 
+import ua.prozorro.entity.tenders.pk.TenderQuestionPK;
+
 import javax.persistence.*;
 
-/*@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-	@JoinTable(name = "Tenders_Questions", joinColumns = {@JoinColumn(name = "tender_id")}, inverseJoinColumns = {
-			@JoinColumn(name = "question_id")})*/
 @Entity
 @Table(name = "Tenders_Questions")
+@IdClass(TenderQuestionPK.class)
 public class TenderQuestionDTO {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
-    private long id;
+    @Column(name = "tender_id")
+    private String tenderId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tender_id")
-    //@Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private TenderDTO tender;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "question_id")
-    //@Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private QuestionDTO questionDTO;
+    @Id
+    @Column(name = "question_id")
+    private String questionId;
 
     public TenderQuestionDTO() {
     }
 
-    public TenderQuestionDTO(TenderDTO tender, QuestionDTO questionDTO) {
-        this.tender = tender;
-        this.questionDTO = questionDTO;
-        //this.id = 31 * tender.getId().hashCode() + questionDTO.getId().hashCode();
+    public TenderQuestionDTO(String tenderId, String questionId) {
+        this.tenderId = tenderId;
+        this.questionId = questionId;
     }
 
-    public long getId() {
-        return id;
+    public String getTenderId() {
+        return tenderId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setTenderId(String tenderId) {
+        this.tenderId = tenderId;
     }
 
-    public TenderDTO getTender() {
-        return tender;
+    public String getQuestionId() {
+        return questionId;
     }
 
-    public void setTender(TenderDTO tender) {
-        this.tender = tender;
-    }
-
-    public QuestionDTO getQuestionDTO() {
-        return questionDTO;
-    }
-
-    public void setQuestionDTO(QuestionDTO questionDTO) {
-        this.questionDTO = questionDTO;
+    public void setQuestionId(String questionId) {
+        this.questionId = questionId;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof TenderQuestionDTO))
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         TenderQuestionDTO that = (TenderQuestionDTO) o;
 
-        if (id != that.id)
-            return false;
-        if (tender != null ? !tender.equals(that.tender) : that.tender != null)
-            return false;
-        return questionDTO != null ? questionDTO.equals(that.questionDTO) : that.questionDTO == null;
+        if (tenderId != null ? !tenderId.equals(that.tenderId) : that.tenderId != null) return false;
+        return questionId != null ? questionId.equals(that.questionId) : that.questionId == null;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (tender != null ? tender.hashCode() : 0);
-        result = 31 * result + (questionDTO != null ? questionDTO.hashCode() : 0);
+        int result = tenderId != null ? tenderId.hashCode() : 0;
+        result = 31 * result + (questionId != null ? questionId.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("TenderQuestionDTO{");
-        sb.append("id=").append(id);
-        sb.append(", tender=").append(tender);
-        sb.append(", questionDTO=").append(questionDTO);
+        final StringBuffer sb = new StringBuffer("TenderQuestionDTO{");
+        sb.append("tenderId='").append(tenderId).append('\'');
+        sb.append(", questionId='").append(questionId).append('\'');
         sb.append('}');
         return sb.toString();
     }

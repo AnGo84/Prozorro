@@ -4,6 +4,7 @@ package ua.prozorro.entity.plans;
 	@JoinTable(name = "Tenders_Items", joinColumns = {@JoinColumn(name = "tender_id")}, inverseJoinColumns = {
 			@JoinColumn(name = "item_id")})*/
 
+import ua.prozorro.entity.plans.pk.PlanItemPK;
 import ua.prozorro.entity.tenders.ItemDTO;
 import ua.prozorro.entity.tenders.TenderDTO;
 
@@ -12,86 +13,59 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "Plans_Items")
+@IdClass(PlanItemPK.class)
 public class PlanItemDTO {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
-    private long id;
+    @Column(name = "plan_id")
+    private String planId;
+    @Id
+    @Column(name = "item_id")
+    private String itemId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "plan_id")
-    //@Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private PlanDTO plan;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_id")
-    //@Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private ItemDTO itemDTO;
-
-    public PlanItemDTO() {
+    public PlanItemDTO(String planId, String itemId) {
+        this.planId = planId;
+        this.itemId = itemId;
     }
 
-    public long getId() {
-        return id;
+    public String getPlanId() {
+        return planId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setPlanId(String planId) {
+        this.planId = planId;
     }
 
-    public PlanItemDTO(PlanDTO planDTO, ItemDTO itemDTO) {
-        this.plan = planDTO;
-        this.itemDTO = itemDTO;
-        //this.id = 31 * tender.getId().hashCode() + itemDTO.getId().hashCode();
+    public String getItemId() {
+        return itemId;
     }
 
-    public PlanDTO getPlan() {
-        return plan;
-    }
-
-    public void setPlan(PlanDTO plan) {
-        this.plan = plan;
-    }
-
-    public ItemDTO getItemDTO() {
-        return itemDTO;
-    }
-
-    public void setItemDTO(ItemDTO itemDTO) {
-        this.itemDTO = itemDTO;
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof PlanItemDTO))
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         PlanItemDTO that = (PlanItemDTO) o;
 
-        if (id != that.id)
-            return false;
-        if (plan != null ? !plan.equals(that.plan) : that.plan != null)
-            return false;
-        return itemDTO != null ? itemDTO.equals(that.itemDTO) : that.itemDTO == null;
+        if (planId != null ? !planId.equals(that.planId) : that.planId != null) return false;
+        return itemId != null ? itemId.equals(that.itemId) : that.itemId == null;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (plan != null ? plan.hashCode() : 0);
-        result = 31 * result + (itemDTO != null ? itemDTO.hashCode() : 0);
+        int result = planId != null ? planId.hashCode() : 0;
+        result = 31 * result + (itemId != null ? itemId.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("PlanItemDTO{");
-        sb.append("id=").append(id);
-        sb.append(", plan=").append(plan);
-        sb.append(", itemDTO=").append(itemDTO);
+        final StringBuffer sb = new StringBuffer("PlanItemDTO{");
+        sb.append("planId='").append(planId).append('\'');
+        sb.append(", itemId='").append(itemId).append('\'');
         sb.append('}');
         return sb.toString();
     }

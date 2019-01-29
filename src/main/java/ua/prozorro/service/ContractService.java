@@ -64,7 +64,7 @@ public class ContractService {
                 session.flush();
                 session.clear();
 
-                session.saveOrUpdate(new ContractItemDTO(contractDTO, itemDTO));
+                session.saveOrUpdate(new ContractItemDTO(contractDTO.getId(), itemDTO.getId()));
                 session.flush();
                 session.clear();
             }
@@ -81,7 +81,7 @@ public class ContractService {
                 session.flush();
                 session.clear();
 
-                session.saveOrUpdate(new ContractSupplierDTO(contractDTO, organizationDTO));
+                session.saveOrUpdate(new ContractSupplierDTO(contractDTO.getId(), organizationDTO.getId()));
                 session.flush();
                 session.clear();
             }
@@ -98,7 +98,7 @@ public class ContractService {
                 session.flush();
                 session.clear();
 
-                session.saveOrUpdate(new ContractDocumentDTO(contractDTO, documentDTO));
+                session.saveOrUpdate(new ContractDocumentDTO(contractDTO.getId(), documentDTO.getId()));
                 session.flush();
                 session.clear();
             }

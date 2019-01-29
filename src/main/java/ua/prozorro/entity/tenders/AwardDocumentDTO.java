@@ -1,91 +1,69 @@
 package ua.prozorro.entity.tenders;
 
+import ua.prozorro.entity.tenders.pk.AwardDocumentPK;
+
 import javax.persistence.*;
 
-/*@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-	@JoinTable(name = "Awards_Documents", joinColumns = {@JoinColumn(name = "award_id")}, inverseJoinColumns = {
-			@JoinColumn(name = "document_id")})*/
 @Entity
 @Table(name = "Awards_Documents")
+@IdClass(AwardDocumentPK.class)
 public class AwardDocumentDTO {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
-    private long id;
+    @Column(name = "award_id")
+    private String awardId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "award_id")
+    @Id
+    @Column(name = "document_id")
     //@Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private AwardDTO award;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "document_id")
-    //@Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private DocumentDTO document;
+    private String documentId;
 
     public AwardDocumentDTO() {
     }
 
-    public AwardDocumentDTO(AwardDTO award, DocumentDTO document) {
-        this.award = award;
-        this.document = document;
-        //this.id = 31 * award.getId().hashCode() + document.getId().hashCode();
+    public AwardDocumentDTO(String awardId, String documentId) {
+        this.awardId = awardId;
+        this.documentId = documentId;
     }
 
-    public long getId() {
-        return id;
+    public String getAwardId() {
+        return awardId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setAwardId(String awardId) {
+        this.awardId = awardId;
     }
 
-    public AwardDTO getAward() {
-        return award;
+    public String getDocumentId() {
+        return documentId;
     }
 
-    public void setAward(AwardDTO award) {
-        this.award = award;
-    }
-
-    public DocumentDTO getDocument() {
-        return document;
-    }
-
-    public void setDocument(DocumentDTO document) {
-        this.document = document;
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof AwardDocumentDTO))
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         AwardDocumentDTO that = (AwardDocumentDTO) o;
 
-        if (id != that.id)
-            return false;
-        if (award != null ? !award.equals(that.award) : that.award != null)
-            return false;
-        return document != null ? document.equals(that.document) : that.document == null;
+        if (awardId != null ? !awardId.equals(that.awardId) : that.awardId != null) return false;
+        return documentId != null ? documentId.equals(that.documentId) : that.documentId == null;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (award != null ? award.hashCode() : 0);
-        result = 31 * result + (document != null ? document.hashCode() : 0);
+        int result = awardId != null ? awardId.hashCode() : 0;
+        result = 31 * result + (documentId != null ? documentId.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("AwardDocumentDTO{");
-        sb.append("id=").append(id);
-        sb.append(", award=").append(award);
-        sb.append(", document=").append(document);
+        final StringBuffer sb = new StringBuffer("AwardDocumentDTO{");
+        sb.append("awardId='").append(awardId).append('\'');
+        sb.append(", documentId='").append(documentId).append('\'');
         sb.append('}');
         return sb.toString();
     }

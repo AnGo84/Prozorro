@@ -1,85 +1,70 @@
 package ua.prozorro.entity.tenders;
 
-/*@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-@JoinTable(name = "Tenders_Documents", joinColumns = {@JoinColumn(name = "tender_id")}, inverseJoinColumns = {
-        @JoinColumn(name = "document_id")})*/
+import ua.prozorro.entity.tenders.pk.TenderDocumentPK;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "Tenders_Documents")
+@IdClass(TenderDocumentPK.class)
 public class TenderDocumentDTO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
-    private long id;
+    @Column(name = "tender_id")
+    private String tenderId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tender_id")
-    //@Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private TenderDTO tender;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "document_id")
-    //@Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private DocumentDTO document;
+    @Id
+    @Column(name = "document_id")
+    private String documentId;
 
     public TenderDocumentDTO() {
     }
 
-    public TenderDocumentDTO(TenderDTO tender, DocumentDTO document) {
-        this.tender = tender;
-        this.document = document;
-        //this.id = 31 * tender.getId().hashCode() + document.getId().hashCode();
+    public TenderDocumentDTO(String tenderId, String documentId) {
+        this.tenderId = tenderId;
+        this.documentId = documentId;
     }
 
-    public long getId() {
-        return id;
+    public String getTenderId() {
+        return tenderId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setTenderId(String tenderId) {
+        this.tenderId = tenderId;
     }
 
-    public TenderDTO getTender() {
-        return tender;
+    public String getDocumentId() {
+        return documentId;
     }
 
-    public void setTender(TenderDTO tender) {
-        this.tender = tender;
-    }
-
-    public DocumentDTO getDocument() {
-        return document;
-    }
-
-    public void setDocument(DocumentDTO document) {
-        this.document = document;
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof TenderDocumentDTO))
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
         TenderDocumentDTO that = (TenderDocumentDTO) o;
-        return id == that.id && Objects.equals(tender, that.tender) && Objects.equals(document, that.document);
+
+        if (tenderId != null ? !tenderId.equals(that.tenderId) : that.tenderId != null) return false;
+        return documentId != null ? documentId.equals(that.documentId) : that.documentId == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, tender, document);
+        int result = tenderId != null ? tenderId.hashCode() : 0;
+        result = 31 * result + (documentId != null ? documentId.hashCode() : 0);
+        return result;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("TenderDocumentDTO{");
-        sb.append("id=").append(id);
-        sb.append(", tender=").append(tender);
-        sb.append(", document=").append(document);
+        final StringBuffer sb = new StringBuffer("TenderDocumentDTO{");
+        sb.append("tenderId='").append(tenderId).append('\'');
+        sb.append(", documentId='").append(documentId).append('\'');
         sb.append('}');
         return sb.toString();
     }

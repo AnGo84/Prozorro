@@ -1,94 +1,69 @@
 package ua.prozorro.entity.tenders;
 
-/*@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-	@JoinTable(name = "Awards_Suppliers", joinColumns = {@JoinColumn(name = "award_id")}, inverseJoinColumns = {
-			@JoinColumn(name = "supplier_id")})*/
-
+import ua.prozorro.entity.tenders.pk.AwardSupplierPK;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "Awards_Suppliers")
+@IdClass(AwardSupplierPK.class)
 public class AwardSupplierDTO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
-    private long id;
+    @Column(name = "award_id")
+    private String awardId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "award_id")
-    //@Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private AwardDTO award;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "supplier_id")
-    //@Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private OrganizationDTO organization;
+    @Id
+    @Column(name = "supplier_id")
+    private int supplierId;
 
     public AwardSupplierDTO() {
     }
 
-    public AwardSupplierDTO(AwardDTO award, OrganizationDTO organization) {
-        this.award = award;
-        this.organization = organization;
-        //this.id = 31 * award.getId().hashCode() + organization.getId();
+    public AwardSupplierDTO(String awardId, int supplierId) {
+        this.awardId = awardId;
+        this.supplierId = supplierId;
     }
 
-    public long getId() {
-        return id;
+    public String getAwardId() {
+        return awardId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setAwardId(String awardId) {
+        this.awardId = awardId;
     }
 
-    public AwardDTO getAward() {
-        return award;
+    public int getSupplierId() {
+        return supplierId;
     }
 
-    public void setAward(AwardDTO award) {
-        this.award = award;
-    }
-
-    public OrganizationDTO getOrganization() {
-        return organization;
-    }
-
-    public void setOrganization(OrganizationDTO organization) {
-        this.organization = organization;
+    public void setSupplierId(int supplierId) {
+        this.supplierId = supplierId;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof AwardSupplierDTO))
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         AwardSupplierDTO that = (AwardSupplierDTO) o;
 
-        if (id != that.id)
-            return false;
-        if (award != null ? !award.equals(that.award) : that.award != null)
-            return false;
-        return organization != null ? organization.equals(that.organization) : that.organization == null;
+        if (supplierId != that.supplierId) return false;
+        return awardId != null ? awardId.equals(that.awardId) : that.awardId == null;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (award != null ? award.hashCode() : 0);
-        result = 31 * result + (organization != null ? organization.hashCode() : 0);
+        int result = awardId != null ? awardId.hashCode() : 0;
+        result = 31 * result + supplierId;
         return result;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("AwardSupplierDTO{");
-        sb.append("id=").append(id);
-        sb.append(", award=").append(award);
-        sb.append(", organization=").append(organization);
+        final StringBuffer sb = new StringBuffer("AwardSupplierDTO{");
+        sb.append("awardId='").append(awardId).append('\'');
+        sb.append(", supplierId=").append(supplierId);
         sb.append('}');
         return sb.toString();
     }
