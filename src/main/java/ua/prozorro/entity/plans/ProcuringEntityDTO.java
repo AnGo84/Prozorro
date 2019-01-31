@@ -18,7 +18,7 @@ public class ProcuringEntityDTO {
 	@JoinColumn(name = "identifier_id")
 	@Cascade({org.hibernate.annotations.CascadeType.ALL})
 	private IdentifierDTO identifier;
-	@Column
+	@Column(length = 2000)
 	private String name;
 	@Id
 	@Column

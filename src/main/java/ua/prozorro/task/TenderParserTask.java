@@ -181,9 +181,11 @@ public class TenderParserTask extends Task<Boolean> {
 
             logger.error("URL: " + pageContent);
             logger.error("Объект: " + text);
+            logger.error("ERROR message: " + e.getMessage());
 
             updateMessage("ERROR on URL: " + pageContent);
             updateMessage("ERROR Объект: " + text);
+            updateMessage("ERROR message: " + e.getMessage());
             if (transaction != null) {
                 transaction.rollback();
             }

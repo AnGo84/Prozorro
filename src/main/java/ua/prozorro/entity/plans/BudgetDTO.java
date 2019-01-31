@@ -20,7 +20,8 @@ public class BudgetDTO {
 	@Column
 	private String description;
 
-	@Column(length = 4000)
+	@Lob
+	@Column
 	private String notes;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
