@@ -16,12 +16,15 @@ public class ContractDocumentPK implements Serializable {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
 		ContractDocumentPK that = (ContractDocumentPK) o;
 
-		if (contractId != null ? !contractId.equals(that.contractId) : that.contractId != null) return false;
+		if (contractId != null ? !contractId.equals(that.contractId) : that.contractId != null)
+			return false;
 		return documentId != null ? documentId.equals(that.documentId) : that.documentId == null;
 	}
 

@@ -15,24 +15,24 @@ import java.util.List;
 
 public class ContractDataServiceProzorro {
 	private static final Logger logger = LogManager.getRootLogger();
-
+	
 	private String contractURL;
-
+	
 	public ContractDataServiceProzorro(String planURL) {
 		this.contractURL = planURL;
 	}
-
+	
 	public ContractData getContractDataContentFromStringJSON(String stringJSON) throws JsonParseException {
 		Gson gson = new Gson();
-
+		
 		return gson.fromJson(stringJSON, ContractData.class);
 	}
-
+	
 	public ContractData getContractContentFromURL(String url) throws JsonParseException, IOException {
 		String genreJson = FileUtils.getStringFromURL(url);
 		return getContractDataContentFromStringJSON(genreJson);
 	}
-
+	
 	public List<ContractData> getContractsDataFromPageContent(ProzorroPageContent pageContent) throws IOException {
 		if (pageContent == null || pageContent.getPageElementList() == null) {
 			return null;
@@ -40,20 +40,20 @@ public class ContractDataServiceProzorro {
 		List<ContractData> contractDataList = new ArrayList<>();
 		for (ProzorroPageElement element : pageContent.getPageElementList()) {
 			String currentTenderURL = contractURL + element.getId();
-
+			
 			ContractData contractData = getContractContentFromURL(currentTenderURL);
 			contractDataList.add(contractData);
 		}
-
+		
 		return contractDataList;
 	}
-
+	
 	public ContractData getContractDataFromPageElement(ProzorroPageElement pageElement) throws IOException {
 		if (pageElement == null) {
 			return null;
 		}
 		String currentURL = contractURL + pageElement.getId();
-
+		
 		ContractData data = getContractContentFromURL(currentURL);
 		return data;
 	}

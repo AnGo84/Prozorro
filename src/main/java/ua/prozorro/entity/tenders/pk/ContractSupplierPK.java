@@ -16,12 +16,15 @@ public class ContractSupplierPK implements Serializable {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
 		ContractSupplierPK that = (ContractSupplierPK) o;
 
-		if (supplierId != that.supplierId) return false;
+		if (supplierId != that.supplierId)
+			return false;
 		return contractId != null ? contractId.equals(that.contractId) : that.contractId == null;
 	}
 

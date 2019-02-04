@@ -86,19 +86,25 @@ public class Changes {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
 		Changes changes = (Changes) o;
 
-		if (status != null ? !status.equals(changes.status) : changes.status != null) return false;
+		if (status != null ? !status.equals(changes.status) : changes.status != null)
+			return false;
 		if (rationaleTypes != null ? !rationaleTypes.equals(changes.rationaleTypes) : changes.rationaleTypes != null)
 			return false;
 		if (contractNumber != null ? !contractNumber.equals(changes.contractNumber) : changes.contractNumber != null)
 			return false;
-		if (dateSigned != null ? !dateSigned.equals(changes.dateSigned) : changes.dateSigned != null) return false;
-		if (rationale != null ? !rationale.equals(changes.rationale) : changes.rationale != null) return false;
-		if (date != null ? !date.equals(changes.date) : changes.date != null) return false;
+		if (dateSigned != null ? !dateSigned.equals(changes.dateSigned) : changes.dateSigned != null)
+			return false;
+		if (rationale != null ? !rationale.equals(changes.rationale) : changes.rationale != null)
+			return false;
+		if (date != null ? !date.equals(changes.date) : changes.date != null)
+			return false;
 		return id != null ? id.equals(changes.id) : changes.id == null;
 	}
 

@@ -18,12 +18,15 @@ public class BidDocumentPK implements Serializable {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
 		BidDocumentPK that = (BidDocumentPK) o;
 
-		if (bidId != null ? !bidId.equals(that.bidId) : that.bidId != null) return false;
+		if (bidId != null ? !bidId.equals(that.bidId) : that.bidId != null)
+			return false;
 		return documentId != null ? documentId.equals(that.documentId) : that.documentId == null;
 	}
 

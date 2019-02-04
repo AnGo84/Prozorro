@@ -18,12 +18,15 @@ public class TenderComplaintPK implements Serializable {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
 		TenderComplaintPK that = (TenderComplaintPK) o;
 
-		if (tenderId != null ? !tenderId.equals(that.tenderId) : that.tenderId != null) return false;
+		if (tenderId != null ? !tenderId.equals(that.tenderId) : that.tenderId != null)
+			return false;
 		return complaintId != null ? complaintId.equals(that.complaintId) : that.complaintId == null;
 	}
 

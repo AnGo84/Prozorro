@@ -18,12 +18,15 @@ public class PlanDocumentPK implements Serializable {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
 		PlanDocumentPK that = (PlanDocumentPK) o;
 
-		if (planId != null ? !planId.equals(that.planId) : that.planId != null) return false;
+		if (planId != null ? !planId.equals(that.planId) : that.planId != null)
+			return false;
 		return documentId != null ? documentId.equals(that.documentId) : that.documentId == null;
 	}
 

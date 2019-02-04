@@ -18,12 +18,15 @@ public class AwardDocumentPK implements Serializable {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
 		AwardDocumentPK that = (AwardDocumentPK) o;
 
-		if (awardId != null ? !awardId.equals(that.awardId) : that.awardId != null) return false;
+		if (awardId != null ? !awardId.equals(that.awardId) : that.awardId != null)
+			return false;
 		return documentId != null ? documentId.equals(that.documentId) : that.documentId == null;
 	}
 

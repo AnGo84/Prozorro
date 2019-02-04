@@ -18,12 +18,15 @@ public class AwardSupplierPK implements Serializable {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
 		AwardSupplierPK that = (AwardSupplierPK) o;
 
-		if (supplierId != that.supplierId) return false;
+		if (supplierId != that.supplierId)
+			return false;
 		return awardId != null ? awardId.equals(that.awardId) : that.awardId == null;
 	}
 

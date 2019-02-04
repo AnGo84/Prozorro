@@ -12,7 +12,7 @@
                 <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
             </PatternLayout>
             <Policies>
-                <TimeBasedTriggeringPolicy />
+                <TimeBasedTriggeringPolicy/>
                 <SizeBasedTriggeringPolicy size="25 MB"/>
             </Policies>
             <!--MAX files count-->
@@ -20,7 +20,7 @@
         </RollingFile>
 
         <!--<File fileName="FILE" fileName="${log-path}/logfile.log" append="true">-->
-            <!--<PatternLayout pattern="%-5p | %d{yyyy-MM-dd HH:mm:ss} | [%t] %C{2} (%F:%L) - %m%n"/>-->
+        <!--<PatternLayout pattern="%-5p | %d{yyyy-MM-dd HH:mm:ss} | [%t] %C{2} (%F:%L) - %m%n"/>-->
         <!--</File>-->
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%-5p | %d{yyyy-MM-dd HH:mm:ss} | [%t] %C{2} (%F:%L) - %m%n"/>
@@ -33,25 +33,25 @@
 
         <!-- Log everything in hibernate -->
         <Logger name="org.hibernate" level="info" additivity="false">
-            <AppenderRef ref="Console" />
+            <AppenderRef ref="Console"/>
         </Logger>
 
         <!-- Log SQL statements -->
         <Logger name="org.hibernate.SQL" level="debug" additivity="false">
-            <AppenderRef ref="Console" />
-            <AppenderRef ref="FILE" />
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="FILE"/>
         </Logger>
 
         <!-- Log JDBC bind parameters -->
         <Logger name="org.hibernate.type.descriptor.sql" level="trace" additivity="false">
-            <AppenderRef ref="Console" />
-            <AppenderRef ref="FILE" />
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="FILE"/>
         </Logger>
 
         <!-- Log custom packages -->
         <Logger name="com.boraji.tutorial.hibernate" level="debug" additivity="false">
-            <AppenderRef ref="Console" />
-            <AppenderRef ref="FILE" />
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="FILE"/>
         </Logger>
 
 
