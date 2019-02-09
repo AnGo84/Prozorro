@@ -11,16 +11,17 @@ cache:
 before_install:
   #- wget -P somewhere/ https://www.dropbox.com/s/n82bt17e2sdhw77/ojdbc6.jar?dl=0
   #- mvn validate
-  #- mvn install:install-file -Dfile=https://www.dropbox.com/s/n82bt17e2sdhw77/ojdbc6.jar?dl=0 -DgroupId=com.cmabreu
-  #- -DartifactId=mylocal-lib -Dversion=1.5 -Dpackaging=jar -DgeneratePom=true
+
+  - mvn install:install-file -Dfile=lib/ojdbc6.jar -DgroupId=com.cmabreu -DartifactId=mylocal-lib -Dversion=1.5 -Dpackaging=jar -DgeneratePom=true
   #- -Durl=$HOME/.m2
 
-  - mvn deploy:deploy-file -Dfile=ojdbc6.jar
-  -Durl=https://www.dropbox.com/s/n82bt17e2sdhw77/ojdbc6.jar?dl=0
-  -DgroupId=com.cmabreu -DartifactId=mylocal-lib -Dversion=1.5 -Dpackaging=jar -DgeneratePom=true
+  #- mvn deploy:deploy-file -Dfile=ojdbc6.jar
+  #-Durl=https://www.dropbox.com/s/n82bt17e2sdhw77/ojdbc6.jar?dl=0
+  #-DgroupId=com.cmabreu -DartifactId=mylocal-lib -Dversion=1.5 -Dpackaging=jar -DgeneratePom=true
 
-  #- mvn install:install-file -Dfile=https://www.dropbox.com/s/n82bt17e2sdhw77/ojdbc6.jar?dl=0 -DgroupId=com.cmabreu
-  #-DartifactId=mylocal-lib -Dversion=1.5 -Dpackaging=jar
+#before_start:
+# mkdir lib/
+#  wget -P "lib/" http://urlForYourJar.jar
 
 # Notifications https://docs.travis-ci.com/user/notifications/
 notifications:
