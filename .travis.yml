@@ -2,14 +2,15 @@
 language: java
 jdk: oraclejdk8
 
-before_install:
-  - wget -P somewhere/ https://www.dropbox.com/s/n82bt17e2sdhw77/ojdbc6.jar?dl=0
-  - mvn validate
-
 # Improve Build Speed https://dzone.com/articles/travis-ci-tutorial-java-projects
 cache:
   directories:
   - $HOME/.m2
+
+# Need for downloading oracle lib
+before_install:
+  - wget -P somewhere/ https://www.dropbox.com/s/n82bt17e2sdhw77/ojdbc6.jar?dl=0
+  - mvn validate
 
 # Notifications https://docs.travis-ci.com/user/notifications/
 notifications:
