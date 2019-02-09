@@ -11,7 +11,10 @@ cache:
 before_install:
   #- wget -P somewhere/ https://www.dropbox.com/s/n82bt17e2sdhw77/ojdbc6.jar?dl=0
   #- mvn validate
-  - mvn install:install-file -Dfile=https://www.dropbox.com/s/n82bt17e2sdhw77/ojdbc6.jar?dl=0 -DgroupId=com.cmabreu -DartifactId=mylocal-lib -Dversion=1.5 -D packaging=jar -DgeneratePom=true
+  #- mvn install:install-file -Dfile=https://www.dropbox.com/s/n82bt17e2sdhw77/ojdbc6.jar?dl=0 -DgroupId=com.cmabreu
+  #- -DartifactId=mylocal-lib -Dversion=1.5 -D packaging=jar -DgeneratePom=true
+
+  - mvn deploy:deploy-file -Dfile=https://www.dropbox.com/s/n82bt17e2sdhw77/ojdbc6.jar?dl=0 -DgroupId=com.cmabreu -DartifactId=mylocal-lib -Dversion=1.5 -D packaging=jar -DgeneratePom=true
 
 # Notifications https://docs.travis-ci.com/user/notifications/
 notifications:
