@@ -54,7 +54,7 @@ public class ContractDTO {
 	@Column(length = 4000)
 	private String title;
 	
-	@Column
+	@Column(length = 1000)
 	private String contractNumber;
 	
 	@Column(name = "start_date")

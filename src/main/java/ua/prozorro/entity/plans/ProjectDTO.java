@@ -1,9 +1,6 @@
 package ua.prozorro.entity.plans;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "Projects")
@@ -12,7 +9,8 @@ public class ProjectDTO {
 	@Column
 	private String id;
 	
-	@Column(length = 4000)
+	@Lob
+	@Column
 	private String name;
 	
 	
