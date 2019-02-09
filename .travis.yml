@@ -5,7 +5,7 @@ jdk: oraclejdk8
 # Improve Build Speed https://dzone.com/articles/travis-ci-tutorial-java-projects
 cache:
   directories:
-  - $HOME/.m2
+    - $HOME/.m2
 
 # Need for downloading oracle lib
 before_install:
@@ -14,7 +14,9 @@ before_install:
   #- mvn install:install-file -Dfile=https://www.dropbox.com/s/n82bt17e2sdhw77/ojdbc6.jar?dl=0 -DgroupId=com.cmabreu
   #- -DartifactId=mylocal-lib -Dversion=1.5 -D packaging=jar -DgeneratePom=true
 
-  - mvn deploy:deploy-file -Dfile=https://www.dropbox.com/s/n82bt17e2sdhw77/ojdbc6.jar?dl=0 -DgroupId=com.cmabreu -DartifactId=mylocal-lib -Dversion=1.5 -D packaging=jar -DgeneratePom=true
+  - mvn deploy:deploy-file -Dfile=https://www.dropbox.com/s/n82bt17e2sdhw77/ojdbc6.jar?dl=0
+    -Durl=$HOME/.m2
+    -DgroupId=com.cmabreu -DartifactId=mylocal-lib -Dversion=1.5 -D packaging=jar -DgeneratePom=true
 
 # Notifications https://docs.travis-ci.com/user/notifications/
 notifications:
