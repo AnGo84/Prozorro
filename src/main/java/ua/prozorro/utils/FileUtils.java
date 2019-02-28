@@ -177,11 +177,21 @@ public class FileUtils {
 		return stringBuilder.toString();
 	}
 	
-	public static void SaveToFile(String content, File file) throws IOException {
+	public static void saveToFile(String content, File file) throws IOException {
 		FileWriter fileWriter = new FileWriter(file);
 		fileWriter.write(content);
+		fileWriter.write("\n");
+		
 		fileWriter.close();
 		
+	}
+	
+	public static void appendToFile(String fileName, String context) throws IOException {
+		FileWriter fw = new FileWriter(fileName, true);
+		BufferedWriter bw = new BufferedWriter(fw);
+		bw.write(context);
+		bw.newLine();
+		bw.close();
 	}
 	
 	public static String getStringFromURL(String url) throws IOException {

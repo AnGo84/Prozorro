@@ -19,10 +19,11 @@ public class AddressDTO {
 	private String countryName;
 	@Column(length = 4000)
 	/*@Lob
-	@Column*/ private String streetAddress;
+	@Column*/
+	private String streetAddress;
 	@Column
 	private String region;
-	@Column(length = 2000)
+	@Column(length = 4000)
 	private String locality;
 	
 	public int getId() {

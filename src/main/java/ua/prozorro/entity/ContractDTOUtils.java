@@ -7,6 +7,7 @@ import ua.prozorro.prozorro.model.contracts.Contract;
 import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
 import ua.prozorro.prozorro.model.plans.ProcuringEntity;
 import ua.prozorro.prozorro.model.tenders.*;
+import ua.prozorro.utils.CommonUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -209,7 +210,12 @@ public class ContractDTOUtils {
 			itemDTO.setDeliveryInvalidationDate(item.getDeliveryDate().getInvalidationDate());
 		}
 		itemDTO.setUnit(getUnitDTO(item.getUnit()));
-		itemDTO.setQuantity(item.getQuantity());
+		try {
+			itemDTO.setQuantity(Long.parseLong(item.getQuantity()));
+		} catch (NumberFormatException e) {
+			itemDTO.setQuantity(1);
+			CommonUtils.saveParsingErrorLog("ITEMS", item.getId(), "QUANTITY", item.getQuantity());
+		}
 		
 		return itemDTO;
 	}

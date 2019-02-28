@@ -145,10 +145,10 @@ public class ContractParserTask extends Task<Boolean> {
 						
 						ContractDataServiceProzorro contractDataServiceProzorro = new ContractDataServiceProzorro(
 								propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_START_PAGE) + "/");
-						
+						text = pageElement.getId()+"\n";
 						ContractData contractData =
 								contractDataServiceProzorro.getContractDataFromPageElement(pageElement);
-						text = contractData.toString();
+						text = text + contractData.toString();
 						ContractDTO planDTO = ContractDTOUtils.getContractDTO(contractData.getContract());
 						planService.saveContract(planDTO, session);
 					}
@@ -171,7 +171,7 @@ public class ContractParserTask extends Task<Boolean> {
 				nextOffsetDate = pageServiceProzorro.getDateFromPageOffset(pageContent.getNextPage().getOffset());
 				currentPageURL = pageContent.getNextPage().getUri();
 				pageContent = pageServiceProzorro.getPageContentFromURL(pageContent.getNextPage().getUri());
-				
+				text = "";
 				updateProgress(pageCount, resultData.getListSize());
 				
 				updateMessage("Найдено " + ((pageCount - 1) * 100 + pageElementCount) + " " +
@@ -181,9 +181,9 @@ public class ContractParserTask extends Task<Boolean> {
 			//catch (ParseException | IOException | Exception e){
 			e.printStackTrace();
 			
-			logger.error("URL: " + currentPageURL);
-			logger.error("Page: " + pageContent);
-			logger.error("Объект: " + text);
+			logger.error("ERROR on URL: " + currentPageURL);
+			logger.error("ERROR on Page: " + pageContent);
+			logger.error("ERROR Объект: " + text);
 			logger.error("ERROR message: " + e.getMessage());
 			
 			updateMessage("ERROR on URL: " + currentPageURL);

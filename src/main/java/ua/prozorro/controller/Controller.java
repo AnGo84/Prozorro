@@ -392,7 +392,7 @@ public class Controller {
 		if (file != null) {
 			textArea.appendText("Выбран  файл для сохранения журнала: " + file.getAbsoluteFile() + "\n");
 			try {
-				FileUtils.SaveToFile(textArea.getText(), file);
+				FileUtils.saveToFile(textArea.getText(), file);
 			} catch (IOException e) {
 				Dialogs.showMessage(Alert.AlertType.WARNING, "Ошибка сохранения",
 									"Ошибка при попытке сохранить файл " + file.getAbsoluteFile(), e.getMessage());

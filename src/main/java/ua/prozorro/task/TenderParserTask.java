@@ -146,9 +146,9 @@ public class TenderParserTask extends Task<Boolean> {
 						
 						TenderDataServiceProzorro tenderDataServiceProzorro = new TenderDataServiceProzorro(
 								propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE) + "/");
-						
+						text = pageElement.getId()+"\n";
 						TenderData tenderData = tenderDataServiceProzorro.getTenderDataFromPageElement(pageElement);
-						text = tenderData.toString();
+						text = text + tenderData.toString();
 						TenderDTO tenderDTO = TenderDTOUtils.getTenderDTO(tenderData.getTender());
 						tenderService.saveTender(tenderDTO, session);
 					}
@@ -171,6 +171,7 @@ public class TenderParserTask extends Task<Boolean> {
 				nextOffsetDate = pageServiceProzorro.getDateFromPageOffset(pageContent.getNextPage().getOffset());
 				currentPageURL = pageContent.getNextPage().getUri();
 				pageContent = pageServiceProzorro.getPageContentFromURL(pageContent.getNextPage().getUri());
+				text = "";
 				updateProgress(pageCount, resultData.getListSize());
 				
 				updateMessage("Найдено " + ((pageCount - 1) * 100 + pageElementCount) + " " +
@@ -180,9 +181,9 @@ public class TenderParserTask extends Task<Boolean> {
 			//catch (ParseException | IOException | Exception e){
 			e.printStackTrace();
 			
-			logger.error("URL: " + currentPageURL);
-			logger.error("Page: " + pageContent);
-			logger.error("Объект: " + text);
+			logger.error("ERROR on URL: " + currentPageURL);
+			logger.error("ERROR on Page: " + pageContent);
+			logger.error("ERROR Объект: " + text);
 			logger.error("ERROR message: " + e.getMessage());
 			
 			updateMessage("ERROR on URL: " + currentPageURL);

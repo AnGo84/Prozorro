@@ -4,7 +4,10 @@ import ua.prozorro.entity.pages.TenderPageDTO;
 import ua.prozorro.entity.tenders.*;
 import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
 import ua.prozorro.prozorro.model.tenders.*;
+import ua.prozorro.utils.CommonUtils;
+import ua.prozorro.utils.FileUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -275,10 +278,17 @@ public class TenderDTOUtils {
 			itemDTO.setDeliveryInvalidationDate(item.getDeliveryDate().getInvalidationDate());
 		}
 		itemDTO.setUnit(getUnitDTO(item.getUnit()));
-		itemDTO.setQuantity(item.getQuantity());
+		try {
+			itemDTO.setQuantity(Long.parseLong(item.getQuantity()));
+		} catch (NumberFormatException e) {
+			itemDTO.setQuantity(1);
+			CommonUtils.saveParsingErrorLog("ITEMS", item.getId(), "QUANTITY", item.getQuantity());
+		}
 		
 		return itemDTO;
 	}
+	
+	
 	
 	public static LotDTO getLotDTO(Lot lot) {
 		if (lot == null) {

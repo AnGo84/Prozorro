@@ -8,7 +8,24 @@ Desktop application for reading data from the site Prozorro.ua for importing int
 - IDE
 - JDK 1.8 or later
 - Maven
-- Oracle or MySQL database
+- Oracle(11.2.0) or MySQL database
+
+### Warning
+First of all, you need to install oracle lib to your maven repository.
+In the project used library for working with Oracle 11.0.2- ojdbc6.jar. It attached to the project: from root **'lib/ojdbc6.jar'**.
+For instaling to Maven:
+`mvn install:install-file -Dfile='YOUR_PATH'/ojdbc6.jar -DgroupId=com.cmabreu -DartifactId=mylocal-lib -Dversion=1.5 -Dpackaging=jar -DgeneratePom=true`
+
+If you do not going to work with Oracle DB, you can remove oracle dependency from **pom.xml**:
+```
+<dependency>
+	<groupId>com.oracle</groupId>
+    <artifactId>ojdbc6</artifactId>
+    <version>${oracle.version}</version>
+    <scope>system</scope>
+    <systemPath>${project.basedir}/lib/ojdbc6.jar</systemPath>
+</dependency>
+```
 
 **To build the project use:**
 `mvn clean jfx:jar`
