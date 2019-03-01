@@ -50,8 +50,8 @@ public class TestNBURates {
 		exchangeRateNBUParser.setExchangeRateServiceNBU(exchangeRateServiceNBU);
 		
 		try {
-			exchangeRateNBUParser.parseAndSave(DateUtils.parseDateFromString("01.01.2019", date_formate),
-											   DateUtils.parseDateFromString("10.01.2019", date_formate));
+			exchangeRateNBUParser.parseAndSave(DateUtils.parseProzorroPageDateFromString("01.01.2019", date_formate),
+											   DateUtils.parseProzorroPageDateFromString("10.01.2019", date_formate));
 		} catch (Exception e) {
 			
 			e.printStackTrace();
@@ -103,8 +103,8 @@ public class TestNBURates {
 			Date start = new Date();
 			
 			List<String> list = exchangeRateServiceNBU
-					.getRatePagesList(DataType.NBU_RATES, DateUtils.parseDateFromString("01.01.2019", date_formate),
-									  DateUtils.parseDateFromString("10.01.2019", date_formate));
+					.getRatePagesList(DataType.NBU_RATES, DateUtils.parseProzorroPageDateFromString("01.01.2019", date_formate),
+									  DateUtils.parseProzorroPageDateFromString("10.01.2019", date_formate));
 			System.out.println("Pages list size: " + list.size());
 			Date finish = new Date();
 			long timeForPages = finish.getTime() - start.getTime();

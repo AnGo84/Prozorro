@@ -32,7 +32,7 @@ public class TenderService {
 		for (ProzorroPageElement pageElement : pageContent.getPageElementList()) {
 			TenderOld tender = getTender(pageElement.getId());
 			if (dateTill.compareTo(
-					DateUtils.parseDateFromString(tender.getDateModified(), DateUtils.DATE_PROZORRO_SHORT_FORMAT)) >=
+					DateUtils.parseProzorroPageDateFromString(tender.getDateModified(), DateUtils.DATE_PROZORRO_SHORT_FORMAT)) >=
 				0) {
 				tenderList.add(tender);
 			} else

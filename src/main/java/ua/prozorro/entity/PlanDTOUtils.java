@@ -136,12 +136,14 @@ public class PlanDTOUtils {
 			itemDTO.setDeliveryInvalidationDate(item.getDeliveryDate().getInvalidationDate());
 		}
 		itemDTO.setUnit(getUnitDTO(item.getUnit()));
+		//if(item.getQuantity() != null && !item.getQuantity().isEmpty()) {
 		try {
 			itemDTO.setQuantity(Long.parseLong(item.getQuantity()));
 		} catch (NumberFormatException e) {
 			itemDTO.setQuantity(1);
 			CommonUtils.saveParsingErrorLog("ITEMS", item.getId(), "QUANTITY", item.getQuantity());
 		}
+		//}
 		
 		return itemDTO;
 	}

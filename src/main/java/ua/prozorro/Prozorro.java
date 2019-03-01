@@ -120,7 +120,7 @@ public class Prozorro {
 			}
 		}
 		//        try {
-		//            writeToXMLFile(tenderList, new File("D:\\Test.xml"));
+		//            writeToXMLFile(tenderList, new File("D:\\TestTender.xml"));
 		//            System.out.println("File created");
 		//        } catch (FileNotFoundException e) {
 		//            e.printStackTrace();

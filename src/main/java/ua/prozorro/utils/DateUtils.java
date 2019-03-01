@@ -25,6 +25,7 @@ public class DateUtils {
 	public static final String DATE_PATTERN_DD_MM_YYYY = "dd.MM.yyyy";
 	private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN_DD_MM_YYYY);
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(DATE_PATTERN_DD_MM_YYYY);
+	public static final String PROZORRO_DATE_FORMATE_WITHOUT_SSS = "yyyy-MM-dd'T'HH:mm:ssXXX";
 	
 	
 	/**
@@ -200,14 +201,22 @@ public class DateUtils {
 		return DATE_FORMAT.format(date);
 	}
 	
-	public static Date parseDateFromString(String stringDate, String dateFormat) throws java.text.ParseException {
-		
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
-		
-		Date date = simpleDateFormat.parse(stringDate);
+	public static Date parseProzorroPageDateFromString(String stringDate, String dateFormat)
+			throws java.text.ParseException {
+		Date date;
+		try {
+			date = parseDateFromString(stringDate, dateFormat);
+		} catch (ParseException e) {
+			date = parseDateFromString(stringDate, PROZORRO_DATE_FORMATE_WITHOUT_SSS);
+		}
 		return date;
 	}
 	
+	public static Date parseDateFromString(String stringDate, String dateFormat) throws ParseException {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
+		Date date = simpleDateFormat.parse(stringDate);
+		return date;
+	}
 	public static String parseDateToString(Date date, String dateFormat) {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
 		return simpleDateFormat.format(date);

@@ -46,8 +46,8 @@ public class ProzorroServiceFactory {
 		tenderParser.setTenderDataServiceProzorro(tenderDataServiceProzorro);
 		
 		try {
-			/*tenderParser.parseAndSave(DateUtils.parseDateFromString("2018-12-11", short_date_formate),
-					DateUtils.parseDateFromString("2018-12-11", short_date_formate));*/
+			/*tenderParser.parseAndSave(DateUtils.parseProzorroPageDateFromString("2018-12-11", short_date_formate),
+					DateUtils.parseProzorroPageDateFromString("2018-12-11", short_date_formate));*/
 			tenderParser.parseAndSave(dateFrom, dateTill);
 		} catch (Exception e) {
 			

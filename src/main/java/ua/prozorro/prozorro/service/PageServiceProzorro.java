@@ -79,7 +79,7 @@ public class PageServiceProzorro {
 			logger.info("Get next page with URL: " + pageContent.getNextPage().getUri());
 			nextOffset = pageContent.getNextPage().getOffset();
 			pageContent = getPageContentFromURL(pageContent.getNextPage().getUri());
-			//nextOffsetDate = DateUtils.parseDateFromString(pageContent.getNextPage().getOffset(), propertyFields.getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT));
+			//nextOffsetDate = DateUtils.parseProzorroPageDateFromString(pageContent.getNextPage().getOffset(), propertyFields.getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT));
 			nextOffsetDate = getDateFromPageOffset(nextOffset);
 		}
 		return pageContentList;
@@ -99,7 +99,7 @@ public class PageServiceProzorro {
 	
 	public Date getDateFromPageOffset(String offset) throws ParseException {
 		return DateUtils
-				.parseDateFromString(offset, propertyFields.getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT));
+				.parseProzorroPageDateFromString(offset, propertyFields.getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT));
 	}
 	
 	public Date getDateTill(Date dateTill) throws ParseException {

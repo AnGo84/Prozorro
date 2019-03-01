@@ -118,8 +118,9 @@ public class TenderParserTask extends Task<Boolean> {
 				
 				for (ProzorroPageElement pageElement : pageContent.getPageElementList()) {
 					
-					Date pageDate = DateUtils.parseDateFromString(pageElement.getDateModified(), propertyFields
-							.getPropertiesStringValue(AppProperty.DATE_FORMAT));
+					Date pageDate = DateUtils.parseProzorroPageDateFromString(pageElement.getDateModified(),
+																			  propertyFields.getPropertiesStringValue(
+																					  AppProperty.DATE_FORMAT));
 					if (propertyFields.getSearchDateTill().
 							compareTo(DateUtils.parseDateToFormate(pageDate, propertyFields
 									.getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT))) < 0) {
@@ -146,7 +147,7 @@ public class TenderParserTask extends Task<Boolean> {
 						
 						TenderDataServiceProzorro tenderDataServiceProzorro = new TenderDataServiceProzorro(
 								propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE) + "/");
-						text = pageElement.getId()+"\n";
+						text = pageElement.getId() + "\n";
 						TenderData tenderData = tenderDataServiceProzorro.getTenderDataFromPageElement(pageElement);
 						text = text + tenderData.toString();
 						TenderDTO tenderDTO = TenderDTOUtils.getTenderDTO(tenderData.getTender());
@@ -172,6 +173,7 @@ public class TenderParserTask extends Task<Boolean> {
 				currentPageURL = pageContent.getNextPage().getUri();
 				pageContent = pageServiceProzorro.getPageContentFromURL(pageContent.getNextPage().getUri());
 				text = "";
+				page = null;
 				updateProgress(pageCount, resultData.getListSize());
 				
 				updateMessage("Найдено " + ((pageCount - 1) * 100 + pageElementCount) + " " +
@@ -182,15 +184,15 @@ public class TenderParserTask extends Task<Boolean> {
 			e.printStackTrace();
 			
 			logger.error("ERROR on URL: " + currentPageURL);
-			logger.error("ERROR on Page: " + pageContent);
+			logger.error("ERROR on Page: " + page);
 			logger.error("ERROR Объект: " + text);
-			logger.error("ERROR message: " + e.getMessage());
+			logger.error("ERROR message: " + e.getMessage() + " : " + e.getMessage());
 			
 			updateMessage("ERROR on URL: " + currentPageURL);
 			updateMessage("ERROR on Page: " + pageContent);
 			updateMessage("ERROR Объект: " + text);
-			updateMessage("ERROR message: " + e.getMessage());
-			if (transaction != null) {
+			updateMessage("ERROR message: " + e.getMessage() + " : " + e.getMessage());
+			if (transaction != null  && transaction.isActive()) {
 				transaction.rollback();
 			}
 			throw new Exception(e);

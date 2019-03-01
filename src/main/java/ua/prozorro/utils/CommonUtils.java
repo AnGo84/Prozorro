@@ -15,7 +15,7 @@ public class CommonUtils {
 	
 	public static String getFullParsingLogFilePath() {
 		String date = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-		String fileName = "logs" + File.pathSeparator + "parsing_error_" + date + ".txt";
+		String fileName = "logs" + File.separator + "parsing_error_" + date + ".txt";
 		File logFile = FileUtils.getFileWithName(ProzorroApp.class, fileName);
 		String path = logFile.getName();
 		return path;

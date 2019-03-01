@@ -210,6 +210,7 @@ public class ContractDTOUtils {
 			itemDTO.setDeliveryInvalidationDate(item.getDeliveryDate().getInvalidationDate());
 		}
 		itemDTO.setUnit(getUnitDTO(item.getUnit()));
+		
 		try {
 			itemDTO.setQuantity(Long.parseLong(item.getQuantity()));
 		} catch (NumberFormatException e) {

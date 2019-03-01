@@ -40,9 +40,10 @@ public class TestPlan {
 		//"https://public.api.openprocurement.org/api/2.4/tenders?descending=1&offset=2018-11-30T21%3A00%3A03.340891%2B03%3A00";
 		
 		
-		//GSONPareser(url2);
+		//GSONPareser("https://public.api.openprocurement.org/api/2.4/plans?offset=2018-01-31T10%3A32%3A29.996915%2B02%3A00");
 		//checkDataForPeriod();
-		parseAndSaveData();
+		//parseAndSaveData();
+		parseAndSaveDataByURL("https://public.api.openprocurement.org/api/2.4/plans?offset=2018-01-31T10%3A32%3A29.996915%2B02%3A00");
 		
 	}
 	
@@ -60,8 +61,30 @@ public class TestPlan {
 		planParser.setPlanDataServiceProzorro(planDataServiceProzorro);
 		
 		try {
-			planParser.parseAndSave(DateUtils.parseDateFromString("2019-01-06", short_date_formate),
-									DateUtils.parseDateFromString("2019-01-06", short_date_formate));
+			planParser.parseAndSave(DateUtils.parseProzorroPageDateFromString("2018-01-31", short_date_formate),
+									DateUtils.parseProzorroPageDateFromString("2018-01-31", short_date_formate));
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		} finally {
+			sessionFactory.close();
+		}
+	}
+	private static void parseAndSaveDataByURL(String url) {
+		//https://www.google.com/search?ei=SN0TXJPOAvDrrgS55JeoBQ&q=java+hibernate+%40onetoone+saveorupdate+child+first&oq=java+hibernate+%40onetoone+saveorupdate+child+first&gs_l=psy-ab.3...18094.18570..19344...0.0..0.94.270.3......0....1..gws-wiz.......0i71.ThMyYku4_E4
+		
+		SessionFactory sessionFactory = getSessionFactoryByDBName("mysql");
+		
+		PageServiceProzorro pageServiceProzorro = new PageServiceProzorro(new PropertyFields(getStartProperties()));
+		
+		PlanDataServiceProzorro planDataServiceProzorro = new PlanDataServiceProzorro(start_page + "/");
+		PlanParser planParser = new PlanParser();
+		planParser.setSessionFactory(sessionFactory);
+		planParser.setPageServiceProzorro(pageServiceProzorro);
+		planParser.setPlanDataServiceProzorro(planDataServiceProzorro);
+		
+		try {
+			planParser.parseAndSaveURL(url);
 		} catch (Exception e) {
 			
 			e.printStackTrace();
@@ -160,8 +183,8 @@ public class TestPlan {
 			Date start = new Date();
 			
 			List<ProzorroPageContent> list = pageServiceProzorro
-					.getPagesList(DataType.PLANS, DateUtils.parseDateFromString("2019-01-08", short_date_formate),
-								  DateUtils.parseDateFromString("2019-01-08", short_date_formate), false);
+					.getPagesList(DataType.PLANS, DateUtils.parseProzorroPageDateFromString("2019-01-08", short_date_formate),
+								  DateUtils.parseProzorroPageDateFromString("2019-01-08", short_date_formate), false);
 			System.out.println("Pages list size: " + list.size());
 			Date finish = new Date();
 			long timeForPages = finish.getTime() - start.getTime();
@@ -173,7 +196,7 @@ public class TestPlan {
 				ProzorroPageContent pageContent = pageServiceProzorro.getPageContentFromURL(pageServiceProzorro
 																									.getPlanPageURL(
 																											DateUtils
-																													.parseDateFromString(
+																													.parseProzorroPageDateFromString(
 																															"2019-01-08",
 																															short_date_formate)));
 				List<PlanData> planDataList = planDataServiceProzorro.getPlansDataFromPageContent(pageContent);
