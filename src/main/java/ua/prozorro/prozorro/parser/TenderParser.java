@@ -135,5 +135,118 @@ public class TenderParser implements DataParser {
 		return true;
 	}
 	
+	public boolean parseAndSaveURL(String url) throws Exception {
+		logger.info("Start parsing for URL " + url);
+		
+		TenderPageDTO page = null;
+		
+		Session session = null;
+		Transaction transaction = null;
+		
+		String text = "";
+		
+		int pageCount = 0;
+		int pageElementCount = 0;
+		try {
+			ProzorroPageContent pageContent = pageServiceProzorro.getPageContentFromURL(url);
+			
+			session = sessionFactory.openSession();
+			
+			pageElementCount = 0;
+			logger.info("Start parsing page №" + pageCount + ": ");
+			
+			for (ProzorroPageElement pageElement : pageContent.getPageElementList()) {
+				pageElementCount++;
+				
+				PageService pageService = new PageService(session);
+				
+				transaction = session.beginTransaction();
+				page = TenderDTOUtils.getPageDTO(pageElement);
+				
+				boolean updatedPage = pageService.saveTenderPage(page, session);
+				if (updatedPage) {
+					TenderService tenderService = new TenderService(session);
+					TenderData tenderData = tenderDataServiceProzorro.getTenderDataFromPageElement(pageElement);
+					text = tenderData.toString();
+					TenderDTO tenderDTO = TenderDTOUtils.getTenderDTO(tenderData.getTender());
+					tenderService.saveTender(tenderDTO, session);
+				}
+				logger.info(
+						"ProzorroPage № " + pageCount + ", tender on page № " + pageElementCount + ", added/updated: " +
+						updatedPage);
+				
+				session.flush();
+				session.clear();
+				transaction.commit();
+			}
+			logger.info("Get next page with URL: " + pageContent.getNextPage().getUri());
+			
+		} catch (Exception e) {
+			//catch (ParseException | IOException | Exception e){
+			e.printStackTrace();
+			logger.error(
+					"Page № " + pageCount + ", tender № " + pageElementCount + ", Parse error: " + page + ", msg: " +
+					e.getMessage());
+			logger.error("Tender: " + text);
+			
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			
+			throw new Exception(e);
+		} finally {
+			session.close();
+		}
+		
+		return true;
+	}
+	
+	public boolean parseAndSaveTender(String url) throws Exception {
+		logger.info("Start parsing for URL " + url);
+		
+		TenderPageDTO page = null;
+		
+		Session session = null;
+		Transaction transaction = null;
+		
+		String text = "";
+		
+		try {
+			
+			session = sessionFactory.openSession();
+			transaction =session.beginTransaction();
+			
+			TenderService tenderService = new TenderService(session);
+			logger.info("Start TENDER parse");
+			TenderData tenderData = tenderDataServiceProzorro.getTenderDataFromURL(url);
+			logger.info("TENDER: " + tenderData);
+			text = "TENDER: " + tenderData;
+			TenderDTO tenderDTO = TenderDTOUtils.getTenderDTO(tenderData.getTender());
+			logger.info("TENDER DTO: " + tenderDTO);
+			text = "TENDER DTO: " + tenderDTO;
+			tenderService.saveTender(tenderDTO, session);
+			
+			session.flush();
+			session.clear();
+			transaction.commit();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			logger.error("Error on Tender: " + text);
+			logger.error("Error message: " + e.getMessage(), e);
+			
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			
+			throw new Exception(e);
+		} finally {
+			session.close();
+		}
+		
+		return true;
+	}
+	
 	
 }

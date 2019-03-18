@@ -212,10 +212,10 @@ public class ContractDTOUtils {
 		itemDTO.setUnit(getUnitDTO(item.getUnit()));
 		
 		try {
-			itemDTO.setQuantity(Long.parseLong(item.getQuantity()));
-		} catch (NumberFormatException e) {
+			itemDTO.setQuantity((new Double(item.getQuantity())).longValue());
+		} catch (NumberFormatException|NullPointerException e) {
 			itemDTO.setQuantity(1);
-			CommonUtils.saveParsingErrorLog("ITEMS", item.getId(), "QUANTITY", item.getQuantity());
+			CommonUtils.saveParsingErrorLog("CONTRACTS","ITEMS", item.getId(), "QUANTITY", item.getQuantity());
 		}
 		
 		return itemDTO;

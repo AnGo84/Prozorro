@@ -111,8 +111,9 @@ public class Dialogs {
 		PrintWriter pw = new PrintWriter(sw);
 		ex.printStackTrace(pw);
 		String exceptionText = dialogText.getContentText() + " : " + sw.toString();
-		
-		logger.error(dialogText + "\n. Error message= \n" + sw.toString());
+		if(logger!=null) {
+			logger.error(dialogText + "\n. Error message: \n" + sw.toString());
+		}
 		
 		Label label = new Label(LABEL_STACKTRACE_TEXT);
 		

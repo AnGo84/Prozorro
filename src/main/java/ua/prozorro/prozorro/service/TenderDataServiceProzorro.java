@@ -7,10 +7,12 @@ import org.apache.logging.log4j.Logger;
 import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
 import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
 import ua.prozorro.prozorro.model.tenders.TenderData;
+import ua.prozorro.utils.DateUtils;
 import ua.prozorro.utils.FileUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TenderDataServiceProzorro {
@@ -29,7 +31,11 @@ public class TenderDataServiceProzorro {
 	}
 	
 	public TenderData getPageContentFromURL(String url) throws JsonParseException, IOException {
+		/*System.out.println("getPageContentFromURL " +
+						   (DateUtils.parseDateToString(new Date(), DateUtils.PROZORRO_DATE_FORMATE_WITHOUT_SSS)));*/
 		String genreJson = FileUtils.getStringFromURL(url);
+		/*System.out.println("getPageContentFromURL 2" +
+						   (DateUtils.parseDateToString(new Date(), DateUtils.PROZORRO_DATE_FORMATE_WITHOUT_SSS)));*/
 		return getTenderDataContentFromStringJSON(genreJson);
 	}
 	
@@ -55,6 +61,15 @@ public class TenderDataServiceProzorro {
 		String currentTenderURL = tenderURL + pageElement.getId();
 		
 		TenderData tenderData = getPageContentFromURL(currentTenderURL);
+		return tenderData;
+	}
+	
+	public TenderData getTenderDataFromURL(String url) throws IOException {
+		if (url == null || url.isEmpty()) {
+			return null;
+		}
+		//System.out.println("Start getTenderDataFromURL " + (DateUtils.parseDateToString(new Date(),DateUtils.PROZORRO_DATE_FORMATE_WITHOUT_SSS )));
+		TenderData tenderData = getPageContentFromURL(url);
 		return tenderData;
 	}
 	

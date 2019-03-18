@@ -138,10 +138,11 @@ public class PlanDTOUtils {
 		itemDTO.setUnit(getUnitDTO(item.getUnit()));
 		//if(item.getQuantity() != null && !item.getQuantity().isEmpty()) {
 		try {
-			itemDTO.setQuantity(Long.parseLong(item.getQuantity()));
-		} catch (NumberFormatException e) {
+			//itemDTO.setQuantity(Long.parseLong(item.getQuantity()));
+			itemDTO.setQuantity((new Double(item.getQuantity())).longValue());
+		} catch (NumberFormatException|NullPointerException e) {
 			itemDTO.setQuantity(1);
-			CommonUtils.saveParsingErrorLog("ITEMS", item.getId(), "QUANTITY", item.getQuantity());
+			CommonUtils.saveParsingErrorLog("PLAN","ITEMS", item.getId(), "QUANTITY", item.getQuantity());
 		}
 		//}
 		

@@ -186,13 +186,13 @@ public class PlanParserTask extends Task<Boolean> {
 			logger.error("ERROR on URL: " + currentPageURL);
 			logger.error("ERROR on Page: " + page);
 			logger.error("ERROR Объект: " + text);
-			logger.error("ERROR message: " + e.getClass() + " : " + e.getMessage());
+			logger.error("ERROR message: " + e.getClass());
 			
 			updateMessage("ERROR on URL: " + currentPageURL);
 			updateMessage("ERROR on Page: " + page);
 			updateMessage("ERROR Объект: " + text);
-			updateMessage("ERROR message: " + e.getMessage() + " : " + e.getMessage());
-			if (transaction != null && transaction.isActive()) {
+			updateMessage("ERROR message: " + e.getMessage());
+			if (transaction != null) {
 				transaction.rollback();
 			}
 			throw new Exception(e);

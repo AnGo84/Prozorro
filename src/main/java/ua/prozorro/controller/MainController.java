@@ -307,7 +307,8 @@ public class MainController {
 						textArea.appendText("Error: " + task.getException().getMessage() + "\n");
 						
 						logger.error("Exception type: " + throwable.getClass());
-						logger.error(throwable.getStackTrace());
+						//logger.error("Exception StackTrace: ", throwable.getStackTrace());
+						logger.error("Exception StackTrace: ", throwable);
 						
 						Dialogs.showErrorDialog(task.getException(),
 												new DialogText("Ошибка отбора", "Ошибка при проверке данных за период",
@@ -316,7 +317,7 @@ public class MainController {
 															   " за период c " + DateUtils.dateToString(dateFrom) +
 															   " по " + DateUtils.dateToString(dateTill) +
 															   " возникла ошибка: " + task.getException().getMessage()),
-												logger);
+												null);
 						
 						setWaitingProcess(false);
 					});

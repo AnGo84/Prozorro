@@ -185,13 +185,13 @@ public class ContractParserTask extends Task<Boolean> {
 			logger.error("ERROR on URL: " + currentPageURL);
 			logger.error("ERROR on Page: " + page);
 			logger.error("ERROR Объект: " + text);
-			logger.error("ERROR message: " + e.getMessage() + " : " + e.getMessage());
+			logger.error("ERROR message: " + e.getMessage());
 			
 			updateMessage("ERROR on URL: " + currentPageURL);
 			updateMessage("ERROR on Page: " + pageContent);
 			updateMessage("ERROR Объект: " + text);
-			updateMessage("ERROR message: " + e.getMessage() + " : " + e.getMessage());
-			if (transaction != null && transaction.isActive()) {
+			updateMessage("ERROR message: " + e.getMessage());
+			if (transaction != null) {
 				transaction.rollback();
 			}
 			throw new Exception(e);

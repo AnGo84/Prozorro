@@ -278,10 +278,10 @@ public class TenderDTOUtils {
 		itemDTO.setUnit(getUnitDTO(item.getUnit()));
 		
 		try {
-			itemDTO.setQuantity(Long.parseLong(item.getQuantity()));
-		} catch (NumberFormatException e) {
+			itemDTO.setQuantity((new Double(item.getQuantity())).longValue());
+		} catch (NumberFormatException | NullPointerException e) {
 			itemDTO.setQuantity(1);
-			CommonUtils.saveParsingErrorLog("ITEMS", item.getId(), "QUANTITY", item.getQuantity());
+			CommonUtils.saveParsingErrorLog("TENDER", "ITEMS", item.getId(), "QUANTITY", item.getQuantity());
 		}
 		
 		
@@ -338,7 +338,9 @@ public class TenderDTOUtils {
 		
 		questionDTO.setId(question.getId());
 		questionDTO.setAuthor(getOrganizationDTO(question.getAuthor()));
-		questionDTO.setTitle(question.getTitle());
+		//questionDTO.setTitle(question.getTitle());
+		questionDTO.setTitle(question.getTitle() == null ? question.getTitle() :
+									 question.getTitle().substring(0, Math.min(question.getTitle().length(), 4000)));
 		questionDTO.setDescription(question.getDescription());
 		questionDTO.setDate(question.getDate());
 		questionDTO.setDateAnswered(question.getDateAnswered());

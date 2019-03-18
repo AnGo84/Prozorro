@@ -48,16 +48,17 @@ public class TestTender {
 		//JSONParser(url);
 		//GSONPareser(url2);
 		
-		try {
+		/*try {
 			Date dateFrom = DateUtils.parseProzorroPageDateFromString("2016-11-05", short_date_formate);
 			Date dateTill = DateUtils.parseProzorroPageDateFromString("2016-11-05", short_date_formate);
 			checkDataForPeriod(dateFrom, dateTill);
 		} catch (java.text.ParseException e) {
 			e.printStackTrace();
-		}
-		
+		}*/
+		//parseAndSaveDataByURL("https://public.api.openprocurement.org/api/2
+		// .4/tenders?offset=2018-04-06T16%3A28%3A34.996915%2B02%3A00");
 		//parseAndSaveData();
-		
+		parseAndSaveTenderByURL("https://public.api.openprocurement.org/api/2.5/tenders/3d9dbab2f47a47a1afb751c28c3ad0b4");
 		//ProzorroPageContent pageContent = getPageContentFromURL(pageContent.getNextPage().getUri());
 		//ProzorroPageContent pageContent = PageServiceProzorro.getPageContentFromURL(startPageURL);
 
@@ -97,6 +98,52 @@ public class TestTender {
 		try {
 			tenderParser.parseAndSave(DateUtils.parseProzorroPageDateFromString("2016-10-06", short_date_formate),
 									  DateUtils.parseProzorroPageDateFromString("2016-10-11", short_date_formate));
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		} finally {
+			sessionFactory.close();
+		}
+	}
+	private static void parseAndSaveDataByURL(String url) {
+		//https://www.google.com/search?ei=SN0TXJPOAvDrrgS55JeoBQ&q=java+hibernate+%40onetoone+saveorupdate+child+first&oq=java+hibernate+%40onetoone+saveorupdate+child+first&gs_l=psy-ab.3...18094.18570..19344...0.0..0.94.270.3......0....1..gws-wiz.......0i71.ThMyYku4_E4
+		
+		SessionFactory sessionFactory = getSessionFactoryByDBName("mysql");
+		
+		PageServiceProzorro pageServiceProzorro = new PageServiceProzorro(new PropertyFields(getStartProperties()));
+		/*TenderDataServiceProzorro tenderDataServiceProzorro =
+				new TenderDataServiceProzorro(start_page + File.separator);*/
+		TenderDataServiceProzorro tenderDataServiceProzorro = new TenderDataServiceProzorro(start_page + "/");
+		TenderParser tenderParser = new TenderParser();
+		tenderParser.setSessionFactory(sessionFactory);
+		tenderParser.setPageServiceProzorro(pageServiceProzorro);
+		tenderParser.setTenderDataServiceProzorro(tenderDataServiceProzorro);
+		
+		try {
+			tenderParser.parseAndSaveURL(url);
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		} finally {
+			sessionFactory.close();
+		}
+	}
+	private static void parseAndSaveTenderByURL(String url) {
+		//https://www.google.com/search?ei=SN0TXJPOAvDrrgS55JeoBQ&q=java+hibernate+%40onetoone+saveorupdate+child+first&oq=java+hibernate+%40onetoone+saveorupdate+child+first&gs_l=psy-ab.3...18094.18570..19344...0.0..0.94.270.3......0....1..gws-wiz.......0i71.ThMyYku4_E4
+		
+		SessionFactory sessionFactory = getSessionFactoryByDBName("mysql");
+		
+		PageServiceProzorro pageServiceProzorro = new PageServiceProzorro(new PropertyFields(getStartProperties()));
+		/*TenderDataServiceProzorro tenderDataServiceProzorro =
+				new TenderDataServiceProzorro(start_page + File.separator);*/
+		TenderDataServiceProzorro tenderDataServiceProzorro = new TenderDataServiceProzorro(start_page + "/");
+		TenderParser tenderParser = new TenderParser();
+		tenderParser.setSessionFactory(sessionFactory);
+		tenderParser.setPageServiceProzorro(pageServiceProzorro);
+		tenderParser.setTenderDataServiceProzorro(tenderDataServiceProzorro);
+		
+		try {
+			tenderParser.parseAndSaveTender(url);
 		} catch (Exception e) {
 			
 			e.printStackTrace();
