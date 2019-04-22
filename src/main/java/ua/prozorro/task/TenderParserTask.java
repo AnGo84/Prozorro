@@ -136,22 +136,36 @@ public class TenderParserTask extends Task<Boolean> {
 								". Отклонён по дате \n");
 						break;
 					}
+					Date start = new Date();
 					pageElementCount++;
 					page = TenderDTOUtils.getPageDTO(pageElement);
+					
+					logger.debug("Parsing PAGE JSON to class (ms):" + ((new Date()).getTime() - start.getTime()));
 					PageService pageService = new PageService(session);
 					
 					transaction = session.beginTransaction();
+					logger.info("Start saving to DB:" );
+					start = new Date();
 					boolean updatedPage = pageService.saveTenderPage(page, session);
+					logger.info("Save Page (ms):" + ((new Date()).getTime() - start.getTime()));
 					if (updatedPage) {
+						start = new Date();
 						TenderService tenderService = new TenderService(session);
 						
 						TenderDataServiceProzorro tenderDataServiceProzorro = new TenderDataServiceProzorro(
 								propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE) + "/");
 						text = pageElement.getId() + "\n";
 						TenderData tenderData = tenderDataServiceProzorro.getTenderDataFromPageElement(pageElement);
+						
+						logger.info("Take TENDER from PAGE:" + ((new Date()).getTime() - start.getTime()));
+						start = new Date();
 						text = text + tenderData.toString();
+						
 						TenderDTO tenderDTO = TenderDTOUtils.getTenderDTO(tenderData.getTender());
+						logger.info("Take TENDERDAO from TENDER:" + ((new Date()).getTime() - start.getTime()));
+						start = new Date();
 						tenderService.saveTender(tenderDTO, session);
+						logger.info("Save TENDERDAO to DB:" + ((new Date()).getTime() - start.getTime()));
 					}
 					logger.info(propertyFields.getSearchDateType().getTypeName() + ": Страница № " + pageCount + "/" +
 								resultData.getListSize() + ", текущий № " + pageElementCount + " c id: " +

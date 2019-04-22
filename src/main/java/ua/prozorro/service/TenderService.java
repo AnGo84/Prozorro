@@ -6,6 +6,8 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 import ua.prozorro.entity.tenders.*;
 
+import java.util.Date;
+
 public class TenderService {
 	private static final Logger logger = LogManager.getRootLogger();
 	
@@ -54,12 +56,17 @@ public class TenderService {
 			logger.info("Ignore Tender: " + tender + "\n");
 		}*/
 		
+		Date start = new Date();
+		
 		
 		session.flush();
 		session.clear();
 		deleteAllTenderDependentRecords(tender, session);
-		
+		logger.info("Delete all relative DATA:" + ((new Date()).getTime() - start.getTime()));
+		start = new Date();
 		session.saveOrUpdate(tender);
+		logger.info("Save TENDERDAO:" + ((new Date()).getTime() - start.getTime()));
+		start = new Date();
 		session.flush();
 		session.clear();
 		
@@ -72,6 +79,7 @@ public class TenderService {
 		saveTenderBids(tender, session);
 		saveTenderQuestions(tender, session);
 		saveTenderComplaints(tender, session);
+		logger.info("Save TENDERDAO parts to DB:" + ((new Date()).getTime() - start.getTime()));
 		
 	}
 	

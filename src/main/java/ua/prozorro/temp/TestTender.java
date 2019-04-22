@@ -58,7 +58,7 @@ public class TestTender {
 		//parseAndSaveDataByURL("https://public.api.openprocurement.org/api/2
 		// .4/tenders?offset=2018-04-06T16%3A28%3A34.996915%2B02%3A00");
 		//parseAndSaveData();
-		parseAndSaveTenderByURL("https://public.api.openprocurement.org/api/2.5/tenders/3d9dbab2f47a47a1afb751c28c3ad0b4");
+		parseAndSaveTenderByURL("https://public.api.openprocurement.org/api/2.5/tenders/dc67724a599643948baa4f1d0ebf911e");
 		//ProzorroPageContent pageContent = getPageContentFromURL(pageContent.getNextPage().getUri());
 		//ProzorroPageContent pageContent = PageServiceProzorro.getPageContentFromURL(startPageURL);
 

@@ -12,7 +12,7 @@ public class OrganizationDTO {
 	
 	@Column(length = 4000)
 	private String name;
-	@Column
+	@Column(length = 500)
 	private String telephone;
 	@Column(length = 2000)
 	private String url;

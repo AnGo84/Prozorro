@@ -223,7 +223,7 @@ public class ContractDTOUtils {
 	
 	
 	public static UnitDTO getUnitDTO(Unit unit) {
-		if (unit == null || unit.getCode() == null) {
+		if (unit == null || unit.getCode() == null|| unit.getCode().equals("")) {
 			return null;
 		}
 		UnitDTO unitDTO = new UnitDTO();

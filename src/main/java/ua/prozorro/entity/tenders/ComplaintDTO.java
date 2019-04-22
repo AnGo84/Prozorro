@@ -17,7 +17,9 @@ public class ComplaintDTO {
 	@Cascade({org.hibernate.annotations.CascadeType.ALL})
 	private OrganizationDTO author;
 	
-	@Column(length = 4000)
+	//@Column(length = 4000)
+	@Lob
+	@Column
 	private String title;
 	//@Column(length = 8000)
 	@Lob
