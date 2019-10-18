@@ -7,6 +7,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import ua.prozorro.entity.TenderDTOUtils;
+import ua.prozorro.entity.mappers.prozorroObjectMapper.TenderMapper;
+import ua.prozorro.entity.mappers.prozorroObjectMapper.pages.TenderPageMapper;
 import ua.prozorro.entity.pages.TenderPageDTO;
 import ua.prozorro.entity.tenders.TenderDTO;
 import ua.prozorro.properties.AppProperty;
@@ -115,7 +117,9 @@ public class TenderParserTask extends Task<Boolean> {
 				pageElementCount = 0;
 				logger.info("Start parsing page №" + pageCount + ": ");
 				updateMessage("Start parsing page №" + pageCount + ": \n");
-				
+				TenderPageMapper tenderPageMapper = new TenderPageMapper();
+				TenderMapper tenderMapper = new TenderMapper();
+
 				for (ProzorroPageElement pageElement : pageContent.getPageElementList()) {
 					
 					Date pageDate = DateUtils.parseProzorroPageDateFromString(pageElement.getDateModified(),
@@ -138,8 +142,9 @@ public class TenderParserTask extends Task<Boolean> {
 					}
 					Date start = new Date();
 					pageElementCount++;
-					page = TenderDTOUtils.getPageDTO(pageElement);
-					
+					//page = TenderDTOUtils.getPageDTO(pageElement);
+					page = tenderPageMapper.convertToEntity(pageElement);
+
 					logger.debug("Parsing PAGE JSON to class (ms):" + ((new Date()).getTime() - start.getTime()));
 					PageService pageService = new PageService(session);
 					
@@ -161,7 +166,8 @@ public class TenderParserTask extends Task<Boolean> {
 						start = new Date();
 						text = text + tenderData.toString();
 						
-						TenderDTO tenderDTO = TenderDTOUtils.getTenderDTO(tenderData.getTender());
+						//TenderDTO tenderDTO = TenderDTOUtils.getTenderDTO(tenderData.getTender());
+						TenderDTO tenderDTO = tenderMapper.convertToEntity(tenderData.getTender());
 						logger.info("Take TENDERDAO from TENDER:" + ((new Date()).getTime() - start.getTime()));
 						start = new Date();
 						tenderService.saveTender(tenderDTO, session);

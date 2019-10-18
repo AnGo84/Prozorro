@@ -7,6 +7,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import ua.prozorro.entity.ContractDTOUtils;
+import ua.prozorro.entity.mappers.prozorroObjectMapper.ContractMapper;
+import ua.prozorro.entity.mappers.prozorroObjectMapper.pages.ContractPageMapper;
 import ua.prozorro.entity.pages.ContractPageDTO;
 import ua.prozorro.entity.tenders.ContractDTO;
 import ua.prozorro.properties.AppProperty;
@@ -114,7 +116,8 @@ public class ContractParserTask extends Task<Boolean> {
 				pageElementCount = 0;
 				logger.info("Start parsing page №" + pageCount + "from " + resultData.getListSize() + ": ");
 				updateMessage("Start parsing page №" + pageCount + "from " + resultData.getListSize() + ":  \n");
-				
+				ContractPageMapper contractPageMapper = new ContractPageMapper();
+				ContractMapper contractMapper = new ContractMapper();
 				for (ProzorroPageElement pageElement : pageContent.getPageElementList()) {
 					
 					Date pageDate = DateUtils.parseProzorroPageDateFromString(pageElement.getDateModified(), propertyFields
@@ -135,7 +138,9 @@ public class ContractParserTask extends Task<Boolean> {
 						break;
 					}
 					pageElementCount++;
-					page = ContractDTOUtils.getPageDTO(pageElement);
+					//page = ContractDTOUtils.getPageDTO(pageElement);
+					page = contractPageMapper.convertToEntity(pageElement);
+
 					PageService pageService = new PageService(session);
 					
 					transaction = session.beginTransaction();
@@ -149,7 +154,8 @@ public class ContractParserTask extends Task<Boolean> {
 						ContractData contractData =
 								contractDataServiceProzorro.getContractDataFromPageElement(pageElement);
 						text = text + contractData.toString();
-						ContractDTO planDTO = ContractDTOUtils.getContractDTO(contractData.getContract());
+						//ContractDTO planDTO = ContractDTOUtils.getContractDTO(contractData.getContract());
+						ContractDTO planDTO = contractMapper.convertToEntity(contractData.getContract());
 						planService.saveContract(planDTO, session);
 					}
 					logger.info(propertyFields.getSearchDateType().getTypeName() + ": Страница № " + pageCount + "/" +

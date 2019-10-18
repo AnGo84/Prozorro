@@ -4,7 +4,6 @@ import org.apache.commons.io.IOUtils;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.json.simple.parser.ParseException;
-import ua.prozorro.Prozorro;
 import ua.prozorro.ProzorroApp;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
@@ -217,7 +216,7 @@ public class TestTender {
 	}
 	
 	private static void JSONPareser(String url) {
-		try {
+		/*try {
 			String genreJson = getStringFromURL(url);
 			//JSONObject genreJsonObject = (JSONObject) JSONValue.parseWithException(genreJson);
 			PageContentURL pageContent = Prozorro.getPageContent(new URL(url), genreJson);
@@ -226,7 +225,7 @@ public class TestTender {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	private static void GSONPareser(String url) {

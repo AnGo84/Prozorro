@@ -8,6 +8,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import ua.prozorro.entity.exchangeRates.ExchangeRateNBUDTO;
 import ua.prozorro.entity.exchangeRates.ExchangeRateNBUDTOUtils;
+import ua.prozorro.entity.mappers.exchangeRates.ExchangeRateNBUListMapper;
+import ua.prozorro.entity.mappers.exchangeRates.ExchangeRateNBUMapper;
 import ua.prozorro.exchangeRates.ExchangeRateNBU;
 import ua.prozorro.exchangeRates.ExchangeRateServiceNBU;
 import ua.prozorro.properties.PropertyFields;
@@ -86,6 +88,9 @@ public class NBURatesParserTask extends Task<Boolean> {
 			try {
 				
 				session = sessionFactory.openSession();
+
+
+				ExchangeRateNBUListMapper exchangeRateNBUListMapper = new ExchangeRateNBUListMapper();
 				for (String url : list) {
 					
 					if (isCancelled()) {
@@ -105,8 +110,10 @@ public class NBURatesParserTask extends Task<Boolean> {
 					
 					ExchangeRateNBUService nbuService = new ExchangeRateNBUService(session);
 					
+					/*List<ExchangeRateNBUDTO> exchangeRateNBUDTOS =
+							ExchangeRateNBUDTOUtils.getExchangeRateNBUDTOList(rateNBUList);*/
 					List<ExchangeRateNBUDTO> exchangeRateNBUDTOS =
-							ExchangeRateNBUDTOUtils.getExchangeRateNBUDTOList(rateNBUList);
+							exchangeRateNBUListMapper.convertToEntitiesList(rateNBUList);
 					
 					boolean saveResult = nbuService.saveExchangeRateNBUList(exchangeRateNBUDTOS);
 					

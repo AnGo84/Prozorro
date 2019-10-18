@@ -1,10 +1,14 @@
 package ua.prozorro.controller;
 
-import com.sun.deploy.uitoolkit.impl.fx.HostServicesFactory;
-import com.sun.javafx.application.HostServicesDelegate;
+//import com.sun.deploy.uitoolkit.impl.fx.HostServicesFactory;
+//import com.sun.javafx.application.HostServicesDelegate;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,7 +30,10 @@ import ua.prozorro.prozorro.service.TenderDataServiceProzorro;
 import ua.prozorro.sql.HibernateDataBaseType;
 import ua.prozorro.utils.FileUtils;
 
+import java.awt.*;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.List;
 
 public class ParseURLController {
@@ -178,43 +185,52 @@ public class ParseURLController {
 	
 	public void onHyperLinkJsonParserOnline(ActionEvent actionEvent) {
 		logger.info("Show " + SITE_JSON_PARSER_ONLINE);
-		try {
+		/*try {
 			HostServicesDelegate hostServices = HostServicesFactory.getInstance(prozorroApp);
 			hostServices.showDocument(SITE_JSON_PARSER_ONLINE);
 		} catch (Exception e1) {
 			e1.printStackTrace();
-		}
+		}*/
 
-		/*if (Desktop.isDesktopSupported()) {
+		showURL(SITE_JSON_PARSER_ONLINE);
+
+	}
+
+	private void showURL(String url) {
+		logger.info("Show URL:" + url);
+		if (Desktop.isDesktopSupported()) {
 			logger.info("DesktopSupported");
 			try {
-				Desktop.getDesktop().browse(new URL(SITE_JSON_PARSER_ONLINE).toURI());
+				Desktop.getDesktop().browse(new URL(url).toURI());
 			} catch (URISyntaxException | IOException e1) {
+				logger.error("Error: " + e1.getMessage());
 				e1.printStackTrace();
 			} catch (Exception e1) {
+				logger.error("Error: " + e1.getMessage());
 				e1.printStackTrace();
 			}
-		}*/
-		
+		}
 	}
-	
-	public void onHyperLinkProzzoroData(ActionEvent actionEvent) {
+
+	public void onHyperLinkProzorroData(ActionEvent actionEvent) {
 		logger.info("Show " + urlProzorroData);
-		try {
+		/*try {
 			HostServicesDelegate hostServices = HostServicesFactory.getInstance(prozorroApp);
 			hostServices.showDocument(urlProzorroData);
 		} catch (Exception e1) {
 			e1.printStackTrace();
-		}
+		}*/
+		showURL(urlProzorroData);
 	}
 	
 	public void onHyperLinkAPIData(ActionEvent actionEvent) {
 		logger.info("Show " + urlAPIData);
-		try {
+		/*try {
 			HostServicesDelegate hostServices = HostServicesFactory.getInstance(prozorroApp);
 			hostServices.showDocument(urlAPIData);
 		} catch (Exception e1) {
 			e1.printStackTrace();
-		}
+		}*/
+		showURL(urlAPIData);
 	}
 }

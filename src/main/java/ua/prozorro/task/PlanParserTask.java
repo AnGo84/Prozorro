@@ -7,6 +7,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import ua.prozorro.entity.PlanDTOUtils;
+import ua.prozorro.entity.mappers.prozorroObjectMapper.PlanMapper;
+import ua.prozorro.entity.mappers.prozorroObjectMapper.pages.PlanPageMapper;
 import ua.prozorro.entity.pages.PlanPageDTO;
 import ua.prozorro.entity.plans.PlanDTO;
 import ua.prozorro.properties.AppProperty;
@@ -114,6 +116,8 @@ public class PlanParserTask extends Task<Boolean> {
 				pageElementCount = 0;
 				logger.info("Start parsing page №" + pageCount + ": ");
 				updateMessage("Start parsing page №" + pageCount + ": \n");
+				PlanPageMapper planPageMapper = new PlanPageMapper();
+				PlanMapper planMapper = new PlanMapper();
 				
 				for (ProzorroPageElement pageElement : pageContent.getPageElementList()) {
 					
@@ -137,7 +141,8 @@ public class PlanParserTask extends Task<Boolean> {
 						break;
 					}
 					pageElementCount++;
-					page = PlanDTOUtils.getPageDTO(pageElement);
+					//page = PlanDTOUtils.getPageDTO(pageElement);
+					page = planPageMapper.convertToEntity(pageElement);
 					PageService pageService = new PageService(session);
 					
 					transaction = session.beginTransaction();
@@ -150,7 +155,8 @@ public class PlanParserTask extends Task<Boolean> {
 						text = pageElement.getId() + "\n";
 						PlanData planData = planDataServiceProzorro.getPlanDataFromPageElement(pageElement);
 						text = text + planData.toString();
-						PlanDTO planDTO = PlanDTOUtils.getPlanDTO(planData.getPlan());
+						//PlanDTO planDTO = PlanDTOUtils.getPlanDTO(planData.getPlan());
+						PlanDTO planDTO = planMapper.convertToEntity(planData.getPlan());
 						planService.savePlan(planDTO, session);
 					}
 					logger.info(propertyFields.getSearchDateType().getTypeName() + ": Страница № " + pageCount + "/" +

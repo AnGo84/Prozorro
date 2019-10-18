@@ -7,17 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "ALL_tenders_IMPORT")
 public class ProzorroPageElement {
 	
 	@SerializedName("id")
-	@Id
-	@Column(name = "tender_id")
 	private String id;
 	
 	@SerializedName("dateModified")
-	@Column(name = "dateModified")
 	private String dateModified;
 	
 	public ProzorroPageElement() {

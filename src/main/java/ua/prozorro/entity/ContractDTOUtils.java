@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class ContractDTOUtils {
 	
-	public static ContractPageDTO getPageDTO(ProzorroPageElement pageElement) {
+	/*public static ContractPageDTO getPageDTO(ProzorroPageElement pageElement) {
 		if (pageElement == null) {
 			return null;
 		}
@@ -26,9 +26,9 @@ public class ContractDTOUtils {
 		page.setDateModified(pageElement.getDateModified());
 		
 		return page;
-	}
+	}*/
 	
-	public static ContractDTO getContractDTO(Contract contract) {
+	/*public static ContractDTO getContractDTO(Contract contract) {
 		if (contract == null) {
 			return null;
 		}
@@ -67,7 +67,7 @@ public class ContractDTOUtils {
 		contractDTO.setOwner(contract.getOwner());
 		
 		return contractDTO;
-	}
+	}*/
 	
 	public static OrganizationDTO getOrganizationDTO(Organization organization) {
 		if (organization == null) {

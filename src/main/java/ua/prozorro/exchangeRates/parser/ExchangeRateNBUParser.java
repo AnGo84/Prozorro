@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import ua.prozorro.entity.exchangeRates.ExchangeRateNBUDTO;
 import ua.prozorro.entity.exchangeRates.ExchangeRateNBUDTOUtils;
+import ua.prozorro.entity.mappers.exchangeRates.ExchangeRateNBUListMapper;
 import ua.prozorro.exchangeRates.ExchangeRateNBU;
 import ua.prozorro.exchangeRates.ExchangeRateServiceNBU;
 import ua.prozorro.prozorro.model.DataType;
@@ -62,6 +63,9 @@ public class ExchangeRateNBUParser implements DataParser {
 			try {
 				
 				session = sessionFactory.openSession();
+
+				ExchangeRateNBUListMapper exchangeRateNBUListMapper = new ExchangeRateNBUListMapper();
+
 				for (String url : list) {
 					currentURL = url;
 					pageCount++;
@@ -71,8 +75,10 @@ public class ExchangeRateNBUParser implements DataParser {
 					
 					ExchangeRateNBUService nbuService = new ExchangeRateNBUService(session);
 					
+					/*List<ExchangeRateNBUDTO> exchangeRateNBUDTOS =
+							ExchangeRateNBUDTOUtils.getExchangeRateNBUDTOList(rateNBUList);*/
 					List<ExchangeRateNBUDTO> exchangeRateNBUDTOS =
-							ExchangeRateNBUDTOUtils.getExchangeRateNBUDTOList(rateNBUList);
+							exchangeRateNBUListMapper.convertToEntitiesList(rateNBUList);
 					
 					boolean saveResult = nbuService.saveExchangeRateNBUList(exchangeRateNBUDTOS);
 					

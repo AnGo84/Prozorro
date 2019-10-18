@@ -5,6 +5,7 @@ import com.google.gson.JsonParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ua.prozorro.entity.TenderDTOUtils;
+import ua.prozorro.entity.mappers.prozorroObjectMapper.TenderMapper;
 import ua.prozorro.entity.tenders.TenderDTO;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
@@ -219,8 +220,11 @@ public class PageServiceProzorro {
 			List<TenderData> tenderDataOnPageList =
 					tenderDataServiceProzorro.getTendersDataFromPageContent(pageContent);
 			if (tenderDataOnPageList != null) {
+				TenderMapper tenderMapper = new TenderMapper();
+
 				for (TenderData tenderData : tenderDataOnPageList) {
-					TenderDTO tenderDTO = TenderDTOUtils.getTenderDTO(tenderData.getTender());
+					//TenderDTO tenderDTO = TenderDTOUtils.getTenderDTO(tenderData.getTender());
+					TenderDTO tenderDTO = tenderMapper.convertToEntity(tenderData.getTender());
 				}
 			}
 		}

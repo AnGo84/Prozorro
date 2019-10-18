@@ -116,7 +116,7 @@
     <build>
         <finalName>Prozorro</finalName>
         <plugins>
-            <!--<plugin>
+            <plugin>
                 <groupId>com.zenjava</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>8.8.3</version>
@@ -124,9 +124,17 @@
                     <mainClass>ua.prozorro.ProzorroApp</mainClass>
                     <jfxMainAppJarName>Prozorro.jar</jfxMainAppJarName>
                 </configuration>
-            </plugin>-->
-            <!--for travis-->
+            </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+            <!--for travis-->
+            <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
@@ -142,7 +150,7 @@
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
-            </plugin>
+            </plugin>-->
         </plugins>
     </build>
 

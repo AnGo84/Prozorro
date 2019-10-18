@@ -37,7 +37,7 @@ public class PageURL {
 	}
 
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		final StringBuilder sb = new StringBuilder("pages.PageURL{");
 		sb.append("path= ").append(path);
 		sb.append(", url= ").append(url);

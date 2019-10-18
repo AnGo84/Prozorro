@@ -50,5 +50,6 @@ public class NBURatesParseTimeTask extends Task<ParsingResultData> {
 		resultData.setHasData((list != null && !list.isEmpty()));
 		return resultData;
 	}
-	
+
+
 }
