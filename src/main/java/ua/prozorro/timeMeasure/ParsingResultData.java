@@ -1,4 +1,4 @@
-package ua.prozorro.prozorro;
+package ua.prozorro.timeMeasure;
 
 public class ParsingResultData {
 	//nanoTime

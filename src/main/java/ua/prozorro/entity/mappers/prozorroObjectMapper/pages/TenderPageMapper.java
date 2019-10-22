@@ -1,22 +1,22 @@
 package ua.prozorro.entity.mappers.prozorroObjectMapper.pages;
 
+import ua.prozorro.entity.PageElement;
 import ua.prozorro.entity.mappers.AbstractMapper;
 import ua.prozorro.entity.pages.TenderPageDTO;
-import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
 
-public class TenderPageMapper extends AbstractMapper<ProzorroPageElement, TenderPageDTO>  {
+public class TenderPageMapper extends AbstractMapper<PageElement, TenderPageDTO> {
     @Override
-    public TenderPageDTO convertToEntity(ProzorroPageElement object) {
-        if(object==null){
+    public TenderPageDTO convertToEntity(PageElement object) {
+        if (object == null) {
             return null;
         }
-        TenderPageDTO pageDTO = new TenderPageDTO(object.getId(),object.getDateModified());
+        TenderPageDTO pageDTO = new TenderPageDTO(object.getId(), object.getDateModified());
 
         return pageDTO;
     }
 
     @Override
-    public ProzorroPageElement convertToObject(TenderPageDTO entity) {
+    public PageElement convertToObject(TenderPageDTO entity) {
         return null;
     }
 }

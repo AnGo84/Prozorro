@@ -3,16 +3,14 @@ package ua.prozorro.temp;
 import org.apache.commons.io.IOUtils;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.json.simple.parser.ParseException;
 import ua.prozorro.ProzorroApp;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.prozorro.model.DataType;
-import ua.prozorro.prozorro.model.pages.PageContentURL;
 import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
 import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
 import ua.prozorro.prozorro.model.tenders.TenderData;
-import ua.prozorro.prozorro.parser.TenderParser;
+import ua.prozorro.parser.prozorro.TenderParser;
 import ua.prozorro.prozorro.service.PageServiceProzorro;
 import ua.prozorro.prozorro.service.TenderDataServiceProzorro;
 import ua.prozorro.sql.HibernateDataBaseType;
@@ -193,7 +191,7 @@ public class TestTender {
 			long timeForPageTenders;
 			if (list != null && !list.isEmpty()) {
 				ProzorroPageContent pageContent = pageServiceProzorro.getPageContentFromURL(pageServiceProzorro
-																									.getTenderPageURL(
+																									.getPageURL(
 																											DateUtils
 																													.parseProzorroPageDateFromString(
 																															"2018-12-10",

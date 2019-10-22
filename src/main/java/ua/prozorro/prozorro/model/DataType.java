@@ -1,10 +1,10 @@
 package ua.prozorro.prozorro.model;
 
-import ua.prozorro.exchangeRates.parser.ExchangeRateNBUParser;
-import ua.prozorro.prozorro.parser.ContractParser;
-import ua.prozorro.prozorro.parser.DataParser;
-import ua.prozorro.prozorro.parser.PlanParser;
-import ua.prozorro.prozorro.parser.TenderParser;
+import ua.prozorro.parser.exchangeRates.ExchangeRateNBUParser;
+import ua.prozorro.parser.prozorro.ContractParser;
+import ua.prozorro.parser.DataParser;
+import ua.prozorro.parser.prozorro.PlanParser;
+import ua.prozorro.parser.prozorro.TenderParser;
 
 public enum DataType {
 	TENDERS("Тендеры", new TenderParser()), CONTRACTS("Контракты", new ContractParser()), PLANS("Планы",

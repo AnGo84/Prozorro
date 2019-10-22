@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ua.prozorro.entity.PageElement;
 import ua.prozorro.prozorro.model.contracts.ContractData;
 import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
 import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
@@ -48,7 +49,7 @@ public class ContractDataServiceProzorro {
 		return contractDataList;
 	}
 	
-	public ContractData getContractDataFromPageElement(ProzorroPageElement pageElement) throws IOException {
+	public ContractData getContractDataFromPageElement(PageElement pageElement) throws IOException {
 		if (pageElement == null) {
 			return null;
 		}

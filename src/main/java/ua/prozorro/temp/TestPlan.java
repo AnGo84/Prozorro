@@ -9,7 +9,7 @@ import ua.prozorro.prozorro.model.DataType;
 import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
 import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
 import ua.prozorro.prozorro.model.plans.PlanData;
-import ua.prozorro.prozorro.parser.PlanParser;
+import ua.prozorro.parser.prozorro.PlanParser;
 import ua.prozorro.prozorro.service.PageServiceProzorro;
 import ua.prozorro.prozorro.service.PlanDataServiceProzorro;
 import ua.prozorro.sql.HibernateDataBaseType;
@@ -194,7 +194,7 @@ public class TestPlan {
 			
 			if (list != null && !list.isEmpty()) {
 				ProzorroPageContent pageContent = pageServiceProzorro.getPageContentFromURL(pageServiceProzorro
-																									.getPlanPageURL(
+																									.getPageURL(
 																											DateUtils
 																													.parseProzorroPageDateFromString(
 																															"2019-01-08",

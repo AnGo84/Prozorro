@@ -1,11 +1,10 @@
-package ua.prozorro.prozorro.parser;
+package ua.prozorro.parser.prozorro;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import ua.prozorro.entity.PlanDTOUtils;
 import ua.prozorro.entity.mappers.prozorroObjectMapper.PlanMapper;
 import ua.prozorro.entity.mappers.prozorroObjectMapper.pages.PlanPageMapper;
 import ua.prozorro.entity.pages.PlanPageDTO;
@@ -17,6 +16,7 @@ import ua.prozorro.prozorro.service.PageServiceProzorro;
 import ua.prozorro.prozorro.service.PlanDataServiceProzorro;
 import ua.prozorro.service.PageService;
 import ua.prozorro.service.PlanService;
+import ua.prozorro.parser.DataParser;
 import ua.prozorro.utils.DateUtils;
 
 import java.util.Date;
@@ -61,7 +61,7 @@ public class PlanParser implements DataParser {
 
         logger.info("Start parsing for period from " + DateUtils.dateToString(dateFrom) + " till " +
                 DateUtils.dateToString(dateTill));
-        String startPageURL = pageServiceProzorro.getPlanPageURL(dateFrom);
+        String startPageURL = pageServiceProzorro.getPageURL(dateFrom);
         logger.info("Start parsing from URL " + startPageURL);
 
         PlanPageDTO page = null;

@@ -19,11 +19,12 @@ import ua.prozorro.fx.DialogText;
 import ua.prozorro.fx.Dialogs;
 import ua.prozorro.properties.PropertiesUtils;
 import ua.prozorro.properties.PropertyFields;
-import ua.prozorro.prozorro.ParsingResultData;
+import ua.prozorro.timeMeasure.ParsingResultData;
 import ua.prozorro.prozorro.model.DataType;
 import ua.prozorro.sql.HibernateDataBaseType;
 import ua.prozorro.sql.HibernateFactory;
-import ua.prozorro.task.TaskFactory;
+import ua.prozorro.task.DataParseAndSaveTask;
+import ua.prozorro.task.TimeMeasureTask;
 import ua.prozorro.utils.DateUtils;
 import ua.prozorro.utils.FileUtils;
 
@@ -159,7 +160,8 @@ public class MainController {
             propertyFields.setSearchDateTill(dateTill);
             propertyFields.setSearchDateType(comboBoxDataType.getValue());
 
-            Task<ParsingResultData> task = TaskFactory.taskForCalculationParsingTimeForPeriod(propertyFields);
+            //Task<ParsingResultData> task = TaskFactory.taskForCalculationParsingTimeForPeriod(propertyFields);
+            Task<ParsingResultData> task = new TimeMeasureTask(propertyFields);
 
             task.setOnRunning(new EventHandler<WorkerStateEvent>() {
                 @Override
@@ -281,8 +283,8 @@ public class MainController {
                     propertyFields.setSearchDateTill(dateTill);
                     propertyFields.setSearchDateType(comboBoxDataType.getValue());
 
-                    //Task task = getDataAndSave(sessionFactory, propertyFields, resultData);
-                    Task task = TaskFactory.taskForParseAndSave(sessionFactory, propertyFields, resultData);
+                    //Task task = TaskFactory.taskForParseAndSave(sessionFactory, propertyFields, resultData);
+                    Task task = new DataParseAndSaveTask(sessionFactory, propertyFields, resultData);
 
                     task.setOnRunning((e) -> {
                         //setWaitingProcess(true);

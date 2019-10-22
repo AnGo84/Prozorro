@@ -5,7 +5,7 @@ import org.hibernate.SessionFactory;
 import ua.prozorro.ProzorroApp;
 import ua.prozorro.exchangeRates.ExchangeRateNBU;
 import ua.prozorro.exchangeRates.ExchangeRateServiceNBU;
-import ua.prozorro.exchangeRates.parser.ExchangeRateNBUParser;
+import ua.prozorro.parser.exchangeRates.ExchangeRateNBUParser;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.prozorro.model.DataType;

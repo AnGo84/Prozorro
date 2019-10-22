@@ -1,4 +1,6 @@
-package ua.prozorro.prozorro.parser;
+package ua.prozorro.parser.prozorro;
+
+import ua.prozorro.parser.DataParser;
 
 import java.util.Date;
 

@@ -4,15 +4,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ua.prozorro.entity.TenderDTOUtils;
-import ua.prozorro.entity.mappers.prozorroObjectMapper.TenderMapper;
-import ua.prozorro.entity.tenders.TenderDTO;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
-import ua.prozorro.prozorro.ParsingResultData;
 import ua.prozorro.prozorro.model.DataType;
+import ua.prozorro.prozorro.model.pages.PageURLFactory;
 import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
-import ua.prozorro.prozorro.model.tenders.TenderData;
 import ua.prozorro.utils.DateUtils;
 import ua.prozorro.utils.FileUtils;
 
@@ -27,9 +23,11 @@ public class PageServiceProzorro {
 	private static final Logger logger = LogManager.getRootLogger();
 	
 	private PropertyFields propertyFields;
-	
+	private PageURLFactory pageURLFactory;
+
 	public PageServiceProzorro(PropertyFields propertyFields) {
 		this.propertyFields = propertyFields;
+		this.pageURLFactory = new PageURLFactory(propertyFields);
 	}
 	
 	public ProzorroPageContent getPageContentFromStringJSON(String stringJSON) throws JsonParseException {
@@ -55,9 +53,9 @@ public class PageServiceProzorro {
 		if (propertyFields == null || propertyFields.getProperties() == null) {
 			return null;
 		}
-		String startPageURL = getPageURL(dataType, dateFrom);
+		String startPageURL = pageURLFactory.getPageURL(dateFrom);
 		
-		logger.info("Plan startPageURL: " + startPageURL);
+		logger.info("Page startPageURL: " + startPageURL);
 		
 		dateTill = getDateTill(dateTill);
 		
@@ -71,8 +69,8 @@ public class PageServiceProzorro {
 			nextOffsetDate = dateTill;
 		}
 		//logger.info("nextOffsetDate: " + nextOffsetDate + ", nextOffset: " + nextOffset);
-		while (dateTill.compareTo(nextOffsetDate) >= 0 && pageContent.getPageElementList() != null &&
-			   !pageContent.getPageElementList().isEmpty()) {
+		while (dateTill.compareTo(nextOffsetDate) >= 0 && (pageContent.getPageElementList() != null &&
+			   !pageContent.getPageElementList().isEmpty())) {
 			if (!withPageElements) {
 				pageContent.getPageElementList().clear();
 			}
@@ -85,17 +83,9 @@ public class PageServiceProzorro {
 		}
 		return pageContentList;
 	}
-	
-	public String getPageURL(DataType dataType, Date date) {
-		if (dataType.equals(DataType.TENDERS)) {
-			return getTenderPageURL(date);
-			
-		} else if (dataType.equals(DataType.CONTRACTS)) {
-			return getContractPageURL(date);
-		} else if (dataType.equals(DataType.PLANS)) {
-			return getPlanPageURL(date);
-		}
-		return null;
+
+	public String getPageURL(Date date) {
+		return pageURLFactory.getPageURL(date);
 	}
 	
 	public Date getDateFromPageOffset(String offset) throws ParseException {
@@ -110,148 +100,11 @@ public class PageServiceProzorro {
 		}
 		return dateTill;
 	}
-	
-	public String getTenderPageURL(Date date) {
-		if (date == null) {
-			return propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE);
-		}
-		String pageURL = propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE) + "?" +
-						 propertyFields.getPropertiesStringValue(AppProperty.TENDER_PAGE_OFFSET) + "=" + DateUtils
-								 .parseDateToString(date, propertyFields
-										 .getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT)) +
-						 propertyFields.getPropertiesStringValue(AppProperty.TENDER_PAGE_END);
-		//logger.info("Get page from date "+ DateUtils.dateToString(date) +" with URL: " + pageURL);
-		return pageURL;
-	}
-	
-	public String getContractPageURL(Date date) {
-		if (date == null) {
-			return propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_START_PAGE);
-		}
-		String pageURL = propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_START_PAGE) + "?" +
-						 propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_PAGE_OFFSET) + "=" + DateUtils
-								 .parseDateToString(date, propertyFields
-										 .getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT)) +
-						 propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_PAGE_END);
-		//logger.info("Get page from date "+ DateUtils.dateToString(date) +" with URL: " + pageURL);
-		return pageURL;
-	}
-	
-	public String getPlanPageURL(Date date) {
-		if (date == null) {
-			return propertyFields.getPropertiesStringValue(AppProperty.PLAN_START_PAGE);
-		}
-		String pageURL = propertyFields.getPropertiesStringValue(AppProperty.PLAN_START_PAGE) + "?" +
-						 propertyFields.getPropertiesStringValue(AppProperty.PLAN_PAGE_OFFSET) + "=" + DateUtils
-								 .parseDateToString(date, propertyFields
-										 .getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT)) +
-						 propertyFields.getPropertiesStringValue(AppProperty.PLAN_PAGE_END);
-		//logger.info("Get page from date "+ DateUtils.dateToString(date) +" with URL: " + pageURL);
-		return pageURL;
-	}
-	
-	public String getTenderPageURLWithLimit(Date date) {
-		if (date == null) {
-			return propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE);
-		}
-		String pageURL = propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE) + "?" +
-						 propertyFields.getPropertiesStringValue(AppProperty.TENDER_PAGE_LIMIT) + "=" +
-						 propertyFields.getPropertiesStringValue(AppProperty.TENDER_PAGE_LIMIT_VALUE) + "&" +
-						 propertyFields.getPropertiesStringValue(AppProperty.TENDER_PAGE_OFFSET) + "=" + DateUtils
-								 .parseDateToString(date, propertyFields
-										 .getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT)) +
-						 propertyFields.getPropertiesStringValue(AppProperty.TENDER_PAGE_END);
-		logger.info("Get page from date " + DateUtils.dateToString(date) + " with URL: " + pageURL);
-		return pageURL;
-	}
-	
-	public String getTenderContractURLWithLimit(Date date) {
-		if (date == null) {
-			return propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_START_PAGE);
-		}
-		String pageURL = propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_START_PAGE) + "?" +
-						 propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_PAGE_LIMIT) + "=" +
-						 propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_PAGE_LIMIT_VALUE) + "&" +
-						 propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_PAGE_OFFSET) + "=" + DateUtils
-								 .parseDateToString(date, propertyFields
-										 .getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT)) +
-						 propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_PAGE_END);
-		logger.info("Get page from date " + DateUtils.dateToString(date) + " with URL: " + pageURL);
-		return pageURL;
-	}
-	
-	public String getPlanPageURLWithLimit(Date date) {
-		if (date == null) {
-			return propertyFields.getPropertiesStringValue(AppProperty.PLAN_START_PAGE);
-		}
-		String pageURL = propertyFields.getPropertiesStringValue(AppProperty.PLAN_START_PAGE) + "?" +
-						 propertyFields.getPropertiesStringValue(AppProperty.PLAN_PAGE_LIMIT) + "=" +
-						 propertyFields.getPropertiesStringValue(AppProperty.PLAN_PAGE_LIMIT_VALUE) + "&" +
-						 propertyFields.getPropertiesStringValue(AppProperty.PLAN_PAGE_OFFSET) + "=" + DateUtils
-								 .parseDateToString(date, propertyFields
-										 .getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT)) +
-						 propertyFields.getPropertiesStringValue(AppProperty.PLAN_PAGE_END);
-		logger.info("Get page from date " + DateUtils.dateToString(date) + " with URL: " + pageURL);
-		return pageURL;
-	}
-	
-	public ParsingResultData getApproximatelyParsingTimeForPeriod(DataType dataType, Date dateFrom, Date dateTill)
-			throws IOException, ParseException {
-		
-		long startTime = System.nanoTime();
-		Date start = new Date();
-		List<ProzorroPageContent> list = getPagesList(dataType, dateFrom, dateTill, false);
-		//System.out.println("Pages list size: " + list.size());
-		Date finish = new Date();
-		//long timeForPages = (System.nanoTime() - startTime);
-		//System.out.println("Time for page without data: " + timeForPages/1000000000);
-		long timeForPages = finish.getTime() - start.getTime();
-		System.out.println("Time for page without data: " + timeForPages);
-		
-		
-		start = new Date();
-		startTime = System.nanoTime();
-		
-		if (list != null && !list.isEmpty()) {
-			ProzorroPageContent pageContent = getPageContentFromURL(getTenderPageURL(dateFrom));
-			
-			TenderDataServiceProzorro tenderDataServiceProzorro = new TenderDataServiceProzorro(
-					propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE) + "/");
-			List<TenderData> tenderDataOnPageList =
-					tenderDataServiceProzorro.getTendersDataFromPageContent(pageContent);
-			if (tenderDataOnPageList != null) {
-				TenderMapper tenderMapper = new TenderMapper();
 
-				for (TenderData tenderData : tenderDataOnPageList) {
-					//TenderDTO tenderDTO = TenderDTOUtils.getTenderDTO(tenderData.getTender());
-					TenderDTO tenderDTO = tenderMapper.convertToEntity(tenderData.getTender());
-				}
-			}
-		}
-		//long timeForPageTenders = (System.nanoTime() - startTime);
-		//System.out.println("Time for ProzorroPage Tenders: " + timeForPageTenders/ 1000000000);
-		finish = new Date();
-		long timeForPageTenders = finish.getTime() - start.getTime();
-		
-		//100- tenders on page
-		//2000- approximately time in milliseconds for saving one tender to database
-		//long totalTime = timeForPages + list.size() * (timeForPageTenders + 100 * 2000 * 1000000);
-		long totalTime = timeForPages + list.size() * (timeForPageTenders + 100 * 2000);
-		System.out.println("Total Time: " + totalTime);
-		
-		//long totalTime = timeForPages + timeForPageTender * 100;
-		
-		ParsingResultData resultData = new ParsingResultData();
-		resultData.setParsingTime(totalTime);
-		resultData.setListSize(list.size());
-		resultData.setHasData((list != null && !list.isEmpty()));
-		return resultData;
-	}
 	/*  private GSONParser gsonParser = new GSONParser();
 		public ProzorroPageContent getPageContentFromStringJSON(String genreJson) {
 		List<ProzorroPageContent> list = GSONParser.getList(genreJson, ProzorroPageContent[].class);
 		if (list!=null) {
-
 			return list.get(0);
 		}
 		return null;

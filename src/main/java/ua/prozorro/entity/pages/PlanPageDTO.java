@@ -60,13 +60,13 @@ public class PlanPageDTO {
 		result = 31 * result + (dateModified != null ? dateModified.hashCode() : 0);
 		return result;
 	}
-	
+
 	@Override
 	public String toString() {
-		final StringBuilder sb = new StringBuilder("ProzorroPage{");
-		sb.append("dateModified='").append(dateModified).append('\'');
-		sb.append(", id='").append(id).append('\'');
-		sb.append('}').append('\n');
+		final StringBuilder sb = new StringBuilder("PlanPageDTO{");
+		sb.append("id='").append(id).append('\'');
+		sb.append(", dateModified='").append(dateModified).append('\'');
+		sb.append('}');
 		return sb.toString();
 	}
 }

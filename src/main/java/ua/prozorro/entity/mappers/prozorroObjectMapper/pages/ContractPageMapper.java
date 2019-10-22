@@ -1,12 +1,13 @@
 package ua.prozorro.entity.mappers.prozorroObjectMapper.pages;
 
+import ua.prozorro.entity.PageElement;
 import ua.prozorro.entity.mappers.AbstractMapper;
 import ua.prozorro.entity.pages.ContractPageDTO;
 import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
 
-public class ContractPageMapper extends AbstractMapper<ProzorroPageElement, ContractPageDTO>  {
+public class ContractPageMapper extends AbstractMapper<PageElement, ContractPageDTO>  {
     @Override
-    public ContractPageDTO convertToEntity(ProzorroPageElement object) {
+    public ContractPageDTO convertToEntity(PageElement object) {
         if(object==null){
             return null;
         }
@@ -16,7 +17,7 @@ public class ContractPageMapper extends AbstractMapper<ProzorroPageElement, Cont
     }
 
     @Override
-    public ProzorroPageElement convertToObject(ContractPageDTO entity) {
+    public PageElement convertToObject(ContractPageDTO entity) {
         return null;
     }
 }

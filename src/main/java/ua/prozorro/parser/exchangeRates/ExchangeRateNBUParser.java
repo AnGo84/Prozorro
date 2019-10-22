@@ -1,4 +1,4 @@
-package ua.prozorro.exchangeRates.parser;
+package ua.prozorro.parser.exchangeRates;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -6,12 +6,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import ua.prozorro.entity.exchangeRates.ExchangeRateNBUDTO;
-import ua.prozorro.entity.exchangeRates.ExchangeRateNBUDTOUtils;
 import ua.prozorro.entity.mappers.exchangeRates.ExchangeRateNBUListMapper;
 import ua.prozorro.exchangeRates.ExchangeRateNBU;
 import ua.prozorro.exchangeRates.ExchangeRateServiceNBU;
 import ua.prozorro.prozorro.model.DataType;
-import ua.prozorro.prozorro.parser.DataParser;
+import ua.prozorro.parser.DataParser;
 import ua.prozorro.service.ExchangeRateNBUService;
 import ua.prozorro.utils.DateUtils;
 

@@ -5,16 +5,19 @@ import ua.prozorro.entity.tenders.ContractDTO;
 import ua.prozorro.prozorro.model.contracts.Contract;
 
 public class ContractMapper extends AbstractMapper<Contract, ContractDTO> {
+    private DocumentsListMapper documentsListMapper = new DocumentsListMapper();
     private ItemsListMapper itemsListMapper = new ItemsListMapper();
     private OrganizationsListMapper organizationsListMapper = new OrganizationsListMapper();
-    private DocumentsListMapper documentsListMapper = new DocumentsListMapper();
     private ProcuringEntityMapper procuringEntityMapper = new ProcuringEntityMapper();
+
     @Override
     public ContractDTO convertToEntity(Contract contract) {
-        if(contract==null){
+        if (contract == null) {
             return null;
         }
+
         ContractDTO contractDTO = new ContractDTO();
+
         contractDTO.setId(contract.getId());
         contractDTO.setStatus(contract.getStatus());
         contractDTO.setItems(itemsListMapper.convertToEntitiesList(contract.getItems()));

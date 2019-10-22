@@ -1,12 +1,13 @@
 package ua.prozorro.entity.mappers.prozorroObjectMapper.pages;
 
+import ua.prozorro.entity.PageElement;
 import ua.prozorro.entity.mappers.AbstractMapper;
 import ua.prozorro.entity.pages.PlanPageDTO;
 import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
 
-public class PlanPageMapper extends AbstractMapper<ProzorroPageElement, PlanPageDTO>  {
+public class PlanPageMapper extends AbstractMapper<PageElement, PlanPageDTO>  {
     @Override
-    public PlanPageDTO convertToEntity(ProzorroPageElement object) {
+    public PlanPageDTO convertToEntity(PageElement object) {
         if(object==null){
             return null;
         }
@@ -16,7 +17,7 @@ public class PlanPageMapper extends AbstractMapper<ProzorroPageElement, PlanPage
     }
 
     @Override
-    public ProzorroPageElement convertToObject(PlanPageDTO entity) {
+    public PageElement convertToObject(PlanPageDTO entity) {
         return null;
     }
 }

@@ -1,11 +1,10 @@
-package ua.prozorro.prozorro.parser;
+package ua.prozorro.parser.prozorro;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import ua.prozorro.entity.TenderDTOUtils;
 import ua.prozorro.entity.mappers.prozorroObjectMapper.TenderMapper;
 import ua.prozorro.entity.mappers.prozorroObjectMapper.pages.TenderPageMapper;
 import ua.prozorro.entity.pages.TenderPageDTO;
@@ -17,6 +16,7 @@ import ua.prozorro.prozorro.service.PageServiceProzorro;
 import ua.prozorro.prozorro.service.TenderDataServiceProzorro;
 import ua.prozorro.service.PageService;
 import ua.prozorro.service.TenderService;
+import ua.prozorro.parser.DataParser;
 import ua.prozorro.utils.DateUtils;
 
 import java.util.Date;
@@ -60,7 +60,7 @@ public class TenderParser implements DataParser {
 	public boolean parseAndSave(Date dateFrom, Date dateTill) throws Exception {
 		logger.info("Start parsing for period from " + DateUtils.dateToString(dateFrom) + " till " +
 					DateUtils.dateToString(dateTill));
-		String startPageURL = pageServiceProzorro.getTenderPageURL(dateFrom);
+		String startPageURL = pageServiceProzorro.getPageURL(dateFrom);
 		logger.info("Start parsing from URL " + startPageURL);
 		
 		TenderPageDTO page = null;
