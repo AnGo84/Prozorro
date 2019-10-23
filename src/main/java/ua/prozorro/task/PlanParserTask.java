@@ -18,8 +18,8 @@ import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
 import ua.prozorro.prozorro.model.plans.PlanData;
 import ua.prozorro.prozorro.service.PageServiceProzorro;
 import ua.prozorro.prozorro.service.PlanDataServiceProzorro;
-import ua.prozorro.service.PageService;
-import ua.prozorro.service.PlanService;
+import ua.prozorro.repositories.PageRepository;
+import ua.prozorro.repositories.PlanRepository;
 import ua.prozorro.utils.DateUtils;
 
 import java.util.Date;
@@ -122,10 +122,10 @@ public class PlanParserTask extends Task<Boolean> {
 
                     Date pageDate = DateUtils.parseProzorroPageDateFromString(pageElement.getDateModified(),
                             propertyFields.getPropertiesStringValue(
-                                    AppProperty.DATE_FORMAT));
+                                    AppProperty.PROZORRO_DATE_FORMAT));
                     if (propertyFields.getSearchDateTill().
-                            compareTo(DateUtils.parseDateToFormate(pageDate, propertyFields
-                                    .getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT))) < 0) {
+                            compareTo(DateUtils.parseDateToFormat(pageDate, propertyFields
+                                    .getPropertiesStringValue(AppProperty.PROZORRO_SHORT_DATE_FORMAT))) < 0) {
                         logger.info(
                                 propertyFields.getSearchDateType().getTypeName() + ": Страница № " + pageCount + "/" +
                                         resultData.getListSize() + ", текущий № " + (pageElementCount + 1) + " c id: " +
@@ -142,12 +142,12 @@ public class PlanParserTask extends Task<Boolean> {
                     pageElementCount++;
                     //page = PlanDTOUtils.getPageDTO(pageElement);
                     page = planPageMapper.convertToEntity(pageElement);
-                    PageService pageService = new PageService(session);
+                    PageRepository pageRepository = new PageRepository(session);
 
                     transaction = session.beginTransaction();
-                    boolean updatedPage = pageService.savePlanPage(page, session);
+                    boolean updatedPage = pageRepository.savePlanPage(page, session);
                     if (updatedPage) {
-                        PlanService planService = new PlanService(session);
+                        PlanRepository planRepository = new PlanRepository(session);
 
                         PlanDataServiceProzorro planDataServiceProzorro = new PlanDataServiceProzorro(
                                 propertyFields.getPropertiesStringValue(AppProperty.PLAN_START_PAGE) + "/");
@@ -156,7 +156,7 @@ public class PlanParserTask extends Task<Boolean> {
                         text = text + planData.toString();
                         //PlanDTO planDTO = PlanDTOUtils.getPlanDTO(planData.getPlan());
                         PlanDTO planDTO = planMapper.convertToEntity(planData.getPlan());
-                        planService.savePlan(planDTO, session);
+                        planRepository.savePlan(planDTO, session);
                     }
                     logger.info(propertyFields.getSearchDateType().getTypeName() + ": Страница № " + pageCount + "/" +
                             resultData.getListSize() + ", текущий № " + pageElementCount + " c id: " +

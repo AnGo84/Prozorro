@@ -14,8 +14,8 @@ import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
 import ua.prozorro.prozorro.model.plans.PlanData;
 import ua.prozorro.prozorro.service.PageServiceProzorro;
 import ua.prozorro.prozorro.service.PlanDataServiceProzorro;
-import ua.prozorro.service.PageService;
-import ua.prozorro.service.PlanService;
+import ua.prozorro.repositories.PageRepository;
+import ua.prozorro.repositories.PlanRepository;
 import ua.prozorro.parser.DataParser;
 import ua.prozorro.utils.DateUtils;
 
@@ -93,20 +93,20 @@ public class PlanParser implements DataParser {
                 for (ProzorroPageElement pageElement : pageContent.getPageElementList()) {
                     pageElementCount++;
 
-                    PageService pageService = new PageService(session);
+                    PageRepository pageRepository = new PageRepository(session);
 
                     transaction = session.beginTransaction();
                     //page = PlanDTOUtils.getPageDTO(pageElement);
                     page = planPageMapper.convertToEntity(pageElement);
 
-                    boolean updatedPage = pageService.savePlanPage(page, session);
+                    boolean updatedPage = pageRepository.savePlanPage(page, session);
                     if (updatedPage) {
-                        PlanService planService = new PlanService(session);
+                        PlanRepository planRepository = new PlanRepository(session);
                         PlanData planData = planDataServiceProzorro.getPlanDataFromPageElement(pageElement);
                         text = planData.toString();
                         //PlanDTO planDTO = PlanDTOUtils.getPlanDTO(planData.getPlan());
                         PlanDTO planDTO = planMapper.convertToEntity(planData.getPlan());
-                        planService.savePlan(planDTO, session);
+                        planRepository.savePlan(planDTO, session);
                     }
                     logger.info("ProzorroPage № " + pageCount + ", tender on page № " + pageElementCount +
                             ", added/updated: " + updatedPage);
@@ -164,20 +164,20 @@ public class PlanParser implements DataParser {
             for (ProzorroPageElement pageElement : pageContent.getPageElementList()) {
                 pageElementCount++;
 
-                PageService pageService = new PageService(session);
+                PageRepository pageRepository = new PageRepository(session);
 
                 transaction = session.beginTransaction();
                 //page = PlanDTOUtils.getPageDTO(pageElement);
                 page = planPageMapper.convertToEntity(pageElement);
 
-                boolean updatedPage = pageService.savePlanPage(page, session);
+                boolean updatedPage = pageRepository.savePlanPage(page, session);
                 if (updatedPage) {
-                    PlanService planService = new PlanService(session);
+                    PlanRepository planRepository = new PlanRepository(session);
                     PlanData planData = planDataServiceProzorro.getPlanDataFromPageElement(pageElement);
                     text = planData.toString();
                     //PlanDTO planDTO = PlanDTOUtils.getPlanDTO(planData.getPlan());
                     PlanDTO planDTO = planMapper.convertToEntity(planData.getPlan());
-                    planService.savePlan(planDTO, session);
+                    planRepository.savePlan(planDTO, session);
                 }
                 logger.info("ProzorroPage № " + pageCount + ", tender on page № " + pageElementCount +
                         ", added/updated: " + updatedPage);

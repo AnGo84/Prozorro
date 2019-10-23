@@ -4,7 +4,7 @@ import javafx.concurrent.Task;
 import org.hibernate.SessionFactory;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.timeMeasure.ParsingResultData;
-import ua.prozorro.prozorro.model.DataType;
+import ua.prozorro.sourceService.DataType;
 @Deprecated
 public class TaskFactory {
 

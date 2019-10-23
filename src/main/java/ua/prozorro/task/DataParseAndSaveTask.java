@@ -63,7 +63,6 @@ public class DataParseAndSaveTask extends Task<Boolean> {
         /*logger.info("Start parsing from URL " + currentPageURL);
         updateMessage("Start parsing from URL " + currentPageURL + "\n");*/
 
-
         Transaction transaction = null;
 
         int pageCount = 0;

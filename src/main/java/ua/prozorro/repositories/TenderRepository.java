@@ -1,4 +1,4 @@
-package ua.prozorro.service;
+package ua.prozorro.repositories;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -8,13 +8,13 @@ import ua.prozorro.entity.tenders.*;
 
 import java.util.Date;
 
-public class TenderService {
+public class TenderRepository {
 	private static final Logger logger = LogManager.getRootLogger();
 	
 	private Session session;
 	
 	
-	public TenderService(Session session) {
+	public TenderRepository(Session session) {
 		this.session = session;
 	}
 	

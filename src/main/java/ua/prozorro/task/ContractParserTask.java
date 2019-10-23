@@ -13,13 +13,13 @@ import ua.prozorro.entity.tenders.ContractDTO;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.timeMeasure.ParsingResultData;
-import ua.prozorro.prozorro.model.contracts.ContractData;
+import ua.prozorro.prozorro.model.contracts.PlanData;
 import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
 import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
 import ua.prozorro.prozorro.service.ContractDataServiceProzorro;
 import ua.prozorro.prozorro.service.PageServiceProzorro;
-import ua.prozorro.service.ContractService;
-import ua.prozorro.service.PageService;
+import ua.prozorro.repositories.ContractRepository;
+import ua.prozorro.repositories.PageRepository;
 import ua.prozorro.utils.DateUtils;
 
 import java.util.Date;
@@ -120,10 +120,10 @@ public class ContractParserTask extends Task<Boolean> {
                 for (ProzorroPageElement pageElement : pageContent.getPageElementList()) {
 
                     Date pageDate = DateUtils.parseProzorroPageDateFromString(pageElement.getDateModified(), propertyFields
-                            .getPropertiesStringValue(AppProperty.DATE_FORMAT));
+                            .getPropertiesStringValue(AppProperty.PROZORRO_DATE_FORMAT));
                     if (propertyFields.getSearchDateTill().
-                            compareTo(DateUtils.parseDateToFormate(pageDate, propertyFields
-                                    .getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT))) < 0) {
+                            compareTo(DateUtils.parseDateToFormat(pageDate, propertyFields
+                                    .getPropertiesStringValue(AppProperty.PROZORRO_SHORT_DATE_FORMAT))) < 0) {
                         logger.info(
                                 propertyFields.getSearchDateType().getTypeName() + ": Страница № " + pageCount + "/" +
                                         resultData.getListSize() + ", текущий № " + (pageElementCount + 1) + " c id: " +
@@ -140,17 +140,17 @@ public class ContractParserTask extends Task<Boolean> {
                     //page = ContractDTOUtils.getPageDTO(pageElement);
                     page = contractPageMapper.convertToEntity(pageElement);
 
-                    PageService pageService = new PageService(session);
+                    PageRepository pageRepository = new PageRepository(session);
 
                     transaction = session.beginTransaction();
-                    boolean updatedPage = pageService.saveContractPage(page, session);
+                    boolean updatedPage = pageRepository.saveContractPage(page, session);
                     if (updatedPage) {
-                        ContractService planService = new ContractService(session);
+                        ContractRepository planService = new ContractRepository(session);
 
                         ContractDataServiceProzorro contractDataServiceProzorro = new ContractDataServiceProzorro(
                                 propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_START_PAGE) + "/");
                         text = pageElement.getId() + "\n";
-                        ContractData contractData =
+                        PlanData contractData =
                                 contractDataServiceProzorro.getContractDataFromPageElement(pageElement);
                         text = text + contractData.toString();
                         //ContractDTO planDTO = ContractDTOUtils.getContractDTO(contractData.getContract());

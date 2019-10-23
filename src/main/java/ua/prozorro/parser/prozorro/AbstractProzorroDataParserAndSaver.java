@@ -6,12 +6,12 @@ import org.hibernate.Session;
 import ua.prozorro.entity.EventResultData;
 import ua.prozorro.entity.PageElement;
 import ua.prozorro.entity.mappers.prozorroObjectMapper.ProzorroPageElementListMapper;
+import ua.prozorro.parser.AbstractDataParserAndSaver;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
-import ua.prozorro.timeMeasure.ParsingResultData;
 import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
-import ua.prozorro.prozorro.service.PageServiceProzorro;
-import ua.prozorro.parser.AbstractDataParserAndSaver;
+import ua.prozorro.prozorro.service.ProzorroPageDataService;
+import ua.prozorro.timeMeasure.ParsingResultData;
 import ua.prozorro.utils.DateUtils;
 
 import java.io.IOException;
@@ -24,7 +24,7 @@ public abstract class AbstractProzorroDataParserAndSaver extends AbstractDataPar
 
     private ProzorroPageElementListMapper prozorroPageElementListMapper;
 
-    private PageServiceProzorro pageServiceProzorro;
+    private ProzorroPageDataService prozorroPageDataService;
 
     private ProzorroPageContent pageContent;
 
@@ -33,21 +33,21 @@ public abstract class AbstractProzorroDataParserAndSaver extends AbstractDataPar
     public AbstractProzorroDataParserAndSaver(PropertyFields propertyFields, ParsingResultData resultData) {
         this.propertyFields = propertyFields;
         this.resultData = resultData;
-        this.pageServiceProzorro = new PageServiceProzorro(propertyFields);
+        this.prozorroPageDataService = new ProzorroPageDataService(propertyFields);
         this.prozorroPageElementListMapper = new ProzorroPageElementListMapper();
     }
 
     @Override
     public String startPageURL() {
-        currentPageURL = pageServiceProzorro.getPageURL(propertyFields.getSearchDateFrom());
+        currentPageURL = prozorroPageDataService.getPageURL(propertyFields.getSearchDateFrom());
         return currentPageURL;
     }
 
     @Override
     public void initDataByURL(String url) throws IOException, ParseException {
-        pageContent = pageServiceProzorro.getPageContentFromURL(url);
+        pageContent = prozorroPageDataService.getObjectFromURL(url);
 
-        nextPageDate = pageServiceProzorro.getDateFromPageOffset(pageContent.getNextPage().getOffset());
+        nextPageDate = prozorroPageDataService.getDateFromPageOffset(pageContent.getNextPage().getOffset());
         if (nextPageDate.compareTo(propertyFields.getSearchDateTill()) > 0) {
             nextPageDate = propertyFields.getSearchDateTill();
         }
@@ -69,11 +69,11 @@ public abstract class AbstractProzorroDataParserAndSaver extends AbstractDataPar
     public EventResultData checkExpireElement(PageElement pageElement) throws ParseException {
         Date pageElementDate = DateUtils.parseProzorroPageDateFromString(pageElement.getDateModified(),
                 propertyFields.getPropertiesStringValue(
-                        AppProperty.DATE_FORMAT));
+                        AppProperty.PROZORRO_DATE_FORMAT));
         EventResultData eventResultData = new EventResultData();
         if (propertyFields.getSearchDateTill().
-                compareTo(DateUtils.parseDateToFormate(pageElementDate, propertyFields
-                        .getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT))) < 0) {
+                compareTo(DateUtils.parseDateToFormat(pageElementDate, propertyFields
+                        .getPropertiesStringValue(AppProperty.PROZORRO_SHORT_DATE_FORMAT))) < 0) {
 
             eventResultData.setHasResult(true);
             eventResultData.setEventResult(propertyFields.getSearchDateType().getTypeName() + ": Страница № %d /" +
@@ -90,9 +90,9 @@ public abstract class AbstractProzorroDataParserAndSaver extends AbstractDataPar
 
     @Override
     public boolean getNextData() throws Exception {
-        nextPageDate = pageServiceProzorro.getDateFromPageOffset(pageContent.getNextPage().getOffset());
+        nextPageDate = prozorroPageDataService.getDateFromPageOffset(pageContent.getNextPage().getOffset());
         currentPageURL = pageContent.getNextPage().getUri();
-        pageContent = pageServiceProzorro.getPageContentFromURL(pageContent.getNextPage().getUri());
+        pageContent = prozorroPageDataService.getObjectFromURL(pageContent.getNextPage().getUri());
         return true;
     }
 }

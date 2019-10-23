@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ua.prozorro.exchangeRates.ExchangeRateServiceNBU;
 import ua.prozorro.properties.PropertyFields;
-import ua.prozorro.prozorro.model.DataType;
+import ua.prozorro.sourceService.DataType;
 
 import java.util.Date;
 import java.util.List;

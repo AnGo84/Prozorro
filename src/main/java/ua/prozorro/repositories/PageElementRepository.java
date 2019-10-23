@@ -1,4 +1,4 @@
-package ua.prozorro.service;
+package ua.prozorro.repositories;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -7,13 +7,13 @@ import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
 
 import java.util.List;
 
-public class PageElementService {
+public class PageElementRepository {
 	private static final Logger logger = LogManager.getRootLogger();
 	
 	private Session session;
 	
 	
-	public PageElementService(Session session) {
+	public PageElementRepository(Session session) {
 		this.session = session;
 	}
 	

@@ -9,13 +9,12 @@ import ua.prozorro.entity.mappers.prozorroObjectMapper.PlanMapper;
 import ua.prozorro.entity.mappers.prozorroObjectMapper.pages.PlanPageMapper;
 import ua.prozorro.entity.pages.PlanPageDTO;
 import ua.prozorro.entity.plans.PlanDTO;
-import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
-import ua.prozorro.timeMeasure.ParsingResultData;
 import ua.prozorro.prozorro.model.plans.PlanData;
-import ua.prozorro.prozorro.service.PlanDataServiceProzorro;
-import ua.prozorro.service.PageService;
-import ua.prozorro.service.PlanService;
+import ua.prozorro.prozorro.service.ProzorroPlanDataService;
+import ua.prozorro.repositories.PageRepository;
+import ua.prozorro.repositories.PlanRepository;
+import ua.prozorro.timeMeasure.ParsingResultData;
 
 public class PlanDataParserAndSaverImp extends AbstractProzorroDataParserAndSaver {
     private static final Logger logger = LogManager.getRootLogger();
@@ -29,25 +28,26 @@ public class PlanDataParserAndSaverImp extends AbstractProzorroDataParserAndSave
         PlanPageMapper planPageMapper = new PlanPageMapper();
         PlanMapper planMapper = new PlanMapper();
         PlanPageDTO planPageDTO = planPageMapper.convertToEntity(pageElement);
-        PageService pageService = new PageService(session);
+        PageRepository pageRepository = new PageRepository(session);
         //String text = "";
         EventResultData eventResultData = new EventResultData();
         PlanData planData = null;
         PlanDTO planDTO = null;
         try {
-            boolean updatedPage = pageService.savePlanPage(planPageDTO, session);
+            boolean updatedPage = pageRepository.savePlanPage(planPageDTO, session);
             if (updatedPage) {
-                PlanService planService = new PlanService(session);
+                PlanRepository planRepository = new PlanRepository(session);
 
-                PlanDataServiceProzorro planDataServiceProzorro = new PlanDataServiceProzorro(
-                        propertyFields.getPropertiesStringValue(AppProperty.PLAN_START_PAGE) + "/");
+                /*PlanDataServiceProzorro planDataServiceProzorro = new PlanDataServiceProzorro(
+                        propertyFields.getPropertiesStringValue(AppProperty.PLAN_START_PAGE) + "/");*/
+                ProzorroPlanDataService planDataService = new ProzorroPlanDataService(propertyFields);
                 //text = pageElement.getId() + "\n";
-                planData = planDataServiceProzorro.getPlanDataFromPageElement(pageElement);
+                planData = planDataService.getObjectByPageElement(pageElement);
                 //text = text + planData.toString();
                 //text = planData.toString();
                 //PlanDTO planDTO = PlanDTOUtils.getPlanDTO(planData.getPlan());
                 planDTO = planMapper.convertToEntity(planData.getPlan());
-                planService.savePlan(planDTO, session);
+                planRepository.savePlan(planDTO, session);
             }
 
             eventResultData.setId(currentPageURL);

@@ -1,4 +1,4 @@
-package ua.prozorro.service;
+package ua.prozorro.repositories;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -6,12 +6,12 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 import ua.prozorro.entity.tenders.*;
 
-public class ContractService {
+public class ContractRepository {
 	private static final Logger logger = LogManager.getRootLogger();
 	
 	private Session session;
 	
-	public ContractService(Session session) {
+	public ContractRepository(Session session) {
 		this.session = session;
 	}
 	

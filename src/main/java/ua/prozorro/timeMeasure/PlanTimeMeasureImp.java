@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
 import ua.prozorro.prozorro.service.PageServiceProzorro;
+import ua.prozorro.prozorro.service.ProzorroPageDataService;
 
 import java.util.Date;
 import java.util.List;
@@ -24,10 +25,12 @@ public class PlanTimeMeasureImp implements TimeMeasureInterface {
     @Override
     public ParsingResultData getListParsingData() throws Exception {
         Date start = new Date();
-        PageServiceProzorro pageServiceProzorro = new PageServiceProzorro(propertyFields);
+        /*PageServiceProzorro pageServiceProzorro = new PageServiceProzorro(propertyFields);
         List<ProzorroPageContent> list = pageServiceProzorro
                 .getPagesList(propertyFields.getSearchDateType(), propertyFields.getSearchDateFrom(),
-                        propertyFields.getSearchDateTill(), false);
+                        propertyFields.getSearchDateTill(), false);*/
+        ProzorroPageDataService prozorroPageDataService = new ProzorroPageDataService(propertyFields);
+        List<ProzorroPageContent> list = prozorroPageDataService.getPagesList();
         Date finish = new Date();
         long timeForPages = finish.getTime() - start.getTime();
 
@@ -48,12 +51,12 @@ public class PlanTimeMeasureImp implements TimeMeasureInterface {
 
     @Override
     public long getPageContentParseTime() throws Exception {
-        Date start = new Date();
+        /*Date start = new Date();
         PageServiceProzorro pageServiceProzorro = new PageServiceProzorro(propertyFields);
         ProzorroPageContent pageContent = pageServiceProzorro
                 .getPageContentFromURL(pageServiceProzorro.getPageURL(propertyFields.getSearchDateFrom()));
 
-            /*PlanDataServiceProzorro planDataServiceProzorro = new PlanDataServiceProzorro(
+            PlanDataServiceProzorro planDataServiceProzorro = new PlanDataServiceProzorro(
                     propertyFields.getPropertiesStringValue(AppProperty.PLAN_START_PAGE) + "/");
             logger.info("Start getting Plans from page \n");
             updateMessage("Start getting Plans from page \n");
@@ -66,11 +69,11 @@ public class PlanTimeMeasureImp implements TimeMeasureInterface {
                     i++;
                     PlanDTO planDTO = PlanDTOUtils.getPlanDTO(planData.getPlan());
                 }
-            }*/
+            }
 
         Date finish = new Date();
         long timeForPageRecords = finish.getTime() - start.getTime();
-
+         */
         //return timeForPageRecords;
         return 100;
     }

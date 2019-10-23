@@ -12,8 +12,8 @@ import ua.prozorro.exchangeRates.ExchangeRateNBU;
 import ua.prozorro.exchangeRates.ExchangeRateServiceNBU;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.timeMeasure.ParsingResultData;
-import ua.prozorro.prozorro.model.DataType;
-import ua.prozorro.service.ExchangeRateNBUService;
+import ua.prozorro.sourceService.DataType;
+import ua.prozorro.repositories.ExchangeRateNBURepository;
 import ua.prozorro.utils.DateUtils;
 
 import java.util.List;
@@ -106,7 +106,7 @@ public class NBURatesParserTask extends Task<Boolean> {
                     text = rateNBUList.toString();
                     transaction = session.beginTransaction();
 
-                    ExchangeRateNBUService nbuService = new ExchangeRateNBUService(session);
+                    ExchangeRateNBURepository nbuService = new ExchangeRateNBURepository(session);
 					
 					/*List<ExchangeRateNBUDTO> exchangeRateNBUDTOS =
 							ExchangeRateNBUDTOUtils.getExchangeRateNBUDTOList(rateNBUList);*/

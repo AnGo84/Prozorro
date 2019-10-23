@@ -9,13 +9,12 @@ import ua.prozorro.entity.mappers.prozorroObjectMapper.TenderMapper;
 import ua.prozorro.entity.mappers.prozorroObjectMapper.pages.TenderPageMapper;
 import ua.prozorro.entity.pages.TenderPageDTO;
 import ua.prozorro.entity.tenders.TenderDTO;
-import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
-import ua.prozorro.timeMeasure.ParsingResultData;
 import ua.prozorro.prozorro.model.tenders.TenderData;
-import ua.prozorro.prozorro.service.TenderDataServiceProzorro;
-import ua.prozorro.service.PageService;
-import ua.prozorro.service.TenderService;
+import ua.prozorro.prozorro.service.ProzorroTenderDataService;
+import ua.prozorro.repositories.PageRepository;
+import ua.prozorro.repositories.TenderRepository;
+import ua.prozorro.timeMeasure.ParsingResultData;
 
 public class TenderDataParserAndSaverImp extends AbstractProzorroDataParserAndSaver {
     private static final Logger logger = LogManager.getRootLogger();
@@ -29,25 +28,26 @@ public class TenderDataParserAndSaverImp extends AbstractProzorroDataParserAndSa
         TenderPageMapper tenderPageMapper = new TenderPageMapper();
         TenderMapper tenderMapper = new TenderMapper();
         TenderPageDTO tenderPageDTO = tenderPageMapper.convertToEntity(pageElement);
-        PageService pageService = new PageService(session);
+        PageRepository pageRepository = new PageRepository(session);
         //String text = "";
         EventResultData eventResultData = new EventResultData();
         TenderData tenderData = null;
         TenderDTO tenderDTO = null;
         try {
-            boolean updatedPage = pageService.saveTenderPage(tenderPageDTO, session);
+            boolean updatedPage = pageRepository.saveTenderPage(tenderPageDTO, session);
             if (updatedPage) {
-                TenderService TenderService = new TenderService(session);
+                TenderRepository TenderRepository = new TenderRepository(session);
 
-                TenderDataServiceProzorro TenderDataServiceProzorro = new TenderDataServiceProzorro(
-                        propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE) + "/");
+                /*TenderDataServiceProzorro TenderDataServiceProzorro = new TenderDataServiceProzorro(
+                        propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE) + "/");*/
+                ProzorroTenderDataService prozorroTenderDataService = new ProzorroTenderDataService(propertyFields);
                 //text = pageElement.getId() + "\n";
-                tenderData = TenderDataServiceProzorro.getTenderDataFromPageElement(pageElement);
+                tenderData = prozorroTenderDataService.getObjectByPageElement(pageElement);
                 //text = text + TenderData.toString();
                 //text = TenderData.toString();
                 //TenderDTO TenderDTO = TenderDTOUtils.getTenderDTO(TenderData.getTender());
                 tenderDTO = tenderMapper.convertToEntity(tenderData.getTender());
-                TenderService.saveTender(tenderDTO, session);
+                TenderRepository.saveTender(tenderDTO, session);
             }
 
             eventResultData.setId(currentPageURL);

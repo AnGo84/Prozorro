@@ -6,7 +6,10 @@ import org.hibernate.SessionFactory;
 import ua.prozorro.ProzorroApp;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
-import ua.prozorro.prozorro.model.DataType;
+import ua.prozorro.prozorro.model.pages.ProzorroPage;
+import ua.prozorro.prozorro.service.ProzorroPageDataService;
+import ua.prozorro.prozorro.service.ProzorroTenderDataService;
+import ua.prozorro.sourceService.DataType;
 import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
 import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
 import ua.prozorro.prozorro.model.tenders.TenderData;
@@ -21,6 +24,7 @@ import ua.prozorro.utils.FileUtils;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -37,6 +41,13 @@ public class TestTender {
 	
 	
 	public static void main(String[] args) {
+		PropertyFields propertyFields = null;
+		try {
+			propertyFields = Test.getTestPropertyFields("2016-10-06", "2016-10-11", getStartProperties(), DataType.TENDERS);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
 		String url = "https://public.api.openprocurement.org/api/2.4/tenders";
 		String url2 =
 				"https://public.api.openprocurement.org//api/2.4/tenders?offset=2016-10-10T10%3A42%3A04.250983%2B03%3A00";
@@ -78,16 +89,17 @@ public class TestTender {
 		 */
 	}
 	
-	private static void parseAndSaveData() {
+	private static void parseAndSaveData(PropertyFields propertyFields) throws ParseException {
 		//https://www.google.com/search?ei=SN0TXJPOAvDrrgS55JeoBQ&q=java+hibernate+%40onetoone+saveorupdate+child+first&oq=java+hibernate+%40onetoone+saveorupdate+child+first&gs_l=psy-ab.3...18094.18570..19344...0.0..0.94.270.3......0....1..gws-wiz.......0i71.ThMyYku4_E4
 		
 		SessionFactory sessionFactory = getSessionFactoryByDBName("mysql");
-		
-		PageServiceProzorro pageServiceProzorro = new PageServiceProzorro(new PropertyFields(getStartProperties()));
+
+
+		ProzorroPageDataService pageServiceProzorro = new ProzorroPageDataService(new PropertyFields(getStartProperties()));
 		/*TenderDataServiceProzorro tenderDataServiceProzorro =
 				new TenderDataServiceProzorro(start_page + File.separator);*/
-		TenderDataServiceProzorro tenderDataServiceProzorro = new TenderDataServiceProzorro(start_page + "/");
-		TenderParser tenderParser = new TenderParser();
+		ProzorroTenderDataService tenderDataServiceProzorro = new ProzorroTenderDataService(propertyFields);
+		/*TenderParser tenderParser = new TenderParser();
 		tenderParser.setSessionFactory(sessionFactory);
 		tenderParser.setPageServiceProzorro(pageServiceProzorro);
 		tenderParser.setTenderDataServiceProzorro(tenderDataServiceProzorro);
@@ -100,17 +112,20 @@ public class TestTender {
 			e.printStackTrace();
 		} finally {
 			sessionFactory.close();
-		}
+		}*/
 	}
-	private static void parseAndSaveDataByURL(String url) {
+
+
+
+	private static void parseAndSaveDataByURL(String url, PropertyFields propertyFields) throws ParseException {
 		//https://www.google.com/search?ei=SN0TXJPOAvDrrgS55JeoBQ&q=java+hibernate+%40onetoone+saveorupdate+child+first&oq=java+hibernate+%40onetoone+saveorupdate+child+first&gs_l=psy-ab.3...18094.18570..19344...0.0..0.94.270.3......0....1..gws-wiz.......0i71.ThMyYku4_E4
 		
 		SessionFactory sessionFactory = getSessionFactoryByDBName("mysql");
-		
-		PageServiceProzorro pageServiceProzorro = new PageServiceProzorro(new PropertyFields(getStartProperties()));
+
+		ProzorroPageDataService pageServiceProzorro = new ProzorroPageDataService(new PropertyFields(getStartProperties()));
 		/*TenderDataServiceProzorro tenderDataServiceProzorro =
 				new TenderDataServiceProzorro(start_page + File.separator);*/
-		TenderDataServiceProzorro tenderDataServiceProzorro = new TenderDataServiceProzorro(start_page + "/");
+		/*TenderDataServiceProzorro tenderDataServiceProzorro = new TenderDataServiceProzorro(start_page + "/");
 		TenderParser tenderParser = new TenderParser();
 		tenderParser.setSessionFactory(sessionFactory);
 		tenderParser.setPageServiceProzorro(pageServiceProzorro);
@@ -123,16 +138,16 @@ public class TestTender {
 			e.printStackTrace();
 		} finally {
 			sessionFactory.close();
-		}
+		}*/
 	}
 	private static void parseAndSaveTenderByURL(String url) {
 		//https://www.google.com/search?ei=SN0TXJPOAvDrrgS55JeoBQ&q=java+hibernate+%40onetoone+saveorupdate+child+first&oq=java+hibernate+%40onetoone+saveorupdate+child+first&gs_l=psy-ab.3...18094.18570..19344...0.0..0.94.270.3......0....1..gws-wiz.......0i71.ThMyYku4_E4
 		
-		SessionFactory sessionFactory = getSessionFactoryByDBName("mysql");
+		/*SessionFactory sessionFactory = getSessionFactoryByDBName("mysql");
 		
 		PageServiceProzorro pageServiceProzorro = new PageServiceProzorro(new PropertyFields(getStartProperties()));
-		/*TenderDataServiceProzorro tenderDataServiceProzorro =
-				new TenderDataServiceProzorro(start_page + File.separator);*/
+		*//*TenderDataServiceProzorro tenderDataServiceProzorro =
+				new TenderDataServiceProzorro(start_page + File.separator);*//*
 		TenderDataServiceProzorro tenderDataServiceProzorro = new TenderDataServiceProzorro(start_page + "/");
 		TenderParser tenderParser = new TenderParser();
 		tenderParser.setSessionFactory(sessionFactory);
@@ -146,7 +161,7 @@ public class TestTender {
 			e.printStackTrace();
 		} finally {
 			sessionFactory.close();
-		}
+		}*/
 	}
 	
 	private static Session getSessionByDBName(String dbName) {
@@ -168,7 +183,7 @@ public class TestTender {
 	}
 	
 	private static void checkDataForPeriod(Date dateFrom, Date dateTill) {
-		PageServiceProzorro pageServiceProzorro = new PageServiceProzorro(new PropertyFields(getStartProperties()));
+		/*PageServiceProzorro pageServiceProzorro = new PageServiceProzorro(new PropertyFields(getStartProperties()));
 		TenderDataServiceProzorro tenderDataServiceProzorro = new TenderDataServiceProzorro(start_page + "/");
 		try {
 			long startTime = System.nanoTime();
@@ -180,13 +195,6 @@ public class TestTender {
 			long timeForPages = (endTime - startTime) / 1000000000;
 			System.out.println("Time for page without data: " + timeForPages);
 
-            /*startTime = System.nanoTime();
-            list = pageServiceProzorro.getPagesList(DateUtils.parseProzorroPageDateFromString("2018-12-10", short_date_formate),
-                    DateUtils.parseProzorroPageDateFromString("2018-12-10", short_date_formate), true);
-            System.out.println("Pages list size: " + list.size());
-            endTime = System.nanoTime();
-            System.out.println("Time for page with data: " + (endTime - startTime)/1000000000);*/
-			
 			startTime = System.nanoTime();
 			long timeForPageTenders;
 			if (list != null && !list.isEmpty()) {
@@ -210,10 +218,10 @@ public class TestTender {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
-	private static void JSONPareser(String url) {
+	private static void JSONParser(String url) {
 		/*try {
 			String genreJson = getStringFromURL(url);
 			//JSONObject genreJsonObject = (JSONObject) JSONValue.parseWithException(genreJson);
@@ -226,8 +234,8 @@ public class TestTender {
 		}*/
 	}
 	
-	private static void GSONPareser(String url) {
-		try {
+	private static void GSONParser(String url) {
+		/*try {
 			String getUrl = url;
 			PageServiceProzorro pageServiceProzorro = new PageServiceProzorro(new PropertyFields(getStartProperties()));
 			TenderDataServiceProzorro tenderDataServiceProzorro = new TenderDataServiceProzorro(start_page + "/");
@@ -268,27 +276,10 @@ public class TestTender {
 			System.out
 					.println(new Date() + ": Total page count: " + pageContent + " with tenders count: " + tenderCount);
 			System.out.println("Total time: " + ((startTime2 - System.nanoTime()) / 1000000000) + " seconds");
-            /*System.out.println(pageContent);
 
-            System.out.println("Read from next URL: " + pageContent.getNextPage().getUri());
-            //genreJson =  IOUtils.toString(new URL(pageContent.getNextPage().getUri()), Charset.forName("UTF-8"));
-
-            pageContent = pageServiceProzorro.getPageContentFromURL(pageContent.getNextPage().getUri());
-
-            System.out.println(pageContent);
-
-            //
-
-            //getUrl = url +"/" +  pageContent.getPageElementList().get(0).getId();
-            getUrl = "https://public.api.openprocurement.org/api/2.4/tenders/8689aed656e34ece8420559e50edaacb";
-            System.out.println("Get TenderDTO URL: " + getUrl);
-            TenderData tenderData = tenderDataServiceProzorro.getPageContentFromURL(getUrl);
-            System.out.println("TenderDTO:");
-            System.out.println(tenderData);*/
-			
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	private static String getStringFromURL(String url) throws IOException {
@@ -302,10 +293,9 @@ public class TestTender {
 		properties.setProperty(AppProperty.TENDER_PAGE_LIMIT_VALUE.getPropertyName(), page_limit_value);
 		properties.setProperty(AppProperty.TENDER_PAGE_OFFSET.getPropertyName(), page_offset);
 		properties.setProperty(AppProperty.TENDER_PAGE_END.getPropertyName(), page_end);
-		properties.setProperty(AppProperty.DATE_FORMAT.getPropertyName(), date_formate);
-		properties.setProperty(AppProperty.SHORT_DATE_FORMAT.getPropertyName(), short_date_formate);
-		
-		
+		properties.setProperty(AppProperty.PROZORRO_DATE_FORMAT.getPropertyName(), date_formate);
+		properties.setProperty(AppProperty.PROZORRO_SHORT_DATE_FORMAT.getPropertyName(), short_date_formate);
+
 		return properties;
 	}
 	

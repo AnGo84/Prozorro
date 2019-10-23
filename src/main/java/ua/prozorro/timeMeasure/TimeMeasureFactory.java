@@ -1,7 +1,7 @@
 package ua.prozorro.timeMeasure;
 
 import ua.prozorro.properties.PropertyFields;
-import ua.prozorro.prozorro.model.DataType;
+import ua.prozorro.sourceService.DataType;
 
 public class TimeMeasureFactory {
     public static TimeMeasureInterface getTimeMeasurer(PropertyFields propertyFields) {

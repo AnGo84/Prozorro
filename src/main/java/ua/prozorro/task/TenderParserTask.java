@@ -18,8 +18,8 @@ import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
 import ua.prozorro.prozorro.model.tenders.TenderData;
 import ua.prozorro.prozorro.service.PageServiceProzorro;
 import ua.prozorro.prozorro.service.TenderDataServiceProzorro;
-import ua.prozorro.service.PageService;
-import ua.prozorro.service.TenderService;
+import ua.prozorro.repositories.PageRepository;
+import ua.prozorro.repositories.TenderRepository;
 import ua.prozorro.utils.DateUtils;
 
 import java.util.Date;
@@ -123,10 +123,10 @@ public class TenderParserTask extends Task<Boolean> {
 
                     Date pageDate = DateUtils.parseProzorroPageDateFromString(pageElement.getDateModified(),
                             propertyFields.getPropertiesStringValue(
-                                    AppProperty.DATE_FORMAT));
+                                    AppProperty.PROZORRO_DATE_FORMAT));
                     if (propertyFields.getSearchDateTill().
-                            compareTo(DateUtils.parseDateToFormate(pageDate, propertyFields
-                                    .getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT))) < 0) {
+                            compareTo(DateUtils.parseDateToFormat(pageDate, propertyFields
+                                    .getPropertiesStringValue(AppProperty.PROZORRO_SHORT_DATE_FORMAT))) < 0) {
                         logger.info(
                                 propertyFields.getSearchDateType().getTypeName() + ": Страница № " + pageCount + "/" +
                                         resultData.getListSize() + ", текущий № " + (pageElementCount + 1) + " c id: " +
@@ -145,16 +145,16 @@ public class TenderParserTask extends Task<Boolean> {
                     page = tenderPageMapper.convertToEntity(pageElement);
 
                     logger.debug("Parsing PAGE JSON to class (ms):" + ((new Date()).getTime() - start.getTime()));
-                    PageService pageService = new PageService(session);
+                    PageRepository pageRepository = new PageRepository(session);
 
                     transaction = session.beginTransaction();
                     logger.info("Start saving to DB:");
                     start = new Date();
-                    boolean updatedPage = pageService.saveTenderPage(page, session);
+                    boolean updatedPage = pageRepository.saveTenderPage(page, session);
                     logger.info("Save Page (ms):" + ((new Date()).getTime() - start.getTime()));
                     if (updatedPage) {
                         start = new Date();
-                        TenderService tenderService = new TenderService(session);
+                        TenderRepository tenderRepository = new TenderRepository(session);
 
                         TenderDataServiceProzorro tenderDataServiceProzorro = new TenderDataServiceProzorro(
                                 propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE) + "/");
@@ -169,7 +169,7 @@ public class TenderParserTask extends Task<Boolean> {
                         TenderDTO tenderDTO = tenderMapper.convertToEntity(tenderData.getTender());
                         logger.info("Take TENDERDAO from TENDER:" + ((new Date()).getTime() - start.getTime()));
                         start = new Date();
-                        tenderService.saveTender(tenderDTO, session);
+                        tenderRepository.saveTender(tenderDTO, session);
                         logger.info("Save TENDERDAO to DB:" + ((new Date()).getTime() - start.getTime()));
                     }
                     logger.info(propertyFields.getSearchDateType().getTypeName() + ": Страница № " + pageCount + "/" +

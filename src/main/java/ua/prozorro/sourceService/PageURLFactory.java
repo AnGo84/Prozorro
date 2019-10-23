@@ -1,10 +1,9 @@
-package ua.prozorro.prozorro.model.pages;
+package ua.prozorro.sourceService;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
-import ua.prozorro.prozorro.model.DataType;
 import ua.prozorro.utils.DateUtils;
 
 import java.util.Date;
@@ -27,6 +26,8 @@ public class PageURLFactory {
             return getContractPageURL(date);
         } else if (dataType.equals(DataType.PLANS)) {
             return getPlanPageURL(date);
+        } else if (dataType.equals(DataType.NBU_RATES)) {
+            return getExchangeRateNBUPageURL(date);
         }
         return null;
     }
@@ -47,6 +48,8 @@ public class PageURLFactory {
             return getTenderContractURLWithLimit(date);
         } else if (dataType.equals(DataType.PLANS)) {
             return getPlanPageURLWithLimit(date);
+        } else if (dataType.equals(DataType.NBU_RATES)) {
+            return getExchangeRateNBUPageURL(date);
         }
         return null;
     }
@@ -58,7 +61,7 @@ public class PageURLFactory {
         String pageURL = propertyFields.getPropertiesStringValue(AppProperty.TENDER_START_PAGE) + "?" +
                 propertyFields.getPropertiesStringValue(AppProperty.TENDER_PAGE_OFFSET) + "=" + DateUtils
                 .parseDateToString(date, propertyFields
-                        .getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT)) +
+                        .getPropertiesStringValue(AppProperty.PROZORRO_SHORT_DATE_FORMAT)) +
                 propertyFields.getPropertiesStringValue(AppProperty.TENDER_PAGE_END);
         //logger.info("Get page from date "+ DateUtils.dateToString(date) +" with URL: " + pageURL);
         return pageURL;
@@ -71,7 +74,7 @@ public class PageURLFactory {
         String pageURL = propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_START_PAGE) + "?" +
                 propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_PAGE_OFFSET) + "=" + DateUtils
                 .parseDateToString(date, propertyFields
-                        .getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT)) +
+                        .getPropertiesStringValue(AppProperty.PROZORRO_SHORT_DATE_FORMAT)) +
                 propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_PAGE_END);
         //logger.info("Get page from date "+ DateUtils.dateToString(date) +" with URL: " + pageURL);
         return pageURL;
@@ -84,7 +87,7 @@ public class PageURLFactory {
         String pageURL = propertyFields.getPropertiesStringValue(AppProperty.PLAN_START_PAGE) + "?" +
                 propertyFields.getPropertiesStringValue(AppProperty.PLAN_PAGE_OFFSET) + "=" + DateUtils
                 .parseDateToString(date, propertyFields
-                        .getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT)) +
+                        .getPropertiesStringValue(AppProperty.PROZORRO_SHORT_DATE_FORMAT)) +
                 propertyFields.getPropertiesStringValue(AppProperty.PLAN_PAGE_END);
         //logger.info("Get page from date "+ DateUtils.dateToString(date) +" with URL: " + pageURL);
         return pageURL;
@@ -99,7 +102,7 @@ public class PageURLFactory {
                 propertyFields.getPropertiesStringValue(AppProperty.TENDER_PAGE_LIMIT_VALUE) + "&" +
                 propertyFields.getPropertiesStringValue(AppProperty.TENDER_PAGE_OFFSET) + "=" + DateUtils
                 .parseDateToString(date, propertyFields
-                        .getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT)) +
+                        .getPropertiesStringValue(AppProperty.PROZORRO_SHORT_DATE_FORMAT)) +
                 propertyFields.getPropertiesStringValue(AppProperty.TENDER_PAGE_END);
         logger.info("Get page from date " + DateUtils.dateToString(date) + " with URL: " + pageURL);
         return pageURL;
@@ -114,7 +117,7 @@ public class PageURLFactory {
                 propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_PAGE_LIMIT_VALUE) + "&" +
                 propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_PAGE_OFFSET) + "=" + DateUtils
                 .parseDateToString(date, propertyFields
-                        .getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT)) +
+                        .getPropertiesStringValue(AppProperty.PROZORRO_SHORT_DATE_FORMAT)) +
                 propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_PAGE_END);
         logger.info("Get page from date " + DateUtils.dateToString(date) + " with URL: " + pageURL);
         return pageURL;
@@ -129,8 +132,21 @@ public class PageURLFactory {
                 propertyFields.getPropertiesStringValue(AppProperty.PLAN_PAGE_LIMIT_VALUE) + "&" +
                 propertyFields.getPropertiesStringValue(AppProperty.PLAN_PAGE_OFFSET) + "=" + DateUtils
                 .parseDateToString(date, propertyFields
-                        .getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT)) +
+                        .getPropertiesStringValue(AppProperty.PROZORRO_SHORT_DATE_FORMAT)) +
                 propertyFields.getPropertiesStringValue(AppProperty.PLAN_PAGE_END);
+        logger.info("Get page from date " + DateUtils.dateToString(date) + " with URL: " + pageURL);
+        return pageURL;
+    }
+
+    private String getExchangeRateNBUPageURL(Date date) {
+        if (date == null) {
+            return propertyFields.getPropertiesStringValue(AppProperty.NBU_START_PAGE);
+        }
+        String pageURL = propertyFields.getPropertiesStringValue(AppProperty.NBU_START_PAGE) + "?" +
+                propertyFields.getPropertiesStringValue(AppProperty.NBU_PAGE_PREFIX) + "=" + DateUtils
+                .parseDateToString(date, propertyFields
+                        .getPropertiesStringValue(AppProperty.NBU_DATE_FORMAT)) + "&" +
+                propertyFields.getPropertiesStringValue(AppProperty.NBU_PAGE_END);
         logger.info("Get page from date " + DateUtils.dateToString(date) + " with URL: " + pageURL);
         return pageURL;
     }

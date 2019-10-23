@@ -20,7 +20,7 @@ import ua.prozorro.fx.Dialogs;
 import ua.prozorro.properties.PropertiesUtils;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.timeMeasure.ParsingResultData;
-import ua.prozorro.prozorro.model.DataType;
+import ua.prozorro.sourceService.DataType;
 import ua.prozorro.sql.HibernateDataBaseType;
 import ua.prozorro.sql.HibernateFactory;
 import ua.prozorro.task.DataParseAndSaveTask;

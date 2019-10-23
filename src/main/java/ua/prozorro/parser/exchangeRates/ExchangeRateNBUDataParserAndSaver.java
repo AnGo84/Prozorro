@@ -8,12 +8,13 @@ import ua.prozorro.entity.PageElement;
 import ua.prozorro.entity.exchangeRates.ExchangeRateNBUDTO;
 import ua.prozorro.entity.mappers.exchangeRates.ExchangeRateNBUListMapper;
 import ua.prozorro.exchangeRates.ExchangeRateNBU;
-import ua.prozorro.exchangeRates.ExchangeRateServiceNBU;
+import ua.prozorro.exchangeRates.ExchangeRatesNBUPage;
+import ua.prozorro.exchangeRates.NBUExchangeRatePageService;
+import ua.prozorro.parser.AbstractDataParserAndSaver;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
+import ua.prozorro.repositories.ExchangeRateNBURepository;
 import ua.prozorro.timeMeasure.ParsingResultData;
-import ua.prozorro.parser.AbstractDataParserAndSaver;
-import ua.prozorro.service.ExchangeRateNBUService;
 import ua.prozorro.utils.DateUtils;
 
 import java.io.IOException;
@@ -23,21 +24,21 @@ import java.util.*;
 public class ExchangeRateNBUDataParserAndSaver extends AbstractDataParserAndSaver {
     private static final Logger logger = LogManager.getRootLogger();
 
-    private ExchangeRateServiceNBU exchangeRateServiceNBU;
+    //private ExchangeRateServiceNBU exchangeRateServiceNBU;
+    private NBUExchangeRatePageService nbuExchangeRatePageService;
 
     private Calendar currentCalendar;
     private Calendar endCalendar;
 
     public ExchangeRateNBUDataParserAndSaver(PropertyFields propertyFields, ParsingResultData resultData) {
         super(propertyFields, resultData);
-        this.exchangeRateServiceNBU = new ExchangeRateServiceNBU(propertyFields);
+        this.nbuExchangeRatePageService = new NBUExchangeRatePageService(propertyFields);
     }
 
     @Override
     public String startPageURL() {
-        currentPageURL = exchangeRateServiceNBU.getPageURL(propertyFields.getSearchDateFrom());
+        currentPageURL = nbuExchangeRatePageService.getPageURL(propertyFields.getSearchDateFrom());
         return currentPageURL;
-
     }
 
     @Override
@@ -45,7 +46,7 @@ public class ExchangeRateNBUDataParserAndSaver extends AbstractDataParserAndSave
         currentCalendar = new GregorianCalendar();
         currentCalendar.setTime(propertyFields.getSearchDateFrom());
         endCalendar = new GregorianCalendar();
-        endCalendar.setTime(exchangeRateServiceNBU.getDate(propertyFields.getSearchDateTill()));
+        endCalendar.setTime(nbuExchangeRatePageService.getDate(propertyFields.getSearchDateTill()));
     }
 
     @Override
@@ -68,7 +69,7 @@ public class ExchangeRateNBUDataParserAndSaver extends AbstractDataParserAndSave
                 propertyFields.getPropertiesStringValue(AppProperty.NBU_DATE_FORMAT));
         EventResultData eventResultData = new EventResultData();
         if (propertyFields.getSearchDateTill().
-                compareTo(DateUtils.parseDateToFormate(pageElementDate, propertyFields
+                compareTo(DateUtils.parseDateToFormat(pageElementDate, propertyFields
                         .getPropertiesStringValue(AppProperty.NBU_DATE_FORMAT))) < 0) {
 
             eventResultData.setHasResult(true);
@@ -88,9 +89,10 @@ public class ExchangeRateNBUDataParserAndSaver extends AbstractDataParserAndSave
         String currentURL = pageElement.getId();
         List<ExchangeRateNBU> rateNBUList = null;
         try {
-            rateNBUList = exchangeRateServiceNBU.getRateContentFromURL(currentURL);
+            ExchangeRatesNBUPage exchangeRatesNBUPage = nbuExchangeRatePageService.getObjectFromURL(currentURL);
+            rateNBUList = exchangeRatesNBUPage.getExchangeRateNBUs();
             //text = rateNBUList.toString();
-            ExchangeRateNBUService nbuService = new ExchangeRateNBUService(session);
+            ExchangeRateNBURepository nbuService = new ExchangeRateNBURepository(session);
             List<ExchangeRateNBUDTO> exchangeRateNBUDTOS =
                     exchangeRateNBUListMapper.convertToEntitiesList(rateNBUList);
 
@@ -113,7 +115,7 @@ public class ExchangeRateNBUDataParserAndSaver extends AbstractDataParserAndSave
     @Override
     public boolean getNextData() throws Exception {
         currentCalendar.add(Calendar.DATE, 1);
-        currentPageURL = exchangeRateServiceNBU.getPageURL(currentCalendar.getTime());
+        currentPageURL = nbuExchangeRatePageService.getPageURL(currentCalendar.getTime());
         return true;
     }
 }

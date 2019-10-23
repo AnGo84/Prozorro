@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
+import ua.prozorro.prozorro.service.ProzorroPageDataService;
 import ua.prozorro.timeMeasure.ParsingResultData;
 import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
 import ua.prozorro.prozorro.service.ContractDataServiceProzorro;
@@ -25,12 +26,13 @@ public class ContractParseTimeTask extends Task<ParsingResultData> {
     @Override
     protected ParsingResultData call() throws Exception {
         updateMessage("Start searching for '" + propertyFields.getSearchDateType().name() + "' \n");
-        PageServiceProzorro pageServiceProzorro = new PageServiceProzorro(propertyFields);
-
         Date start = new Date();
+        /*PageServiceProzorro pageServiceProzorro = new PageServiceProzorro(propertyFields);
         List<ProzorroPageContent> list = pageServiceProzorro
                 .getPagesList(propertyFields.getSearchDateType(), propertyFields.getSearchDateFrom(),
-                        propertyFields.getSearchDateTill(), false);
+                        propertyFields.getSearchDateTill(), false);*/
+        ProzorroPageDataService prozorroPageDataService = new ProzorroPageDataService(propertyFields);
+        List<ProzorroPageContent> list = prozorroPageDataService.getPagesList();
         Date finish = new Date();
 
         long timeForPages = finish.getTime() - start.getTime();
@@ -40,12 +42,12 @@ public class ContractParseTimeTask extends Task<ParsingResultData> {
         if (list != null && !list.isEmpty()) {
             logger.info("Found pages: " + list.size() + " \n");
             updateMessage("Found pages: " + list.size() + " \n");
-            ProzorroPageContent pageContent = pageServiceProzorro
-                    .getPageContentFromURL(pageServiceProzorro.getPageURL(propertyFields.getSearchDateFrom()));
+            /*ProzorroPageContent pageContent = prozorroPageDataService
+                    .getObjectFromURL(prozorroPageDataService.getPageURL(propertyFields.getSearchDateFrom()));
 
             ContractDataServiceProzorro contractDataServiceProzorro = new ContractDataServiceProzorro(
                     propertyFields.getPropertiesStringValue(AppProperty.CONTRACT_START_PAGE) + "/");
-            /*logger.info("Start getting Contracts from page \n");
+            logger.info("Start getting Contracts from page \n");
             updateMessage("Start getting Contracts from page \n");
             List<ContractData> contractDataList =
                     contractDataServiceProzorro.getContractsDataFromPageContent(pageContent);

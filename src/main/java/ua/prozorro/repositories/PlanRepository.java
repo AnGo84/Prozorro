@@ -1,4 +1,4 @@
-package ua.prozorro.service;
+package ua.prozorro.repositories;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,12 +12,12 @@ import ua.prozorro.entity.tenders.ClassificationDTO;
 import ua.prozorro.entity.tenders.DocumentDTO;
 import ua.prozorro.entity.tenders.ItemDTO;
 
-public class PlanService {
+public class PlanRepository {
 	private static final Logger logger = LogManager.getRootLogger();
 	
 	private Session session;
 	
-	public PlanService(Session session) {
+	public PlanRepository(Session session) {
 		this.session = session;
 	}
 	

@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
 import ua.prozorro.prozorro.service.PageServiceProzorro;
+import ua.prozorro.prozorro.service.ProzorroPageDataService;
 
 import java.util.Date;
 import java.util.List;
@@ -23,10 +24,12 @@ public class TenderTimeMeasureImp implements TimeMeasureInterface {
     @Override
     public ParsingResultData getListParsingData() throws Exception {
         Date start = new Date();
-        PageServiceProzorro pageServiceProzorro = new PageServiceProzorro(propertyFields);
+        /*PageServiceProzorro pageServiceProzorro = new PageServiceProzorro(propertyFields);
         List<ProzorroPageContent> list = pageServiceProzorro
                 .getPagesList(propertyFields.getSearchDateType(), propertyFields.getSearchDateFrom(),
-                        propertyFields.getSearchDateTill(), false);
+                        propertyFields.getSearchDateTill(), false);*/
+        ProzorroPageDataService prozorroPageDataService = new ProzorroPageDataService(propertyFields);
+        List<ProzorroPageContent> list = prozorroPageDataService.getPagesList();
         Date finish = new Date();
         long timeForPages = finish.getTime() - start.getTime();
 

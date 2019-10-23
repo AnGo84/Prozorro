@@ -13,7 +13,7 @@ import ua.prozorro.utils.FileUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
+@Deprecated
 public class PlanDataServiceProzorro {
 	private static final Logger logger = LogManager.getRootLogger();
 	
@@ -40,9 +40,9 @@ public class PlanDataServiceProzorro {
 		}
 		List<PlanData> planDataList = new ArrayList<>();
 		for (ProzorroPageElement element : pageContent.getPageElementList()) {
-			String currentURL = planURL + element.getId();
-			
-			PlanData planData = getPageContentFromURL(currentURL);
+			/*String currentURL = planURL + element.getId();
+			PlanData planData = getPageContentFromURL(currentURL);*/
+			PlanData planData = getPlanDataFromPageElement(element);
 			planDataList.add(planData);
 		}
 		

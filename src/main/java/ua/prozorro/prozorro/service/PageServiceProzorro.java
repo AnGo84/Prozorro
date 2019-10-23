@@ -6,8 +6,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
-import ua.prozorro.prozorro.model.DataType;
-import ua.prozorro.prozorro.model.pages.PageURLFactory;
+import ua.prozorro.sourceService.DataType;
+import ua.prozorro.sourceService.PageURLFactory;
 import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
 import ua.prozorro.utils.DateUtils;
 import ua.prozorro.utils.FileUtils;
@@ -19,6 +19,8 @@ import java.util.Date;
 import java.util.List;
 
 //http://www.jsonschema2pojo.org/
+
+@Deprecated
 public class PageServiceProzorro {
 	private static final Logger logger = LogManager.getRootLogger();
 	
@@ -47,7 +49,7 @@ public class PageServiceProzorro {
 	}
 	
 	public List<ProzorroPageContent> getPagesList(DataType dataType, Date dateFrom, Date dateTill, boolean withPageElements)
-			throws IOException, java.text.ParseException {
+			throws IOException, ParseException {
 		//logger.info("DataType:" + dataType + ", DateFrom: " + dateFrom + ", DateTill: " + dateTill);
 		
 		if (propertyFields == null || propertyFields.getProperties() == null) {
@@ -90,13 +92,13 @@ public class PageServiceProzorro {
 	
 	public Date getDateFromPageOffset(String offset) throws ParseException {
 		return DateUtils
-				.parseProzorroPageDateFromString(offset, propertyFields.getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT));
+				.parseProzorroPageDateFromString(offset, propertyFields.getPropertiesStringValue(AppProperty.PROZORRO_SHORT_DATE_FORMAT));
 	}
 	
 	public Date getDateTill(Date dateTill) throws ParseException {
 		if (dateTill == null) {
-			dateTill = DateUtils.parseDateToFormate(new Date(), propertyFields
-					.getPropertiesStringValue(AppProperty.SHORT_DATE_FORMAT));
+			dateTill = DateUtils.parseDateToFormat(new Date(), propertyFields
+					.getPropertiesStringValue(AppProperty.PROZORRO_SHORT_DATE_FORMAT));
 		}
 		return dateTill;
 	}

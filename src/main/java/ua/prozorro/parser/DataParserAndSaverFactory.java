@@ -5,7 +5,7 @@ import ua.prozorro.parser.prozorro.ContractDataParserAndSaverImp;
 import ua.prozorro.parser.prozorro.PlanDataParserAndSaverImp;
 import ua.prozorro.parser.prozorro.TenderDataParserAndSaverImp;
 import ua.prozorro.properties.PropertyFields;
-import ua.prozorro.prozorro.model.DataType;
+import ua.prozorro.sourceService.DataType;
 import ua.prozorro.timeMeasure.ParsingResultData;
 
 public class DataParserAndSaverFactory {

@@ -1,4 +1,4 @@
-package ua.prozorro.service;
+package ua.prozorro.repositories;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,13 +9,13 @@ import ua.prozorro.entity.pages.TenderPageDTO;
 
 import java.util.List;
 
-public class PageService {
+public class PageRepository {
     private static final Logger logger = LogManager.getRootLogger();
 
     private Session session;
 
 
-    public PageService(Session session) {
+    public PageRepository(Session session) {
         this.session = session;
     }
 

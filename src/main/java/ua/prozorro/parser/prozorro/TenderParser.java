@@ -14,8 +14,8 @@ import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
 import ua.prozorro.prozorro.model.tenders.TenderData;
 import ua.prozorro.prozorro.service.PageServiceProzorro;
 import ua.prozorro.prozorro.service.TenderDataServiceProzorro;
-import ua.prozorro.service.PageService;
-import ua.prozorro.service.TenderService;
+import ua.prozorro.repositories.PageRepository;
+import ua.prozorro.repositories.TenderRepository;
 import ua.prozorro.parser.DataParser;
 import ua.prozorro.utils.DateUtils;
 
@@ -95,20 +95,20 @@ public class TenderParser implements DataParser {
 				for (ProzorroPageElement pageElement : pageContent.getPageElementList()) {
 					pageElementCount++;
 					
-					PageService pageService = new PageService(session);
+					PageRepository pageRepository = new PageRepository(session);
 					
 					transaction = session.beginTransaction();
 					//page = TenderDTOUtils.getPageDTO(pageElement);
 					page = tenderPageMapper.convertToEntity(pageElement);
 
-					boolean updatedPage = pageService.saveTenderPage(page, session);
+					boolean updatedPage = pageRepository.saveTenderPage(page, session);
 					if (updatedPage) {
-						TenderService tenderService = new TenderService(session);
+						TenderRepository tenderRepository = new TenderRepository(session);
 						TenderData tenderData = tenderDataServiceProzorro.getTenderDataFromPageElement(pageElement);
 						text = tenderData.toString();
 						//TenderDTO tenderDTO = TenderDTOUtils.getTenderDTO(tenderData.getTender());
 						TenderDTO tenderDTO = tenderMapper.convertToEntity(tenderData.getTender());
-						tenderService.saveTender(tenderDTO, session);
+						tenderRepository.saveTender(tenderDTO, session);
 					}
 					logger.info("ProzorroPage № " + pageCount + ", tender on page № " + pageElementCount +
 								", added/updated: " + updatedPage);
@@ -165,20 +165,20 @@ public class TenderParser implements DataParser {
 			for (ProzorroPageElement pageElement : pageContent.getPageElementList()) {
 				pageElementCount++;
 				
-				PageService pageService = new PageService(session);
+				PageRepository pageRepository = new PageRepository(session);
 				
 				transaction = session.beginTransaction();
 				//page = TenderDTOUtils.getPageDTO(pageElement);
 				page = tenderPageMapper.convertToEntity(pageElement);
 				
-				boolean updatedPage = pageService.saveTenderPage(page, session);
+				boolean updatedPage = pageRepository.saveTenderPage(page, session);
 				if (updatedPage) {
-					TenderService tenderService = new TenderService(session);
+					TenderRepository tenderRepository = new TenderRepository(session);
 					TenderData tenderData = tenderDataServiceProzorro.getTenderDataFromPageElement(pageElement);
 					text = tenderData.toString();
 					//TenderDTO tenderDTO = TenderDTOUtils.getTenderDTO(tenderData.getTender());
 					TenderDTO tenderDTO = tenderMapper.convertToEntity(tenderData.getTender());
-					tenderService.saveTender(tenderDTO, session);
+					tenderRepository.saveTender(tenderDTO, session);
 				}
 				logger.info(
 						"ProzorroPage № " + pageCount + ", tender on page № " + pageElementCount + ", added/updated: " +
@@ -225,7 +225,7 @@ public class TenderParser implements DataParser {
 			session = sessionFactory.openSession();
 			transaction =session.beginTransaction();
 			
-			TenderService tenderService = new TenderService(session);
+			TenderRepository tenderRepository = new TenderRepository(session);
 			logger.info("Start TENDER parse");
 			TenderData tenderData = tenderDataServiceProzorro.getTenderDataFromURL(url);
 			logger.info("TENDER: " + tenderData);
@@ -234,7 +234,7 @@ public class TenderParser implements DataParser {
 			TenderDTO tenderDTO = tenderMapper.convertToEntity(tenderData.getTender());
 			logger.info("TENDER DTO: " + tenderDTO);
 			text = "TENDER DTO: " + tenderDTO;
-			tenderService.saveTender(tenderDTO, session);
+			tenderRepository.saveTender(tenderDTO, session);
 			
 			session.flush();
 			session.clear();

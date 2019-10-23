@@ -1,4 +1,4 @@
-package ua.prozorro.service;
+package ua.prozorro.repositories;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -7,12 +7,12 @@ import ua.prozorro.entity.exchangeRates.ExchangeRateNBUDTO;
 
 import java.util.List;
 
-public class ExchangeRateNBUService {
+public class ExchangeRateNBURepository {
 	private static final Logger logger = LogManager.getRootLogger();
 	
 	private Session session;
 	
-	public ExchangeRateNBUService(Session session) {
+	public ExchangeRateNBURepository(Session session) {
 		this.session = session;
 	}
 	

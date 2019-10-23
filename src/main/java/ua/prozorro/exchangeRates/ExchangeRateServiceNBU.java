@@ -7,7 +7,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
-import ua.prozorro.prozorro.model.DataType;
+import ua.prozorro.sourceService.PageURLFactory;
+import ua.prozorro.sourceService.DataType;
 import ua.prozorro.utils.DateUtils;
 import ua.prozorro.utils.FileUtils;
 
@@ -15,17 +16,19 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.util.*;
-
+@Deprecated
 public class ExchangeRateServiceNBU {
 	private static final Logger logger = LogManager.getRootLogger();
 	
 	private PropertyFields propertyFields;
+	private PageURLFactory pageURLFactory;
 	
 	public ExchangeRateServiceNBU() {
 	}
 	
 	public ExchangeRateServiceNBU(PropertyFields propertyFields) {
 		this.propertyFields = propertyFields;
+		this.pageURLFactory = new PageURLFactory(propertyFields);
 	}
 	
 	public List<ExchangeRateNBU> getExchangeRatesNBUFromStringJSON(String stringJSON) throws JsonParseException {
@@ -57,7 +60,7 @@ public class ExchangeRateServiceNBU {
 		if (propertyFields == null || propertyFields.getProperties() == null) {
 			return null;
 		}
-		String startPageURL = getPageURL(dateFrom);
+		String startPageURL = pageURLFactory.getPageURL(dateFrom);
 		
 		logger.info("NBU Rates startPageURL: " + startPageURL);
 		Date date = dateFrom;
@@ -78,28 +81,15 @@ public class ExchangeRateServiceNBU {
 			}
 			calendar.add(Calendar.DATE, 1);
 			Date result = calendar.getTime();
-			startPageURL = getPageURL(result);
+			startPageURL = pageURLFactory.getPageURL(result);
 		}
 		
 		return ratesURLList;
 	}
-	
-	public String getPageURL(Date date) {
-		if (date == null) {
-			return propertyFields.getPropertiesStringValue(AppProperty.NBU_START_PAGE);
-		}
-		String pageURL = propertyFields.getPropertiesStringValue(AppProperty.NBU_START_PAGE) + "?" +
-						 propertyFields.getPropertiesStringValue(AppProperty.NBU_PAGE_PREFIX) + "=" + DateUtils
-								 .parseDateToString(date, propertyFields
-										 .getPropertiesStringValue(AppProperty.NBU_DATE_FORMAT)) + "&" +
-						 propertyFields.getPropertiesStringValue(AppProperty.NBU_PAGE_END);
-		logger.info("Get page from date " + DateUtils.dateToString(date) + " with URL: " + pageURL);
-		return pageURL;
-	}
-	
+
 	public Date getDate(Date date) throws ParseException {
 		if (date == null) {
-			date = DateUtils.parseDateToFormate(new Date(),
+			date = DateUtils.parseDateToFormat(new Date(),
 												propertyFields.getPropertiesStringValue(AppProperty.NBU_DATE_FORMAT));
 		}
 		return date;
