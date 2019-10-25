@@ -37,8 +37,8 @@ Right **jar** file will be in directory **'Project_name/target/jfx/app/'**
 Prozorro tutorial with API:
 
 - [Tenders' information](http://api-docs.openprocurement.org/uk_UA/latest/standard/index.html)
-- [Contracts' information](http://planning.api-docs.openprocurement.org/uk/latest/standard/contract.html)
-- [Plans' information](http://contracting.api-docs.openprocurement.org/uk/latest/tutorial.html)
+- [Contracts' information](http://contracting.api-docs.openprocurement.org/uk/latest/tutorial.html)
+- [Plans' information](http://planning.api-docs.openprocurement.org/uk/latest/standard/contract.html)
 
 Developed and tested for API version 2.4.
 For getting information from beginning use start pages:
