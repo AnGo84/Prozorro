@@ -3,21 +3,21 @@ package ua.prozorro.sourceService.prozorro;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ua.prozorro.properties.PropertyFields;
-import ua.prozorro.prozorro.model.contracts.PlanData;
+import ua.prozorro.prozorro.model.contracts.ContractData;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
-public class ProzorroContractDataService extends AbstractProzorroSourceDataService<PlanData> {
+public class ProzorroContractDataService extends AbstractProzorroSourceDataService<ContractData> {
 	private static final Logger logger = LogManager.getRootLogger();
-
+	
 	public ProzorroContractDataService(PropertyFields propertyFields) {
-		super(PlanData.class, propertyFields);
+		super(ContractData.class, propertyFields);
 	}
-
+	
 	@Override
-	public List<PlanData> getPagesList() throws IOException, ParseException {
+	public List<ContractData> getPagesList() throws IOException, ParseException {
 		return null;
 	}
 
@@ -33,5 +33,5 @@ public class ProzorroContractDataService extends AbstractProzorroSourceDataServi
 		
 		return contractDataList;
 	}*/
-
+	
 }

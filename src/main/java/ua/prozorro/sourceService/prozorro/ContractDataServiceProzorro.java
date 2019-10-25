@@ -5,7 +5,7 @@ import com.google.gson.JsonParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ua.prozorro.entity.PageElement;
-import ua.prozorro.prozorro.model.contracts.PlanData;
+import ua.prozorro.prozorro.model.contracts.ContractData;
 import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
 import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
 import ua.prozorro.utils.FileUtils;
@@ -13,6 +13,7 @@ import ua.prozorro.utils.FileUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 @Deprecated
 public class ContractDataServiceProzorro {
 	private static final Logger logger = LogManager.getRootLogger();
@@ -23,36 +24,36 @@ public class ContractDataServiceProzorro {
 		this.contractURL = planURL;
 	}
 	
-	public PlanData getContractDataContentFromStringJSON(String stringJSON) throws JsonParseException {
+	public ContractData getContractDataContentFromStringJSON(String stringJSON) throws JsonParseException {
 		Gson gson = new Gson();
 		
-		return gson.fromJson(stringJSON, PlanData.class);
+		return gson.fromJson(stringJSON, ContractData.class);
 	}
 	
-	public PlanData getContractContentFromURL(String url) throws JsonParseException, IOException {
+	public ContractData getContractContentFromURL(String url) throws JsonParseException, IOException {
 		String genreJson = FileUtils.getStringFromURL(url);
 		return getContractDataContentFromStringJSON(genreJson);
 	}
 	
-	public List<PlanData> getContractsDataFromPageContent(ProzorroPageContent pageContent) throws IOException {
+	public List<ContractData> getContractsDataFromPageContent(ProzorroPageContent pageContent) throws IOException {
 		if (pageContent == null || pageContent.getPageElementList() == null) {
 			return null;
 		}
-		List<PlanData> contractDataList = new ArrayList<>();
+		List<ContractData> contractDataList = new ArrayList<>();
 		for (ProzorroPageElement element : pageContent.getPageElementList()) {
-			PlanData contractData = getContractDataFromPageElement(element);
-					contractDataList.add(contractData);
+			ContractData contractData = getContractDataFromPageElement(element);
+			contractDataList.add(contractData);
 		}
 		
 		return contractDataList;
 	}
 	
-	public PlanData getContractDataFromPageElement(PageElement pageElement) throws IOException {
+	public ContractData getContractDataFromPageElement(PageElement pageElement) throws IOException {
 		if (pageElement == null) {
 			return null;
 		}
 		String currentURL = contractURL + pageElement.getId();
-		PlanData data = getContractContentFromURL(currentURL);
+		ContractData data = getContractContentFromURL(currentURL);
 		return data;
 	}
 }

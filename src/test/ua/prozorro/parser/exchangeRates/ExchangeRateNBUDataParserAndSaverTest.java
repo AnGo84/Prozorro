@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ExchangeRateNBUDataParserAndSaverTest {
     ExchangeRateNBUDataParserAndSaver exchangeRateNBUDataParserAndSaver;
 
-
     @Before
     public void beforeEach() {
         try {

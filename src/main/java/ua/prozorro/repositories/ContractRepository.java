@@ -16,7 +16,7 @@ public class ContractRepository {
 	}
 	
 	public void saveContract(ContractDTO contractDTO, Session session) throws Exception {
-		if (session == null) {
+		if (session == null || !session.isOpen()) {
 			throw new Exception("Session did not set");
 		}
 		

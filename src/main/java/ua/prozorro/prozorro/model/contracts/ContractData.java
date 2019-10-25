@@ -2,7 +2,7 @@ package ua.prozorro.prozorro.model.contracts;
 
 import com.google.gson.annotations.SerializedName;
 
-public class PlanData extends ua.prozorro.prozorro.model.plans.PlanData {
+public class ContractData {
     @SerializedName("data")
     private Contract contract;
 

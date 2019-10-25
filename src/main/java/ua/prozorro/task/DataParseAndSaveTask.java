@@ -55,7 +55,7 @@ public class DataParseAndSaveTask extends Task<Boolean> {
 
     @Override
     protected Boolean call() throws Exception {
-        AbstractDataParserAndSaver dataParserAndSaver = DataParserAndSaverFactory.getDataParserAndSaver(propertyFields, resultData);
+        AbstractDataParserAndSaver dataParserAndSaver = DataParserAndSaverFactory.getDataParserAndSaver(propertyFields);
 
         String currentPageURL = dataParserAndSaver.startPageURL();
 

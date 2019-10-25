@@ -34,7 +34,7 @@ public class TestTender {
 	public static void main(String[] args) {
 		PropertyFields propertyFields = null;
 		try {
-			propertyFields = Test.getTestPropertyFields("2016-10-06", "2016-10-11", getStartProperties(), DataType.TENDERS);
+			propertyFields = Test.getTestPropertyFields("2016-10-06", "2016-10-11", DataType.TENDERS);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

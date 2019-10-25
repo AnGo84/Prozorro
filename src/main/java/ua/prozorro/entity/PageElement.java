@@ -2,9 +2,9 @@ package ua.prozorro.entity;
 
 public class PageElement {
 
-    private String id;
+    protected String id;
 
-    private String dateModified;
+    protected String dateModified;
 
     public PageElement() {
     }

@@ -27,7 +27,7 @@ public class TestPlan {
 	public static void main(String[] args) {
 		PropertyFields propertyFields = null;
 		try {
-			propertyFields = Test.getTestPropertyFields("2016-10-06", "2016-10-11", getStartProperties(), DataType.PLANS);
+			propertyFields = Test.getTestPropertyFields("2016-10-06", "2016-10-11",  DataType.PLANS);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

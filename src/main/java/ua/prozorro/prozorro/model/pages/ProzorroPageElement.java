@@ -5,11 +5,11 @@ import ua.prozorro.entity.PageElement;
 
 public class ProzorroPageElement extends PageElement {
 
-    @SerializedName("id")
+    /*@SerializedName("id")
     private String id;
 
     @SerializedName("dateModified")
-    private String dateModified;
+    private String dateModified;*/
 
     public ProzorroPageElement() {
     }
@@ -18,11 +18,11 @@ public class ProzorroPageElement extends PageElement {
         this.dateModified = dateModified;
         this.id = id;
     }
-
+    @SerializedName("dateModified")
     public String getDateModified() {
         return dateModified;
     }
-
+    @SerializedName("id")
     public String getId() {
         return id;
     }

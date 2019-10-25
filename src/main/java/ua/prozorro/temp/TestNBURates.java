@@ -49,7 +49,7 @@ public class TestNBURates {
 		NBUExchangeRatePageService nbuExchangeRatePageService = new NBUExchangeRatePageService(propertyFields);
 
 		
-		ExchangeRateNBUDataParserAndSaver exchangeRateNBUParser = new ExchangeRateNBUDataParserAndSaver(propertyFields, new ParsingResultData());
+		ExchangeRateNBUDataParserAndSaver exchangeRateNBUParser = new ExchangeRateNBUDataParserAndSaver(propertyFields);
 
 		/*exchangeRateNBUParser.setSessionFactory(sessionFactory);
 		exchangeRateNBUParser.setExchangeRateServiceNBU(exchangeRateServiceNBU);
