@@ -211,6 +211,11 @@ public class DateUtils {
 		}
 		return date;
 	}
+	public static String parseProzorroPageDateToString(Date date, String dateFormat)
+			throws java.text.ParseException {
+		String stringDate = parseDateToString(date, dateFormat);
+		return stringDate;
+	}
 	
 	public static Date parseDateFromString(String stringDate, String dateFormat) throws ParseException {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
@@ -222,7 +227,7 @@ public class DateUtils {
 		return simpleDateFormat.format(date);
 	}
 	
-	public static Date parseDateToFormate(Date date, String dateFormat) throws ParseException {
+	public static Date parseDateToFormat(Date date, String dateFormat) throws ParseException {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
 		return simpleDateFormat.parse(simpleDateFormat.format(date));
 	}

@@ -107,4 +107,10 @@ public class HibernateSession {
 			sessionFactory.close();
 		}
 	}
+	public static String getDefaultScriptFileName(String name) {
+		if (name != null && !(name.trim()).equals("")) {
+			return (name.trim()) + "_" + SCRIPT_FILE;
+		}
+		return SCRIPT_FILE;
+	}
 }

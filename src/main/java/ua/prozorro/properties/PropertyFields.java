@@ -1,6 +1,6 @@
 package ua.prozorro.properties;
 
-import ua.prozorro.prozorro.model.DataType;
+import ua.prozorro.sourceService.DataType;
 
 import java.util.Date;
 import java.util.Properties;

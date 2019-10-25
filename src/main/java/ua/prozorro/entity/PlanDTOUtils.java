@@ -15,10 +15,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@Deprecated
 public class PlanDTOUtils {
 	
-	public static PlanPageDTO getPageDTO(ProzorroPageElement pageElement) {
+	/*public static PlanPageDTO getPageDTO(ProzorroPageElement pageElement) {
 		if (pageElement == null) {
 			return null;
 		}
@@ -28,7 +28,7 @@ public class PlanDTOUtils {
 		page.setDateModified(pageElement.getDateModified());
 		
 		return page;
-	}
+	}*/
 	
 	public static AddressDTO getAddressDTO(Address address) {
 		if (address == null) {
@@ -176,12 +176,12 @@ public class PlanDTOUtils {
 		if (project == null || project.getId() == null || project.getId().equals("")) {
 			return null;
 		}
-		
+
 		ProjectDTO projectDTO = new ProjectDTO();
-		
+
 		projectDTO.setId(project.getId());
 		projectDTO.setName(project.getName());
-		
+
 		return projectDTO;
 	}
 	
@@ -286,7 +286,7 @@ public class PlanDTOUtils {
 	}
 	
 	
-	public static PlanDTO getPlanDTO(Plan plan) {
+	/*public static PlanDTO getPlanDTO(Plan plan) {
 		if (plan == null) {
 			return null;
 		}
@@ -319,5 +319,5 @@ public class PlanDTOUtils {
 		planDTO.setDateModified(plan.getDateModified());
 		
 		return planDTO;
-	}
+	}*/
 }

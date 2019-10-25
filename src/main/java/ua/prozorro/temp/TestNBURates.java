@@ -3,22 +3,20 @@ package ua.prozorro.temp;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import ua.prozorro.ProzorroApp;
-import ua.prozorro.exchangeRates.ExchangeRateNBU;
-import ua.prozorro.exchangeRates.ExchangeRateServiceNBU;
-import ua.prozorro.exchangeRates.parser.ExchangeRateNBUParser;
+import ua.prozorro.exchangeRates.ExchangeRatesNBUPage;
+import ua.prozorro.sourceService.exchangeRates.NBUExchangeRatePageService;
+import ua.prozorro.parser.exchangeRates.ExchangeRateNBUDataParserAndSaver;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
-import ua.prozorro.prozorro.model.DataType;
-import ua.prozorro.prozorro.service.PageServiceProzorro;
+import ua.prozorro.sourceService.DataType;
 import ua.prozorro.sql.HibernateDataBaseType;
 import ua.prozorro.sql.HibernateFactory;
-import ua.prozorro.utils.DateUtils;
+import ua.prozorro.timeMeasure.ParsingResultData;
 import ua.prozorro.utils.FileUtils;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Date;
-import java.util.List;
+import java.text.ParseException;
 import java.util.Properties;
 
 public class TestNBURates {
@@ -30,23 +28,30 @@ public class TestNBURates {
 	
 	public static void main(String[] args) {
 		String url1 = "https://bank.gov.ua/NBU_Exchange/exchange?date=14.01.2019&json";
-		
-		//GSONPareser(url1);
+		PropertyFields propertyFields = null;
+		try {
+			propertyFields = TestPropertyFieldsFactory.getTestPropertyFields("2016-10-06", "2016-10-11", DataType.NBU_RATES);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		//GSONParser(propertyFields, url1);
 		//checkDataForPeriod();
-		parseAndSaveData();
+		parseAndSaveData(propertyFields);
 		
 	}
 	
-	private static void parseAndSaveData() {
+	private static void parseAndSaveData(PropertyFields propertyFields) {
 		//https://www.google.com/search?ei=SN0TXJPOAvDrrgS55JeoBQ&q=java+hibernate+%40onetoone+saveorupdate+child+first&oq=java+hibernate+%40onetoone+saveorupdate+child+first&gs_l=psy-ab.3...18094.18570..19344...0.0..0.94.270.3......0....1..gws-wiz.......0i71.ThMyYku4_E4
-		
+
+
 		SessionFactory sessionFactory = getSessionFactoryByDBName("mysql");
+		NBUExchangeRatePageService nbuExchangeRatePageService = new NBUExchangeRatePageService(propertyFields);
+
 		
-		ExchangeRateServiceNBU exchangeRateServiceNBU =
-				new ExchangeRateServiceNBU(new PropertyFields(getStartProperties()));
-		
-		ExchangeRateNBUParser exchangeRateNBUParser = new ExchangeRateNBUParser();
-		exchangeRateNBUParser.setSessionFactory(sessionFactory);
+		ExchangeRateNBUDataParserAndSaver exchangeRateNBUParser = new ExchangeRateNBUDataParserAndSaver(propertyFields, new ParsingResultData());
+
+		/*exchangeRateNBUParser.setSessionFactory(sessionFactory);
 		exchangeRateNBUParser.setExchangeRateServiceNBU(exchangeRateServiceNBU);
 		
 		try {
@@ -57,7 +62,7 @@ public class TestNBURates {
 			e.printStackTrace();
 		} finally {
 			sessionFactory.close();
-		}
+		}*/
 	}
 	
 	private static Session getSessionByDBName(String dbName) {
@@ -77,17 +82,17 @@ public class TestNBURates {
 		return factory;
 	}
 	
-	private static void GSONPareser(String url) {
+	private static void GSONParser(PropertyFields propertyFields, String url) {
 		try {
 			String getUrl = url;
-			PageServiceProzorro pageServiceProzorro = new PageServiceProzorro(new PropertyFields(getStartProperties()));
 			
-			ExchangeRateServiceNBU exchangeRateServiceNBU = new ExchangeRateServiceNBU();
+			//ExchangeRateServiceNBU exchangeRateServiceNBU = new ExchangeRateServiceNBU();
+			NBUExchangeRatePageService nbuExchangeRatePageService = new NBUExchangeRatePageService(propertyFields);
 			
 			System.out.println("Read from URL: " + getUrl);
 			
-			List<ExchangeRateNBU> rateNBUList = exchangeRateServiceNBU.getRateContentFromURL(getUrl);
-			System.out.println("Result Read from URL: " + rateNBUList);
+			ExchangeRatesNBUPage exchangeRatesNBUPage = nbuExchangeRatePageService.getObjectFromURL(getUrl);
+			System.out.println("Result Read from URL: " + exchangeRatesNBUPage);
 			
 			
 		} catch (IOException e) {
@@ -97,7 +102,7 @@ public class TestNBURates {
 	
 	private static void checkDataForPeriod() {
 		
-		ExchangeRateServiceNBU exchangeRateServiceNBU =
+		/*ExchangeRateServiceNBU exchangeRateServiceNBU =
 				new ExchangeRateServiceNBU(new PropertyFields(getStartProperties()));
 		try {
 			Date start = new Date();
@@ -117,7 +122,7 @@ public class TestNBURates {
 			
 		} catch (java.text.ParseException | IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	

@@ -120,7 +120,7 @@
                                                         </Label>
 
                                                         <Hyperlink fx:id="hyperLinkProzorroData" layoutX="187.0"
-                                                                   onAction="#onHyperLinkProzzoroData"
+                                                                   onAction="#onHyperLinkProzorroData"
                                                                    text="Данные Prozorro" AnchorPane.bottomAnchor="3.0"
                                                                    AnchorPane.rightAnchor="5.0"
                                                                    AnchorPane.topAnchor="3.0"

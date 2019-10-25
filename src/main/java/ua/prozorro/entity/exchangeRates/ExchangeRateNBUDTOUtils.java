@@ -8,7 +8,7 @@ import java.util.List;
 public class ExchangeRateNBUDTOUtils {
 	
 	
-	public static ExchangeRateNBUDTO getExchangeRateNBUDTO(ExchangeRateNBU exchangeRateNBU) {
+	/*public static ExchangeRateNBUDTO getExchangeRateNBUDTO(ExchangeRateNBU exchangeRateNBU) {
 		if (exchangeRateNBU == null) {
 			return null;
 		}
@@ -34,6 +34,6 @@ public class ExchangeRateNBUDTOUtils {
 		}
 		
 		return exchangeRateNBUDTOList;
-	}
+	}*/
 	
 }

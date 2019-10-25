@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@Deprecated
 public class TenderDTOUtils {
-	public static TenderPageDTO getPageDTO(ProzorroPageElement pageElement) {
+	/*public static TenderPageDTO getPageDTO(ProzorroPageElement pageElement) {
 		if (pageElement == null) {
 			return null;
 		}
@@ -22,7 +22,7 @@ public class TenderDTOUtils {
 		page.setDateModified(pageElement.getDateModified());
 		
 		return page;
-	}
+	}*/
 	
 	public static AddressDTO getAddressDTO(Address address) {
 		if (address == null) {
@@ -603,7 +603,7 @@ public class TenderDTOUtils {
 		return complaintDTOList;
 	}
 	
-	public static TenderDTO getTenderDTO(Tender tender) {
+/*	public static TenderDTO getTenderDTO(Tender tender) {
 		if (tender == null) {
 			return null;
 		}
@@ -694,5 +694,5 @@ public class TenderDTOUtils {
 		
 		
 		return tenderDTO;
-	}
+	}*/
 }
