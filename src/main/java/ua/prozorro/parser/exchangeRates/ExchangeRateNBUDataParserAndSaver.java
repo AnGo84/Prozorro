@@ -9,12 +9,11 @@ import ua.prozorro.entity.exchangeRates.ExchangeRateNBUDTO;
 import ua.prozorro.entity.mappers.exchangeRates.ExchangeRateNBUListMapper;
 import ua.prozorro.exchangeRates.ExchangeRateNBU;
 import ua.prozorro.exchangeRates.ExchangeRatesNBUPage;
-import ua.prozorro.exchangeRates.NBUExchangeRatePageService;
+import ua.prozorro.sourceService.exchangeRates.NBUExchangeRatePageService;
 import ua.prozorro.parser.AbstractDataParserAndSaver;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.repositories.ExchangeRateNBURepository;
-import ua.prozorro.timeMeasure.ParsingResultData;
 import ua.prozorro.utils.DateUtils;
 
 import java.io.IOException;
@@ -30,8 +29,8 @@ public class ExchangeRateNBUDataParserAndSaver extends AbstractDataParserAndSave
     private Calendar currentCalendar;
     private Calendar endCalendar;
 
-    public ExchangeRateNBUDataParserAndSaver(PropertyFields propertyFields, ParsingResultData resultData) {
-        super(propertyFields, resultData);
+    public ExchangeRateNBUDataParserAndSaver(PropertyFields propertyFields) {
+        super(propertyFields);
         this.nbuExchangeRatePageService = new NBUExchangeRatePageService(propertyFields);
     }
 
@@ -73,8 +72,7 @@ public class ExchangeRateNBUDataParserAndSaver extends AbstractDataParserAndSave
                         .getPropertiesStringValue(AppProperty.NBU_DATE_FORMAT))) < 0) {
 
             eventResultData.setHasResult(true);
-            eventResultData.setEventResult(propertyFields.getSearchDateType().getTypeName() + ": Страница № %d /" +
-                    resultData.getListSize() + ", текущий № %d c id: " + pageElement.getId() + ", date: "
+            eventResultData.setEventResult(propertyFields.getSearchDateType().getTypeName() + ": Страница № %d / %d, текущий № %d c id: " + pageElement.getId() + ", date: "
                     + pageElement.getDateModified() + ". Отклонён по дате \n");
         } else {
             eventResultData.setHasResult(false);
@@ -100,8 +98,7 @@ public class ExchangeRateNBUDataParserAndSaver extends AbstractDataParserAndSave
 
             eventResultData.setId(currentPageURL);
             eventResultData.setHasResult(true);
-            eventResultData.setEventResult(propertyFields.getSearchDateType().getTypeName() + ": Страница № %d /" +
-                    resultData.getListSize() + ", текущий № %d c id: " +
+            eventResultData.setEventResult(propertyFields.getSearchDateType().getTypeName() + ": Страница № %d / %d, текущий № %d c id: " +
                     pageElement.getId() + ", date: " + pageElement.getDateModified() + ". added/updated: " +
                     saveResult + " \n");
         } catch (Exception e) {

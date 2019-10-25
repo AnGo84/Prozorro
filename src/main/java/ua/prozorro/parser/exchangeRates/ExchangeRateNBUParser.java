@@ -8,7 +8,7 @@ import org.hibernate.Transaction;
 import ua.prozorro.entity.exchangeRates.ExchangeRateNBUDTO;
 import ua.prozorro.entity.mappers.exchangeRates.ExchangeRateNBUListMapper;
 import ua.prozorro.exchangeRates.ExchangeRateNBU;
-import ua.prozorro.exchangeRates.ExchangeRateServiceNBU;
+import ua.prozorro.sourceService.exchangeRates.ExchangeRateServiceNBU;
 import ua.prozorro.sourceService.DataType;
 import ua.prozorro.parser.DataParser;
 import ua.prozorro.repositories.ExchangeRateNBURepository;

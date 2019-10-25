@@ -1,4 +1,4 @@
-package ua.prozorro.exchangeRates;
+package ua.prozorro.sourceService.exchangeRates;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
@@ -6,6 +6,8 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ua.prozorro.entity.PageElement;
+import ua.prozorro.exchangeRates.ExchangeRateNBU;
+import ua.prozorro.exchangeRates.ExchangeRatesNBUPage;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.sourceService.AbstractSourceDataService;

@@ -1,26 +1,25 @@
-package ua.prozorro.prozorro.service;
+package ua.prozorro.sourceService.prozorro;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ua.prozorro.properties.PropertyFields;
-import ua.prozorro.prozorro.model.plans.PlanData;
-
+import ua.prozorro.prozorro.model.contracts.PlanData;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
-public class ProzorroPlanDataService extends AbstractProzorroSourceDataService<PlanData> {
-    private static final Logger logger = LogManager.getRootLogger();
+public class ProzorroContractDataService extends AbstractProzorroSourceDataService<PlanData> {
+	private static final Logger logger = LogManager.getRootLogger();
 
-    public ProzorroPlanDataService(PropertyFields propertyFields) {
-        super(PlanData.class, propertyFields);
-    }
+	public ProzorroContractDataService(PropertyFields propertyFields) {
+		super(PlanData.class, propertyFields);
+	}
 
-    @Override
-    public List<PlanData> getPagesList() throws IOException, ParseException {
-        return null;
-    }
+	@Override
+	public List<PlanData> getPagesList() throws IOException, ParseException {
+		return null;
+	}
 
 	/*public List<ContractData> getContractsDataFromPageContent(ProzorroPageContent pageContent) throws IOException {
 		if (pageContent == null || pageContent.getPageElementList() == null) {
@@ -31,7 +30,7 @@ public class ProzorroPlanDataService extends AbstractProzorroSourceDataService<P
 			ContractData contractData = getContractDataFromPageElement(element);
 					contractDataList.add(contractData);
 		}
-
+		
 		return contractDataList;
 	}*/
 

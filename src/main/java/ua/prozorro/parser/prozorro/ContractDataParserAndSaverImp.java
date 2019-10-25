@@ -11,16 +11,15 @@ import ua.prozorro.entity.pages.ContractPageDTO;
 import ua.prozorro.entity.tenders.ContractDTO;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.prozorro.model.contracts.PlanData;
-import ua.prozorro.prozorro.service.ProzorroContractDataService;
+import ua.prozorro.sourceService.prozorro.ProzorroContractDataService;
 import ua.prozorro.repositories.ContractRepository;
 import ua.prozorro.repositories.PageRepository;
-import ua.prozorro.timeMeasure.ParsingResultData;
 
 public class ContractDataParserAndSaverImp extends AbstractProzorroDataParserAndSaver {
     private static final Logger logger = LogManager.getRootLogger();
 
-    public ContractDataParserAndSaverImp(PropertyFields propertyFields, ParsingResultData resultData) {
-        super(propertyFields, resultData);
+    public ContractDataParserAndSaverImp(PropertyFields propertyFields) {
+        super(propertyFields);
     }
 
     @Override
@@ -54,8 +53,7 @@ public class ContractDataParserAndSaverImp extends AbstractProzorroDataParserAnd
 
             eventResultData.setId(currentPageURL);
             eventResultData.setHasResult(true);
-            eventResultData.setEventResult(propertyFields.getSearchDateType().getTypeName() + ": Страница № %d /" +
-                    resultData.getListSize() + ", текущий № %d c id: " +
+            eventResultData.setEventResult(propertyFields.getSearchDateType().getTypeName() + ": Страница № %d / %d, текущий № %d c id: " +
                     pageElement.getId() + ", date: " + pageElement.getDateModified() + ". added/updated: " +
                     updatedPage + " \n");
         } catch (Exception e) {

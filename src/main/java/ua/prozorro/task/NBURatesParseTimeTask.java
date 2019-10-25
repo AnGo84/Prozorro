@@ -3,7 +3,7 @@ package ua.prozorro.task;
 import javafx.concurrent.Task;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ua.prozorro.exchangeRates.ExchangeRateServiceNBU;
+import ua.prozorro.sourceService.exchangeRates.ExchangeRateServiceNBU;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.timeMeasure.ParsingResultData;
 import ua.prozorro.sourceService.DataType;

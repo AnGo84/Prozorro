@@ -3,27 +3,20 @@ package ua.prozorro.temp;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import ua.prozorro.ProzorroApp;
-import ua.prozorro.exchangeRates.ExchangeRateNBU;
-import ua.prozorro.exchangeRates.ExchangeRateServiceNBU;
 import ua.prozorro.exchangeRates.ExchangeRatesNBUPage;
-import ua.prozorro.exchangeRates.NBUExchangeRatePageService;
+import ua.prozorro.sourceService.exchangeRates.NBUExchangeRatePageService;
 import ua.prozorro.parser.exchangeRates.ExchangeRateNBUDataParserAndSaver;
-import ua.prozorro.parser.exchangeRates.ExchangeRateNBUParser;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.sourceService.DataType;
-import ua.prozorro.prozorro.service.PageServiceProzorro;
 import ua.prozorro.sql.HibernateDataBaseType;
 import ua.prozorro.sql.HibernateFactory;
 import ua.prozorro.timeMeasure.ParsingResultData;
-import ua.prozorro.utils.DateUtils;
 import ua.prozorro.utils.FileUtils;
 
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
-import java.util.Date;
-import java.util.List;
 import java.util.Properties;
 
 public class TestNBURates {
@@ -37,7 +30,7 @@ public class TestNBURates {
 		String url1 = "https://bank.gov.ua/NBU_Exchange/exchange?date=14.01.2019&json";
 		PropertyFields propertyFields = null;
 		try {
-			propertyFields = Test.getTestPropertyFields("2016-10-06", "2016-10-11", getStartProperties(), DataType.NBU_RATES);
+			propertyFields = TestPropertyFieldsFactory.getTestPropertyFields("2016-10-06", "2016-10-11", DataType.NBU_RATES);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

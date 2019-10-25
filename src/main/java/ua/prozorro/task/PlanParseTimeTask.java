@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.timeMeasure.ParsingResultData;
 import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
-import ua.prozorro.prozorro.service.PageServiceProzorro;
+import ua.prozorro.sourceService.prozorro.PageServiceProzorro;
 
 import java.io.IOException;
 import java.text.ParseException;

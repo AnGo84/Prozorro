@@ -2,7 +2,7 @@ package ua.prozorro.timeMeasure;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ua.prozorro.exchangeRates.ExchangeRateServiceNBU;
+import ua.prozorro.sourceService.exchangeRates.ExchangeRateServiceNBU;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.sourceService.DataType;
 

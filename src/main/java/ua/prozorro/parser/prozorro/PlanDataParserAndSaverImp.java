@@ -11,16 +11,15 @@ import ua.prozorro.entity.pages.PlanPageDTO;
 import ua.prozorro.entity.plans.PlanDTO;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.prozorro.model.plans.PlanData;
-import ua.prozorro.prozorro.service.ProzorroPlanDataService;
+import ua.prozorro.sourceService.prozorro.ProzorroPlanDataService;
 import ua.prozorro.repositories.PageRepository;
 import ua.prozorro.repositories.PlanRepository;
-import ua.prozorro.timeMeasure.ParsingResultData;
 
 public class PlanDataParserAndSaverImp extends AbstractProzorroDataParserAndSaver {
     private static final Logger logger = LogManager.getRootLogger();
 
-    public PlanDataParserAndSaverImp(PropertyFields propertyFields, ParsingResultData resultData) {
-        super(propertyFields, resultData);
+    public PlanDataParserAndSaverImp(PropertyFields propertyFields) {
+        super(propertyFields);
     }
 
     @Override
@@ -52,8 +51,7 @@ public class PlanDataParserAndSaverImp extends AbstractProzorroDataParserAndSave
 
             eventResultData.setId(currentPageURL);
             eventResultData.setHasResult(true);
-            eventResultData.setEventResult(propertyFields.getSearchDateType().getTypeName() + ": Страница № %d /" +
-                    resultData.getListSize() + ", текущий № %d c id: " +
+            eventResultData.setEventResult(propertyFields.getSearchDateType().getTypeName() + ": Страница № %d / %d, текущий № %d c id: " +
                     pageElement.getId() + ", date: " + pageElement.getDateModified() + ". added/updated: " +
                     updatedPage + " \n");
         } catch (Exception e) {

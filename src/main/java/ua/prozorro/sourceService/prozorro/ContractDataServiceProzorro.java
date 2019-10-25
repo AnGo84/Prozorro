@@ -1,4 +1,4 @@
-package ua.prozorro.prozorro.service;
+package ua.prozorro.sourceService.prozorro;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;

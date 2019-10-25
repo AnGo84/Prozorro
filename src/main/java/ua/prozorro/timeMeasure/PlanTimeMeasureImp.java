@@ -4,8 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
-import ua.prozorro.prozorro.service.PageServiceProzorro;
-import ua.prozorro.prozorro.service.ProzorroPageDataService;
+import ua.prozorro.sourceService.prozorro.ProzorroPageDataService;
 
 import java.util.Date;
 import java.util.List;

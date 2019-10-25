@@ -10,8 +10,7 @@ import ua.prozorro.parser.AbstractDataParserAndSaver;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
-import ua.prozorro.prozorro.service.ProzorroPageDataService;
-import ua.prozorro.timeMeasure.ParsingResultData;
+import ua.prozorro.sourceService.prozorro.ProzorroPageDataService;
 import ua.prozorro.utils.DateUtils;
 
 import java.io.IOException;
@@ -30,9 +29,8 @@ public abstract class AbstractProzorroDataParserAndSaver extends AbstractDataPar
 
     private Date nextPageDate;
 
-    public AbstractProzorroDataParserAndSaver(PropertyFields propertyFields, ParsingResultData resultData) {
+    public AbstractProzorroDataParserAndSaver(PropertyFields propertyFields) {
         this.propertyFields = propertyFields;
-        this.resultData = resultData;
         this.prozorroPageDataService = new ProzorroPageDataService(propertyFields);
         this.prozorroPageElementListMapper = new ProzorroPageElementListMapper();
     }
@@ -76,8 +74,7 @@ public abstract class AbstractProzorroDataParserAndSaver extends AbstractDataPar
                         .getPropertiesStringValue(AppProperty.PROZORRO_SHORT_DATE_FORMAT))) < 0) {
 
             eventResultData.setHasResult(true);
-            eventResultData.setEventResult(propertyFields.getSearchDateType().getTypeName() + ": Страница № %d /" +
-                    resultData.getListSize() + ", текущий № %d c id: " + pageElement.getId() + ", date: "
+            eventResultData.setEventResult(propertyFields.getSearchDateType().getTypeName() + ": Страница № %d / %d, текущий № %d c id: " + pageElement.getId() + ", date: "
                     + pageElement.getDateModified() + ". Отклонён по дате \n");
         } else {
             eventResultData.setHasResult(false);

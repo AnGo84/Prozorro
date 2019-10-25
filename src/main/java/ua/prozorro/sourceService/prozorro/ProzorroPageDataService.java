@@ -1,4 +1,4 @@
-package ua.prozorro.prozorro.service;
+package ua.prozorro.sourceService.prozorro;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -6,7 +6,6 @@ import ua.prozorro.entity.PageElement;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
-import ua.prozorro.sourceService.AbstractSourceDataService;
 import ua.prozorro.utils.DateUtils;
 
 import java.io.IOException;

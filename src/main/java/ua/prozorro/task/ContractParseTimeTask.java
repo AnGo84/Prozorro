@@ -3,13 +3,10 @@ package ua.prozorro.task;
 import javafx.concurrent.Task;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
-import ua.prozorro.prozorro.service.ProzorroPageDataService;
+import ua.prozorro.sourceService.prozorro.ProzorroPageDataService;
 import ua.prozorro.timeMeasure.ParsingResultData;
 import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
-import ua.prozorro.prozorro.service.ContractDataServiceProzorro;
-import ua.prozorro.prozorro.service.PageServiceProzorro;
 
 import java.util.Date;
 import java.util.List;

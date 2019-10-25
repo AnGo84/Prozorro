@@ -66,7 +66,7 @@ public class DataParseAndSaveTask extends Task<Boolean> {
         Transaction transaction = null;
 
         int pageCount = 0;
-        try(Session session = sessionFactory.openSession();) {
+        try (Session session = sessionFactory.openSession();) {
             updateProgress(pageCount, resultData.getListSize());
             dataParserAndSaver.initDataByURL(currentPageURL);
 
@@ -91,7 +91,7 @@ public class DataParseAndSaveTask extends Task<Boolean> {
                     pageElementCount++;
                     String checkResult;
                     if (checkExpireElement.isHasResult()) {
-                        checkResult = String.format(checkExpireElement.getEventResult(), pageCount, pageElementCount);
+                        checkResult = String.format(checkExpireElement.getEventResult(), pageCount, resultData.getListSize(), pageElementCount);
                         logger.warn(checkResult);
                         updateMessage(checkResult);
                         break;
@@ -100,7 +100,7 @@ public class DataParseAndSaveTask extends Task<Boolean> {
                     transaction = session.beginTransaction();
                     EventResultData parseAndSaveResult = dataParserAndSaver.parseAndSave(pageElement, session);
 
-                    infoLogging(String.format(parseAndSaveResult.getEventResult(), pageCount, pageElementCount));
+                    infoLogging(String.format(parseAndSaveResult.getEventResult(), pageCount, resultData.getListSize(), pageElementCount));
                     /* checkResult = String.format(parseAndSaveResult.getEventResult(), pageCount, pageElementCount);
                     logger.info(checkResult);
                     updateMessage(checkResult);*/

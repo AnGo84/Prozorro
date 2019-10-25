@@ -6,22 +6,12 @@ import ua.prozorro.ProzorroApp;
 import ua.prozorro.properties.AppProperty;
 import ua.prozorro.properties.PropertyFields;
 import ua.prozorro.sourceService.DataType;
-import ua.prozorro.prozorro.model.pages.ProzorroPageContent;
-import ua.prozorro.prozorro.model.pages.ProzorroPageElement;
-import ua.prozorro.prozorro.model.plans.PlanData;
-import ua.prozorro.parser.prozorro.PlanParser;
-import ua.prozorro.prozorro.service.PageServiceProzorro;
-import ua.prozorro.prozorro.service.PlanDataServiceProzorro;
 import ua.prozorro.sql.HibernateDataBaseType;
 import ua.prozorro.sql.HibernateFactory;
-import ua.prozorro.utils.DateUtils;
 import ua.prozorro.utils.FileUtils;
 
-import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
-import java.util.Date;
-import java.util.List;
 import java.util.Properties;
 
 public class TestPlan {

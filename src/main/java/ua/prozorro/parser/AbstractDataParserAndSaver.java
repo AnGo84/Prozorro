@@ -19,14 +19,12 @@ public abstract class AbstractDataParserAndSaver implements DataParserAndSaver {
 
     protected String currentPageURL;
     protected PropertyFields propertyFields;
-    protected ParsingResultData resultData;
 
     public AbstractDataParserAndSaver() {
     }
 
-    public AbstractDataParserAndSaver(PropertyFields propertyFields, ParsingResultData resultData) {
+    public AbstractDataParserAndSaver(PropertyFields propertyFields) {
         this.propertyFields = propertyFields;
-        this.resultData = resultData;
     }
 
     public String getCurrentPageURL() {
