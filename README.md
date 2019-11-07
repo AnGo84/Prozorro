@@ -50,11 +50,11 @@ Information about the tender can be obtained by reference https://public.api.ope
 
 For example, information for tender with id **'55e20be09f3544deace53f5a9019f800'** can be gettin by link [https://public.api.openprocurement.org/api/2.4/tenders/55e20be09f3544deace53f5a9019f800](https://public.api.openprocurement.org/api/2.4/tenders/55e20be09f3544deace53f5a9019f800)
 
-## Currancy rates source
+## Currency rates source
 
 For getting currencies rates' information used NBU API [https://bank.gov.ua/control/uk/publish/article?art_id=38441973](https://bank.gov.ua/control/uk/publish/article?art_id=38441973)
 
-#### Helpful information
+## Helpful information
 For work with JSON was used some online resources
 
 ###### Create classes from JSON:

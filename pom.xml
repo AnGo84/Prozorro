@@ -19,6 +19,7 @@
         <jackson.version>2.9.7</jackson.version>
         <oracle.version>11.2.0</oracle.version>
         <junit.version>5.3.1</junit.version>
+        <mockito.version>3.1.0</mockito.version>
 
         <!--
         <apache.poi.version>3.16</apache.poi.version>
@@ -114,10 +115,24 @@
         <!-- https://maven.apache.org/surefire/maven-surefire-plugin/examples/junit-platform.html -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+
 
     </dependencies>
 
@@ -141,6 +156,16 @@
                     <target>8</target>
                 </configuration>
             </plugin>
+            <!-- Test -->
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.22.2</version>
+            </plugin>
+            <!-- /-->
             <!--for travis-->
             <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
