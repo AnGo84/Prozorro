@@ -46,6 +46,17 @@ public abstract class AbstractProzorroSourceDataService<T> extends AbstractSourc
         T data = getObjectFromURL(currentURL);
         return data;
     }
+    
+    public String getJSONModelByPageElement(PageElement pageElement) throws IOException {
+        if (pageElement == null) {
+            return null;
+        }
+        String currentURL = pageURLFactory.getPageURL(null) + "/" + pageElement.getId();
+        String genreJson = FileUtils.getStringFromURL(currentURL);
+        return genreJson;
+    }
+    
+    
     public Date getDate(Date date) throws ParseException {
         if (date == null) {
             date = DateUtils.parseDateToFormat(new Date(), propertyFields

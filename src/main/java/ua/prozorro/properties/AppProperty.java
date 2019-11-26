@@ -7,6 +7,7 @@ public enum AppProperty {
 	db.login = prozorro
 	db.password = prozorro*/
 	//
+	PROZORRO_EXPORT_JSON_ONLY("app.prozorro.export.json.only"), //
 	TENDER_START_PAGE("prozorro.tender.start_page"), TENDER_PAGE_LIMIT(
 			"prozorro.tender.page_limit"), TENDER_PAGE_LIMIT_VALUE(
 			"prozorro.tender.page_limit_value"), TENDER_PAGE_OFFSET("prozorro.tender.page_offset"), TENDER_PAGE_END(

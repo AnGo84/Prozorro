@@ -60,6 +60,10 @@
         <mapping class="ua.prozorro.entity.tenders.UnitDTO"/>
 
         <mapping class="ua.prozorro.entity.tenders.TenderDTO"/>
+        <mapping class="ua.prozorro.entity.tenders.TenderJSONDTO"/>
+
+        <mapping class="ua.prozorro.entity.tenders.ContractJSONDTO"/>
+
         <!--Additional for tender-->
         <mapping class="ua.prozorro.entity.tenders.TenderAwardDTO"/>
         <mapping class="ua.prozorro.entity.tenders.TenderBidDTO"/>
@@ -92,6 +96,8 @@
         <mapping class="ua.prozorro.entity.plans.PlanTenderDTO"/>
         <mapping class="ua.prozorro.entity.plans.ProcuringEntityDTO"/>
         <mapping class="ua.prozorro.entity.plans.ProjectDTO"/>
+
+        <mapping class="ua.prozorro.entity.plans.PlanJSONDTO"/>
         <!--Additional for plan-->
         <mapping class="ua.prozorro.entity.plans.PlanDocumentDTO"/>
         <mapping class="ua.prozorro.entity.plans.PlanItemDTO"/>
