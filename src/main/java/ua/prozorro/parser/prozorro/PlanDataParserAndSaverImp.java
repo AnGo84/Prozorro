@@ -43,7 +43,8 @@ public class PlanDataParserAndSaverImp extends AbstractProzorroDataParserAndSave
 				
 				PlanJSONDTO planJSONDTO = parseAndSaveAsJSON(pageElement, session);
 				
-				if (!propertyFields.getPropertiesStringValue(AppProperty.PROZORRO_EXPORT_JSON_ONLY).equals("true")) {
+				//if (!propertyFields.getPropertiesStringValue(AppProperty.PROZORRO_EXPORT_JSON_ONLY).equals("true")) {
+				if (!this.prozorroExportJSONOnly) {
 					
 					PlanRepository planRepository = new PlanRepository(session);
 
@@ -60,6 +61,10 @@ public class PlanDataParserAndSaverImp extends AbstractProzorroDataParserAndSave
 					//PlanDTO planDTO = PlanDTOUtils.getPlanDTO(planData.getPlan());
 					planDTO = planMapper.convertToEntity(planData.getPlan());
 					planRepository.savePlan(planDTO, session);
+				}
+				else{
+					session.flush();
+					session.clear();
 				}
 			}
 			

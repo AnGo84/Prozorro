@@ -81,6 +81,16 @@ public class PageRepository {
         if (session == null || !session.isOpen()) {
             throw new Exception("Session did not set");
         }
+    
+        session.saveOrUpdate(page);
+        logger.info("Saved Or Updated TenderPage: " + page + "\n");
+        return true;
+    }
+    /*public boolean saveTenderPage(TenderPageDTO page, Session session) throws Exception {
+
+        if (session == null || !session.isOpen()) {
+            throw new Exception("Session did not set");
+        }
 
         TenderPageDTO oldPage = session.get(TenderPageDTO.class, page.getId());
         session.flush();
@@ -101,9 +111,19 @@ public class PageRepository {
         session.flush();
         session.clear();
         return true;
-    }
+    }*/
 
     public boolean savePlanPage(PlanPageDTO page, Session session) throws Exception {
+
+        if (session == null || !session.isOpen()) {
+            throw new Exception("Session did not set");
+        }
+    
+        session.saveOrUpdate(page);
+        logger.info("Saved Or Updated PlanPage: " + page + "\n");
+        return true;
+    }
+    /*public boolean savePlanPage(PlanPageDTO page, Session session) throws Exception {
 
         if (session == null || !session.isOpen()) {
             throw new Exception("Session did not set");
@@ -128,9 +148,19 @@ public class PageRepository {
         session.flush();
         session.clear();
         return true;
-    }
+    }*/
 
     public boolean saveContractPage(ContractPageDTO page, Session session) throws Exception {
+
+        if (session == null || !session.isOpen()) {
+            throw new Exception("Session did not set");
+        }
+
+        session.saveOrUpdate(page);
+        logger.info("Saved Or Updated ContractPage: " + page + "\n");
+        return true;
+    }
+    /*public boolean saveContractPage(ContractPageDTO page, Session session) throws Exception {
 
         if (session == null || !session.isOpen()) {
             throw new Exception("Session did not set");
@@ -155,6 +185,6 @@ public class PageRepository {
         session.clear();
 
         return true;
-    }
+    }*/
 
 }

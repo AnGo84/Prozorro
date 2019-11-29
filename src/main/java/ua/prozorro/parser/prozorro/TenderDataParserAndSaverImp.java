@@ -44,7 +44,8 @@ public class TenderDataParserAndSaverImp extends AbstractProzorroDataParserAndSa
 			if (updatedPage) {
                 TenderJSONDTO tenderJSONDTO = parseAndSaveAsJSON(pageElement,session);
                 
-                if (!propertyFields.getPropertiesStringValue(AppProperty.PROZORRO_EXPORT_JSON_ONLY).equals("true")) {
+                //if (!propertyFields.getPropertiesStringValue(AppProperty.PROZORRO_EXPORT_JSON_ONLY).equals("true")) {
+                if (!this.prozorroExportJSONOnly) {
 					TenderRepository TenderRepository = new TenderRepository(session);
     
                 /*TenderDataServiceProzorro TenderDataServiceProzorro = new TenderDataServiceProzorro(
@@ -61,6 +62,10 @@ public class TenderDataParserAndSaverImp extends AbstractProzorroDataParserAndSa
 					//TenderDTO TenderDTO = TenderDTOUtils.getTenderDTO(TenderData.getTender());
 					tenderDTO = tenderMapper.convertToEntity(tenderData.getTender());
 					TenderRepository.saveTender(tenderDTO, session);
+				}
+                else{
+					session.flush();
+					session.clear();
 				}
 			}
 			

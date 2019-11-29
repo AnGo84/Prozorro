@@ -42,7 +42,8 @@ public class ContractDataParserAndSaverImp extends AbstractProzorroDataParserAnd
 			if (updatedPage) {
 				ContractJSONDTO contractJSONDTO = parseAndSaveAsJSON(pageElement, session);
 				
-				if (!propertyFields.getPropertiesStringValue(AppProperty.PROZORRO_EXPORT_JSON_ONLY).equals("true")) {
+				//if (!propertyFields.getPropertiesStringValue(AppProperty.PROZORRO_EXPORT_JSON_ONLY).equals("true")) {
+				if (!this.prozorroExportJSONOnly) {
 					
 					ContractRepository contractRepository = new ContractRepository(session);
 
@@ -51,13 +52,17 @@ public class ContractDataParserAndSaverImp extends AbstractProzorroDataParserAnd
 					
 					//text = pageElement.getId() + "\n";
 					//contractData = contractDataService.getObjectByPageElement(pageElement);
-					contractData = contractDataService.getObjectFromStringJSON(contractJSONDTO.getModel());;
+					contractData = contractDataService.getObjectFromStringJSON(contractJSONDTO.getModel());
 					
 					//text = text + planData.toString();
 					//text = planData.toString();
 					//PlanDTO planDTO = PlanDTOUtils.getPlanDTO(planData.getPlan());
 					contractDTO = contractMapper.convertToEntity(contractData.getContract());
 					contractRepository.saveContract(contractDTO, session);
+				}
+				else{
+					session.flush();
+					session.clear();
 				}
 			}
 			
@@ -93,8 +98,7 @@ public class ContractDataParserAndSaverImp extends AbstractProzorroDataParserAnd
 		session.flush();
 		session.clear();
          */
-		}
-		catch (Exception e){
+		} catch (Exception e) {
 			logger.error("Error on UpdateOrSave ContractJSON for PAGE: " + pageElement + "\n", e);
 			throw e;
 		}
