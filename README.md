@@ -54,6 +54,21 @@ For example, information for tender with id **'55e20be09f3544deace53f5a9019f800'
 
 For getting currencies rates' information used NBU API [https://bank.gov.ua/control/uk/publish/article?art_id=38441973](https://bank.gov.ua/control/uk/publish/article?art_id=38441973)
 
+### Realises
+
+During developing the project was implemented three different realisations of importing data from Prozorro. Each realisation represent in separate branch:
+
+|  Realise    | Descreaption |
+| ----------- | ------ |
+| realise-1.0 | First version. Without maven, VCS. Work with the database implemented  with JDBC. Imported                   data have restrictions on length and content. Import working very slow. Supports only MySQL                 database. Import only Tenders|
+| realise-2.0 | Added support maven, git, Hibernate. Import only Tenders |
+| realise-3.0 | Import  tenders, plans, contracts, NBU rates. Added supporl Oracle 11|
+
+### Todos
+
+ - Write MORE Tests
+ - Import data from Prozorro in formate  id, date, JSON
+
 ## Helpful information
 For work with JSON was used some online resources
 
