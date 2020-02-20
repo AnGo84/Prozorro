@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <!--ORACLE-->
+        <property name="hibernate.dialect">org.hibernate.dialect.Oracle112gDialect</property>
+
+        <property name="hibernate.connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
+
+        <property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:ORCL</property>
+
+        <property name="hibernate.connection.username">PROZORRO</property>
+        <!--<property name="hibernate.connection.password">orrozorp</property>-->
+        <property name="hibernate.connection.password">123321</property>
+        <property name="hibernate.default_schema">PROZORRO</property>
+
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.use_sql_comments">true</property>
+        <property name="hibernate.connection.release_mode">auto</property>
+        <!--<property name="current_session_context_class">thread</property>-->
+        <property name="hibernate.connection.autoReconnect">true</property>
+        <!--END ORACLE-->
+
+        <!-- Mapping With Model Class Containing Annotations -->
+        <mapping class="ua.prozorro.entity.nburate.NBURate"/>
+        <mapping class="ua.prozorro.entity.prozorro.TenderJSON"/>
+        <mapping class="ua.prozorro.entity.prozorro.PlanJSON"/>
+        <mapping class="ua.prozorro.entity.prozorro.ContractJSON"/>
+
+    </session-factory>
+
+</hibernate-configuration>

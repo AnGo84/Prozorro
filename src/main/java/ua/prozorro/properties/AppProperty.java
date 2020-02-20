@@ -19,7 +19,7 @@ public enum AppProperty {
 	PLAN_START_PAGE("prozorro.plan.start_page"), PLAN_PAGE_LIMIT("prozorro.plan.page_limit"), PLAN_PAGE_LIMIT_VALUE(
 			"prozorro.plan.page_limit_value"), PLAN_PAGE_OFFSET("prozorro.plan.page_offset"), PLAN_PAGE_END(
 			"prozorro.plan.page_end"), //
-	PROZORRO_DATE_FORMAT("prozorro.date_formate"), PROZORRO_SHORT_DATE_FORMAT("prozorro.short_date_formate"), //
+	PROZORRO_DATE_FORMAT("prozorro.api.date_format"), PROZORRO_SHORT_DATE_FORMAT("prozorro.api.short_date_format"), //
 	NBU_START_PAGE("nbu.exchangerates.start_page"), NBU_PAGE_PREFIX("nbu.exchangerates.page_prefix"), NBU_PAGE_END(
 			"nbu.exchangerates.page_end"), NBU_DATE_FORMAT("nbu.exchangerates.date_format")
 	//

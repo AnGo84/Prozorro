@@ -12,6 +12,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by AnGo on 08.06.2017.
@@ -23,10 +25,9 @@ public class DateUtils {
 	//    private static final String DATE_PATTERN_DD_MM_YYYY = "dd.MM.yyyy hh:mm:ss";
 	//"(0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])[/](19|20)\d\d ([0-9]|1[0-1]):[0-5][0-9](:[0-5][0-9])? ?[APap][mM]$"
 	public static final String DATE_PATTERN_DD_MM_YYYY = "dd.MM.yyyy";
+	public static final String PROZORRO_DATE_FORMATE_WITHOUT_SSS = "yyyy-MM-dd'T'HH:mm:ssXXX";
 	private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN_DD_MM_YYYY);
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(DATE_PATTERN_DD_MM_YYYY);
-	public static final String PROZORRO_DATE_FORMATE_WITHOUT_SSS = "yyyy-MM-dd'T'HH:mm:ssXXX";
-	
 	
 	/**
 	 * Возвращает полученную дату в виде хорошо отформатированной строки.
@@ -211,8 +212,8 @@ public class DateUtils {
 		}
 		return date;
 	}
-	public static String parseProzorroPageDateToString(Date date, String dateFormat)
-			throws java.text.ParseException {
+	
+	public static String parseProzorroPageDateToString(Date date, String dateFormat) throws java.text.ParseException {
 		String stringDate = parseDateToString(date, dateFormat);
 		return stringDate;
 	}
@@ -222,6 +223,7 @@ public class DateUtils {
 		Date date = simpleDateFormat.parse(stringDate);
 		return date;
 	}
+	
 	public static String parseDateToString(Date date, String dateFormat) {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
 		return simpleDateFormat.format(date);
@@ -269,5 +271,17 @@ public class DateUtils {
 		long second = (int) (timeDifference - (hour * 3600) - minute * 60);
 		
 		return String.format("%02dh:%02dm:%02ds:%dms", hour, minute, second, millisec);
+	}
+	
+	public static long daysBetween(Date dateFrom, Date dateTill) {
+		long diffInMillies = Math.abs(dateTill.getTime() - dateFrom.getTime());
+		long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+		return diff;
+	}
+	
+	public static  long getHoursFromDate(Date date) {
+		Calendar calendar = GregorianCalendar.getInstance(); // creates a new calendar instance
+		calendar.setTime(date);
+		return calendar.get(Calendar.HOUR_OF_DAY);
 	}
 }

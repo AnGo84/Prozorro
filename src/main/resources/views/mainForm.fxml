@@ -1,87 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<BorderPane prefHeight="500.0" prefWidth="893.0" xmlns="http://javafx.com/javafx/8.0.172-ea"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.prozorro.controller.MainController">
+
+<BorderPane prefHeight="500.0" prefWidth="893.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.prozorro.controller.MainController">
     <center>
         <BorderPane>
             <top>
                 <AnchorPane BorderPane.alignment="CENTER">
                     <children>
 
-                        <Label layoutX="14.0" layoutY="5.0" text="Выбрать" AnchorPane.leftAnchor="10.0">
+                        <Label fx:id="labelSelectSource" layoutX="14.0" layoutY="5.0" text="Выбрать" AnchorPane.leftAnchor="10.0">
                             <font>
-                                <Font name="SansSerif Bold" size="12.0"/>
+                                <Font name="SansSerif Bold" size="12.0" />
                             </font>
                         </Label>
 
-                        <Label layoutX="14.0" layoutY="5.0" text="Дата выборки От" AnchorPane.leftAnchor="280.0">
+                        <Label fx:id="labelPeriodFrom" alignment="CENTER_RIGHT" layoutX="263.0" layoutY="5.0" prefHeight="15.0" prefWidth="85.0" text="Период С" textAlignment="RIGHT" AnchorPane.leftAnchor="265.0">
                             <font>
-                                <Font name="SansSerif Bold" size="12.0"/>
+                                <Font name="SansSerif Bold" size="12.0" />
                             </font>
                         </Label>
-                        <DatePicker fx:id="datePickerFrom" layoutX="390.0" layoutY="1.0" prefHeight="25.0"
-                                    prefWidth="120.0" promptText="date from" AnchorPane.bottomAnchor="1.0"
-                                    AnchorPane.leftAnchor="390.0" AnchorPane.topAnchor="1.0"/>
+                        <DatePicker fx:id="datePickerFrom" layoutX="357.0" layoutY="1.0" prefHeight="25.0" prefWidth="120.0" promptText="date from" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="360.0" AnchorPane.topAnchor="1.0" />
 
 
-                        <Label layoutX="520.0" layoutY="5.0" text="До" AnchorPane.leftAnchor="520.0">
+                        <Label fx:id="labelTo" layoutX="487.0" layoutY="5.0" text="По" AnchorPane.leftAnchor="490.0">
                             <font>
-                                <Font name="SansSerif Bold" size="12.0"/>
+                                <Font name="SansSerif Bold" size="12.0" />
                             </font>
                         </Label>
-                        <DatePicker fx:id="datePickerTill" layoutX="540.0" layoutY="1.0" prefHeight="25.0"
-                                    prefWidth="120.0" promptText="date till" AnchorPane.bottomAnchor="1.0"
-                                    AnchorPane.leftAnchor="540.0" AnchorPane.topAnchor="1.0"/>
+                        <DatePicker fx:id="datePickerTill" layoutX="512.0" layoutY="1.0" prefHeight="25.0" prefWidth="120.0" promptText="date till" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="515.0" AnchorPane.topAnchor="1.0" />
 
-                        <Button fx:id="buttonGetPages" defaultButton="true" layoutX="400.0" layoutY="1.0"
-                                mnemonicParsing="false" onAction="#onCheckDataForPeriod" prefHeight="25.0"
-                                prefWidth="140.0" text="Проверить данные" AnchorPane.bottomAnchor="1.0"
-                                AnchorPane.leftAnchor="700.0" AnchorPane.topAnchor="1.0">
+                        <Button fx:id="buttonGetPages" defaultButton="true" layoutX="642.0" layoutY="1.0" mnemonicParsing="false" onAction="#onCheckDataForPeriod" prefHeight="25.0" prefWidth="130.0" text="Проверить данные" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="650.0" AnchorPane.topAnchor="1.0">
                             <font>
-                                <Font name="SansSerif Regular" size="12.0"/>
+                                <Font name="SansSerif Regular" size="12.0" />
                             </font>
                         </Button>
-                        <ComboBox fx:id="comboBoxDataType" prefHeight="25.0" prefWidth="180.0"
-                                  AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="75.0"
-                                  AnchorPane.topAnchor="1.0"/>
+                        <ComboBox fx:id="comboBoxDataType" prefHeight="25.0" prefWidth="180.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="75.0" AnchorPane.topAnchor="1.0" />
+                  <Button fx:id="buttonData" layoutX="839.0" mnemonicParsing="false" onAction="#onButtonData" text="Test" AnchorPane.topAnchor="1.0" />
+                  <Label fx:id="labelTotalPages" layoutX="889.0" layoutY="4.0" text="Label" />
+                  <Button fx:id="buttonDownload" layoutX="925.0" mnemonicParsing="false" onAction="#onButtonDownload" text="Download" AnchorPane.topAnchor="1.0" />
                     </children>
                 </AnchorPane>
             </top>
             <bottom>
                 <AnchorPane>
                     <children>
-                        <Button fx:id="buttonGetData" disable="true" layoutX="10.0" layoutY="6.0"
-                                mnemonicParsing="false" onAction="#onGetParseSaveData" prefHeight="25.0"
-                                prefWidth="135.0" text="Получить данные">
+                        <Button fx:id="buttonGetData" disable="true" layoutX="10.0" layoutY="6.0" mnemonicParsing="false" onAction="#onGetParseSaveData" prefHeight="25.0" prefWidth="135.0" text="Получить данные">
                             <font>
-                                <Font name="SansSerif Bold" size="12.0"/>
+                                <Font name="SansSerif Bold" size="12.0" />
                             </font>
                         </Button>
 
-                        <Label layoutX="150.0" layoutY="11.0" text="Прогресс:">
+                        <Label fx:id="labelProgress" layoutX="150.0" layoutY="11.0" text="Прогресс:">
                             <font>
-                                <Font name="SansSerif Bold" size="12.0"/>
+                                <Font name="SansSerif Bold" size="12.0" />
                             </font>
                         </Label>
-                        <ProgressBar fx:id="progressBar" layoutX="220.0" layoutY="9.0" prefHeight="18.0"
-                                     prefWidth="750.0" progress="0.0"/>
+                        <ProgressBar fx:id="progressBar" layoutX="220.0" layoutY="9.0" prefHeight="18.0" prefWidth="750.0" progress="0.0" />
 
-                        <ProgressIndicator fx:id="progressIndicator" layoutX="970.0" layoutY="7.0" prefHeight="32.0"
-                                           prefWidth="45.0" progress="0.0">
+                        <ProgressIndicator fx:id="progressIndicator" layoutX="970.0" layoutY="7.0" prefHeight="32.0" prefWidth="45.0" progress="0.0">
                             <opaqueInsets>
-                                <Insets right="10.0"/>
+                                <Insets right="10.0" />
                             </opaqueInsets>
                         </ProgressIndicator>
                     </children>
                 </AnchorPane>
             </bottom>
             <center>
-                <TextArea fx:id="textArea" editable="false" prefHeight="409.0" prefWidth="901.0"
-                          BorderPane.alignment="CENTER"/>
+                <TextArea fx:id="textArea" editable="false" prefHeight="409.0" prefWidth="901.0" BorderPane.alignment="CENTER" />
             </center>
 
         </BorderPane>
@@ -89,32 +78,27 @@
     <top>
         <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
             <menus>
-                <Menu mnemonicParsing="false" text="Меню">
+                <Menu fx:id="menuMenu" mnemonicParsing="false" text="Меню">
                     <items>
-                        <MenuItem fx:id="menuItemClose" mnemonicParsing="false" onAction="#onClose" text="Close"/>
+                        <MenuItem fx:id="menuItemClose" mnemonicParsing="false" onAction="#onClose" text="Close" />
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Схема ДБ">
+                <Menu fx:id="menuSchemaDB" mnemonicParsing="false" text="Схема ДБ">
                     <items>
-                        <MenuItem fx:id="menuItemScheme" mnemonicParsing="false" onAction="#onMenuItemScheme"
-                                  text="Экспорт схемы БД"/>
+                        <MenuItem fx:id="menuItemExportSchemeDB" mnemonicParsing="false" onAction="#onMenuItemScheme" text="Экспорт схемы БД" />
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Журнал">
+                <Menu fx:id="menuLog" mnemonicParsing="false" text="Журнал">
                     <items>
-                        <MenuItem fx:id="menuItemClean" mnemonicParsing="false" onAction="#onClean" text="Очистить"/>
-                        <MenuItem fx:id="menuItemSaveLog" mnemonicParsing="false" onAction="#onSaveLogToFile"
-                                  text="Сохранить в файл"/>
+                        <MenuItem fx:id="menuItemCleanLog" mnemonicParsing="false" onAction="#onCleanLog" text="Очистить" />
+                        <MenuItem fx:id="menuItemSaveLogToFile" mnemonicParsing="false" onAction="#onSaveLogToFile" text="Сохранить в файл" />
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Обработка">
+                <Menu fx:id="menuProcessing" mnemonicParsing="false" text="Обработка">
                     <items>
-                        <MenuItem fx:id="menuItemParseURL" mnemonicParsing="false" onAction="#onMenuItemParseURL"
-                                  text="Проверка данных"/>
-                        <MenuItem fx:id="menuItemParseList" mnemonicParsing="false" onAction="#onParsePage"
-                                  text="Разобрать лист по URL" visible="false"/>
-                        <MenuItem fx:id="menuItemParseTender" mnemonicParsing="false" onAction="#onParseTender"
-                                  text="Разобрать тендер по ID" visible="false"/>
+                        <MenuItem fx:id="menuItemParseURL" mnemonicParsing="false" onAction="#onMenuItemParseURL" text="Проверка данных" />
+                        <MenuItem fx:id="menuItemParseList" mnemonicParsing="false" onAction="#onParsePage" text="Разобрать лист по URL" visible="false" />
+                        <MenuItem fx:id="menuItemParseTender" mnemonicParsing="false" onAction="#onParseTender" text="Разобрать тендер по ID" visible="false" />
                     </items>
                 </Menu>
             </menus>

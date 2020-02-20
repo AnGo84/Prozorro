@@ -143,4 +143,6 @@ public class DataParseAndSaveTask extends Task<Boolean> {
         logger.info(logText);
         updateMessage(logText + " \n");
     }
+    
+    
 }

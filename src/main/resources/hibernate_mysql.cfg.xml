@@ -105,7 +105,14 @@
         <!--/Plans-->
         <!-- ExchangeRateNBU -->
         <mapping class="ua.prozorro.entity.exchangeRates.ExchangeRateNBUDTO"/>
+
         <!-- /ExchangeRateNBU -->
+        <!--New -->
+        <mapping class="ua.prozorro.entity.nburate.NBURate"/>
+        <mapping class="ua.prozorro.entity.prozorro.TenderJSON"/>
+        <mapping class="ua.prozorro.entity.prozorro.PlanJSON"/>
+        <mapping class="ua.prozorro.entity.prozorro.ContractJSON"/>
+        <!--/-->
 
     </session-factory>
 

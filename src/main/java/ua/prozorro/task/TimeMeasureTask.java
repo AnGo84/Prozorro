@@ -40,10 +40,6 @@ public class TimeMeasureTask extends Task<ParsingResultData> {
         logger.info("Finished. Total Time: " + totalTime + "ms \n");
         updateMessage("Finished. Total Time: " + totalTime + "ms \n");
 
-        /*ParsingResultData resultData = new ParsingResultData();
-        resultData.setParsingTime(totalTime);
-        resultData.setListSize(listSize);
-        resultData.setHasData(listSize > 0);*/
         resultData.setParsingTime(totalTime);
         return resultData;
     }
