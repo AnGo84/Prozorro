@@ -2,7 +2,6 @@ package ua.prozorro.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -17,10 +16,9 @@ import org.hibernate.tool.schema.TargetType;
 import ua.prozorro.ProzorroApp;
 import ua.prozorro.fx.DialogText;
 import ua.prozorro.fx.Dialogs;
+import ua.prozorro.hibernate.HibernateDataBaseType;
+import ua.prozorro.hibernate.HibernateSession;
 import ua.prozorro.properties.PropertiesUtils;
-import ua.prozorro.properties.PropertyFields;
-import ua.prozorro.sql.HibernateDataBaseType;
-import ua.prozorro.sql.HibernateSession;
 
 import java.io.File;
 import java.util.EnumSet;
@@ -46,7 +44,6 @@ public class SchemaExportDialogController {
 	private Label labelFile;
 	
 	private ProzorroApp prozorroApp;
-	private PropertyFields propertyFields;
 	
 	private Stage dialogStage;
 	
@@ -90,9 +87,8 @@ public class SchemaExportDialogController {
 			//if (file.exists() && !file.isDirectory()) {
 			
 			String tempDialectEngine = System.getProperty(HibernateSession.HIBERNATE_DIALECT_STORAGE_ENGINE);
-			if (tempDialectEngine == null || tempDialectEngine.equals("") || !tempDialectEngine.toUpperCase()
-																							   .equals(HibernateSession.HIBERNATE_DIALECT_STORAGE_ENGINE_NAME
-																											   .toUpperCase())) {
+			if (tempDialectEngine == null || tempDialectEngine.equals("") || !tempDialectEngine.toUpperCase().equals(
+					HibernateSession.HIBERNATE_DIALECT_STORAGE_ENGINE_NAME.toUpperCase())) {
 				
 				System.setProperty(HibernateSession.HIBERNATE_DIALECT_STORAGE_ENGINE,
 								   HibernateSession.HIBERNATE_DIALECT_STORAGE_ENGINE_NAME);
@@ -102,7 +98,8 @@ public class SchemaExportDialogController {
 			
 			try {
 				createSchema(file, metadata);
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				e.printStackTrace();
 				Dialogs.showErrorDialog(e.getCause(),
 										new DialogText(prozorroApp.getMessages().getString("error.exporting"),
@@ -151,8 +148,8 @@ public class SchemaExportDialogController {
 				}
 				
 			} else {
-				new SchemaExport().setOutputFile(file.getAbsolutePath()).setFormat(false)
-								  .createOnly(EnumSet.of(TargetType.SCRIPT), metadata);
+				new SchemaExport().setOutputFile(file.getAbsolutePath()).setFormat(false).createOnly(
+						EnumSet.of(TargetType.SCRIPT), metadata);
 				logger.info("Schema was export to file: " + file.getAbsolutePath());
 				
 				dialogText = new DialogText(prozorroApp.getMessages().getString("schema.DB.export"),
@@ -163,13 +160,17 @@ public class SchemaExportDialogController {
 			}
 			Dialogs.showMessage(Alert.AlertType.INFORMATION, dialogText, logger);
 			
-		} catch (ExceptionInInitializerError | ServiceException | ClassLoadingException e) {
+		}
+		catch (ExceptionInInitializerError | ServiceException | ClassLoadingException e) {
 			throw new Exception(prozorroApp.getMessages().getString("error.file.configuration"), e);
-		} catch (RuntimeException e) {
+		}
+		catch (RuntimeException e) {
 			throw new Exception(prozorroApp.getMessages().getString("error.export.processing"), e);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			throw new Exception(prozorroApp.getMessages().getString("error.export.DB"), e);
-		} finally {
+		}
+		finally {
 			logger.info("Close connection");
 			if (metadata != null) {
 				SessionFactory sessionFactory = metadata.getSessionFactoryBuilder().build();
@@ -184,7 +185,6 @@ public class SchemaExportDialogController {
 	
 	public void setProzorroApp(ProzorroApp prozorroApp) {
 		this.prozorroApp = prozorroApp;
-		this.propertyFields = new PropertyFields(prozorroApp.getProperties());
 		
 		String dbName = PropertiesUtils.getPropertyString(prozorroApp.getProperties(), "db.type");
 		HibernateDataBaseType dataBaseType = HibernateDataBaseType.valueOf(dbName.toUpperCase());

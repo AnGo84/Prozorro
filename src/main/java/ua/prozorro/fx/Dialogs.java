@@ -3,9 +3,12 @@ package ua.prozorro.fx;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Optional;
@@ -148,5 +151,12 @@ public class Dialogs {
 		} else {
 			return "";
 		}
+	}
+	
+	public static File getTXTFileFromOpenDialog(Window window) {
+		FileChooser fileChooser = new FileChooser();
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+		fileChooser.getExtensionFilters().add(extFilter);
+		return fileChooser.showSaveDialog(window);
 	}
 }

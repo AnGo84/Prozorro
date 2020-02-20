@@ -3,8 +3,8 @@ package ua.prozorro.temp;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import ua.prozorro.ProzorroApp;
-import ua.prozorro.sql.HibernateDataBaseType;
-import ua.prozorro.sql.HibernateFactory;
+import ua.prozorro.hibernate.HibernateDataBaseType;
+import ua.prozorro.hibernate.HibernateFactory;
 import ua.prozorro.utils.FileUtils;
 
 import java.net.URL;

@@ -86,7 +86,8 @@ public class DateUtils {
 	public static LocalDate parseToLocalDate(String dateString) {
 		try {
 			return DATE_TIME_FORMATTER.parse(dateString, LocalDate::from);
-		} catch (DateTimeParseException e) {
+		}
+		catch (DateTimeParseException e) {
 			return null;
 		}
 	}
@@ -104,7 +105,8 @@ public class DateUtils {
 	public static LocalDateTime parseToLocalDateTime(String dateString) {
 		try {
 			return DATE_TIME_FORMATTER.parse(dateString, LocalDateTime::from);
-		} catch (DateTimeParseException e) {
+		}
+		catch (DateTimeParseException e) {
 			return null;
 		}
 	}
@@ -203,11 +205,12 @@ public class DateUtils {
 	}
 	
 	public static Date parseProzorroPageDateFromString(String stringDate, String dateFormat)
-			throws java.text.ParseException {
+	throws java.text.ParseException {
 		Date date;
 		try {
 			date = parseDateFromString(stringDate, dateFormat);
-		} catch (ParseException e) {
+		}
+		catch (ParseException e) {
 			date = parseDateFromString(stringDate, PROZORRO_DATE_FORMATE_WITHOUT_SSS);
 		}
 		return date;
@@ -235,32 +238,36 @@ public class DateUtils {
 	}
 	
 	
-	public static String checkDatesForPeriod(Date dateFrom, Date dateTill) {
+	public static String checkValidForPeriod(Date dateFrom, Date dateTill) {
 		if (dateFrom == null) {
-			return "Дата \"С\" не может быть пустой!";
+			return "Date \"FROM\" can`t be empty";
 		}
 		if (dateTill == null) {
-			return "Дата \"ПО\" не может быть пустой!";
+			return "Date \"Till\" cant't be empty";
 			
 		}
 		if (dateFrom.compareTo(dateTill) > 0) {
-			return "Дата \"С\" не может быть больше даты \"ПО\"!";
+			return "Date \"From\" cannot be more than date \"Till\"!";
 		}
 		return null;
 	}
 	
-	public static String checkDatesForPeriod(LocalDate dateFrom, LocalDate dateTill) {
+	public static String checkValidForPeriod(LocalDate dateFrom, LocalDate dateTill) {
 		if (dateFrom == null) {
-			return "Дата \"С\" не может быть пустой!";
+			return "Date \"FROM\" can`t be empty";
 		}
 		if (dateTill == null) {
-			return "Дата \"ПО\" не может быть пустой!";
+			return "Date \"Till\" cant't be empty";
 			
 		}
 		if (dateFrom.compareTo(dateTill) > 0) {
-			return "Дата \"С\" не может быть больше даты \"ПО\"!";
+			return "Date \"From\" cannot be more than date \"Till\"!";
 		}
 		return null;
+	}
+	
+	public static boolean isValidForPeriod(LocalDate dateFrom, LocalDate dateTill) {
+		return dateFrom != null && dateTill != null && dateFrom.compareTo(dateTill) <= 0;
 	}
 	
 	public static String getTextTime(long milliseconds) {
@@ -279,7 +286,7 @@ public class DateUtils {
 		return diff;
 	}
 	
-	public static  long getHoursFromDate(Date date) {
+	public static long getHoursFromDate(Date date) {
 		Calendar calendar = GregorianCalendar.getInstance(); // creates a new calendar instance
 		calendar.setTime(date);
 		return calendar.get(Calendar.HOUR_OF_DAY);

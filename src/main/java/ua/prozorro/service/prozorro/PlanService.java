@@ -3,10 +3,7 @@ package ua.prozorro.service.prozorro;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.SessionFactory;
 import ua.prozorro.entity.mappers.prozorro.ContentDataToPlanJSONMapper;
-import ua.prozorro.entity.prozorro.ContractJSON;
 import ua.prozorro.entity.prozorro.PlanJSON;
-import ua.prozorro.prozorro.model.plans.Plan;
-import ua.prozorro.repositories.prozorro.ContractJSONRepository;
 import ua.prozorro.repositories.prozorro.PlanJSONRepository;
 import ua.prozorro.service.ResultType;
 import ua.prozorro.service.Service;
@@ -35,9 +32,8 @@ public class PlanService implements Service {
 											 .resultDescription("Empty content data list").build());
 		}
 		
-		List<PlanJSON> contractList =
-				data.parallelStream().map(contentData -> contentDataToPlanJSONMapper.convertToEntity(contentData))
-					.collect(Collectors.toList());
+		List<PlanJSON> contractList = data.parallelStream().map(
+				contentData -> contentDataToPlanJSONMapper.convertToEntity(contentData)).collect(Collectors.toList());
 		
 		List<ActionResult> actionResults = planJSONRepository.saveOrUpdateAll(contractList);
 		

@@ -2,8 +2,6 @@ package ua.prozorro.entity.mappers.prozorro;
 
 import ua.prozorro.entity.mappers.AbstractMapper;
 import ua.prozorro.entity.prozorro.PlanJSON;
-import ua.prozorro.entity.prozorro.TenderJSON;
-import ua.prozorro.prozorro.model.plans.Plan;
 import ua.prozorro.source.ContentData;
 
 public class ContentDataToPlanJSONMapper extends AbstractMapper<ContentData, PlanJSON> {

@@ -195,7 +195,7 @@ public class ProzorroApp extends Application {
 		if (isConfirmShutDown()) {
 			
 			Platform.exit();
-			
+			System.exit(0);
 			return true;
 		}
 		return false;

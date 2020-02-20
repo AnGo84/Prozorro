@@ -9,8 +9,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import ua.prozorro.entity.EventResultData;
 import ua.prozorro.entity.PageElement;
-import ua.prozorro.properties.PropertyFields;
-import ua.prozorro.repositories.ExchangeRateNBURepository;
 import ua.prozorro.sourceService.DataType;
 import ua.prozorro.temp.TestPropertyFieldsFactory;
 
