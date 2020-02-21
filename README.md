@@ -1,5 +1,5 @@
 # Prozorro
-Build status: [![build_status](https://travis-ci.com/AnGo84/Prozorro.svg?branch=master)](https://travis-ci.com/AnGo84/Prozorro.svg)
+Build status: [![build_status](https://travis-ci.com/AnGo84/Prozorro.svg?branch=master)](https://travis-ci.com/AnGo84/Prozorro.svg) [![BCH compliance](https://bettercodehub.com/edge/badge/AnGo84/Prozorro?branch=master)](https://bettercodehub.com/)
 - - -
 Desktop application for reading data from the site Prozorro.ua for importing into the database.
 
@@ -8,18 +8,18 @@ Desktop application for reading data from the site Prozorro.ua for importing int
 - IDE
 - JDK 1.8 or later
 - Maven
-- Oracle(11.2.0) or MySQL database
+- Oracle(11.2.0 or more) or MySQL database
 
 ### Warning
 First of all, you need to install oracle lib to your maven repository.
-In the project used library for working with Oracle 11.0.2- ojdbc6.jar. It attached to the project: from root **'lib/ojdbc6.jar'**.
-For instaling to Maven:
+In the project used library for working with Oracle 11.0.2- ojdbc6.jar( from app root **'lib/ojdbc6.jar'**).
+For instaling it to Maven:
 `mvn install:install-file -Dfile='YOUR_PATH'/ojdbc6.jar -DgroupId=com.cmabreu -DartifactId=mylocal-lib -Dversion=1.5 -Dpackaging=jar -DgeneratePom=true`
 
 If you do not going to work with Oracle DB, you can remove oracle dependency from **pom.xml**:
 ```
 <dependency>
-	<groupId>com.oracle</groupId>
+    <groupId>com.oracle</groupId>
     <artifactId>ojdbc6</artifactId>
     <version>${oracle.version}</version>
     <scope>system</scope>
@@ -40,7 +40,7 @@ Prozorro tutorial with API:
 - [Contracts' information](http://contracting.api-docs.openprocurement.org/uk/latest/tutorial.html)
 - [Plans' information](http://planning.api-docs.openprocurement.org/uk/latest/standard/contract.html)
 
-Developed and tested for API version 2.4.
+Developed and tested for API **version 2.5**.
 For getting information from beginning use start pages:
 - https://public.api.openprocurement.org/api/API_VERSION/tenders
 - https://public.api.openprocurement.org/api/API_VERSION/plans
@@ -63,11 +63,11 @@ During developing the project was implemented three different realisations of im
 | realise-1.0 | First version. Without maven, VCS. Work with the database implemented  with JDBC. Imported                   data have restrictions on length and content. Import working very slow. Supports only MySQL                 database. Import only Tenders|
 | realise-2.0 | Added support maven, git, Hibernate. Import only Tenders |
 | realise-3.0 | Import  tenders, plans, contracts, NBU rates. Added supporl Oracle 11|
+|  current    | Import  tenders, plans, contracts as JSON only. Added supporl Oracle 12|
 
 ## Todos
 
- - Write MORE Tests
- - Import data from Prozorro in formate  id, date, JSON
+ - Cower code with tests
 
 ## Helpful information
 For work with JSON was used some online resources
