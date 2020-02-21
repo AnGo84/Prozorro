@@ -60,7 +60,6 @@ public abstract class AbstractPageReader {
 			dataPage.getPageContentData().parallelStream().forEach(contentData -> {
 				contentData.getDataURL().setType(sourceLink.getType());
 				contentData.getDataURL().setDateFormat(sourceLink.getPageDateFormat());
-				//log.info("contentData: " + contentData);
 			});
 		}
 	}

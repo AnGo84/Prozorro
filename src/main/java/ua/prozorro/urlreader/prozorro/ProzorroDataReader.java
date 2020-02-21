@@ -40,9 +40,6 @@ public class ProzorroDataReader extends AbstractPageReader {
 			dataPage = prozorroPageContentToDataPageMapper.convertToEntity(pageContent);
 			updateDataPageTypes();
 			dataPage.setReadResult(new ReadResult(ResultType.SUCCESS));
-			//TODO
-			log.info("-------------------------------");
-			log.info("DATA PAGE: {}", dataPage);
 			
 		} catch (IOException e) {
 			dataPage.setReadResult(new ReadResult(ResultType.ERROR, e.getMessage()));
@@ -53,17 +50,21 @@ public class ProzorroDataReader extends AbstractPageReader {
 	
 	@Override
 	public void readPageContent() throws IOException {
-		//dataPage.getPageContentData().stream().forEach(contentData -> {
 		dataPage.getPageContentData().parallelStream().forEach(contentData -> {
-			
+			try {
+				Thread.sleep(50);
+			}
+			catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			contentData.getDataURL().setUrl(sourceLink.getStartPage() + "/" + contentData.getId());
 			String genreJson = null;
 			try {
 				genreJson = FileUtils.getStringFromURL(contentData.getDataURL().getUrl());
 				contentData.setReadResult(new ReadResult(ResultType.SUCCESS));
-			} catch (IOException e) {
+			}
+			catch (IOException e) {
 				contentData.setReadResult(new ReadResult(ResultType.ERROR, e.getMessage()));
-				//log.error("NBURatePageReader: ", dataPage);
 				log.error("Error message: {}", e.getMessage(), e);
 				throw new RuntimeException("Error on read content " + e.getMessage(), e);
 			}

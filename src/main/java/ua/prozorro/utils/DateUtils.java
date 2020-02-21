@@ -22,8 +22,6 @@ public class DateUtils {
 	public static final String DATE_PROZORRO_FULL_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX";
 	public static final String DATE_PROZORRO_SHORT_FORMAT = "yyyy-MM-dd";
 	public static final String DATE_PROZORRO_MAX_DATE_TILL = "3000-01-01";
-	//    private static final String DATE_PATTERN_DD_MM_YYYY = "dd.MM.yyyy hh:mm:ss";
-	//"(0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])[/](19|20)\d\d ([0-9]|1[0-1]):[0-5][0-9](:[0-5][0-9])? ?[APap][mM]$"
 	public static final String DATE_PATTERN_DD_MM_YYYY = "dd.MM.yyyy";
 	public static final String PROZORRO_DATE_FORMATE_WITHOUT_SSS = "yyyy-MM-dd'T'HH:mm:ssXXX";
 	private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN_DD_MM_YYYY);
@@ -136,7 +134,6 @@ public class DateUtils {
 	}
 	
 	public static LocalDateTime getLocalDateTime(Date date) {
-		//Date date = new Date();
 		if (date == null) {
 			date = new Date();
 		}
@@ -146,7 +143,6 @@ public class DateUtils {
 	}
 	
 	public static LocalDate getLocalDate(Date date) {
-		//Date date = new Date();
 		if (date == null) {
 			date = new Date();
 		}
@@ -170,7 +166,6 @@ public class DateUtils {
 		calendar.setTime(date);
 		calendar.add(Calendar.SECOND, seconds);
 		Date newDate = calendar.getTime();
-		//System.out.println("1 min later: " + newDate);
 		return newDate;
 	}
 	
@@ -179,7 +174,6 @@ public class DateUtils {
 		calendar.setTime(date);
 		calendar.add(Calendar.DATE, days);
 		Date newDate = calendar.getTime();
-		//System.out.println("1 min later: " + newDate);
 		return newDate;
 	}
 	
@@ -235,35 +229,6 @@ public class DateUtils {
 	public static Date parseDateToFormat(Date date, String dateFormat) throws ParseException {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
 		return simpleDateFormat.parse(simpleDateFormat.format(date));
-	}
-	
-	
-	public static String checkValidForPeriod(Date dateFrom, Date dateTill) {
-		if (dateFrom == null) {
-			return "Date \"FROM\" can`t be empty";
-		}
-		if (dateTill == null) {
-			return "Date \"Till\" cant't be empty";
-			
-		}
-		if (dateFrom.compareTo(dateTill) > 0) {
-			return "Date \"From\" cannot be more than date \"Till\"!";
-		}
-		return null;
-	}
-	
-	public static String checkValidForPeriod(LocalDate dateFrom, LocalDate dateTill) {
-		if (dateFrom == null) {
-			return "Date \"FROM\" can`t be empty";
-		}
-		if (dateTill == null) {
-			return "Date \"Till\" cant't be empty";
-			
-		}
-		if (dateFrom.compareTo(dateTill) > 0) {
-			return "Date \"From\" cannot be more than date \"Till\"!";
-		}
-		return null;
 	}
 	
 	public static boolean isValidForPeriod(LocalDate dateFrom, LocalDate dateTill) {

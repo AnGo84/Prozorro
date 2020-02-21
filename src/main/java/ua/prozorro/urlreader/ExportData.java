@@ -39,7 +39,8 @@ public class ExportData {
 		Date compareDate;
 		try {
 			compareDate = DateUtils.parseDateToFormat(currentDate, filterData.getDateFormat());
-		} catch (ParseException e) {
+		}
+		catch (ParseException e) {
 			log.error("Can't format date '{}' to '{}': {}", currentDate, filterData.getDateFormat(), e.getMessage());
 			return false;
 		}
@@ -48,18 +49,12 @@ public class ExportData {
 	
 	public void read() throws IOException {
 		pageReader.readDataPage();
-		//TODO
-		log.info("Page with content: {}",
-				 (!ResultType.ERROR.equals(pageReader.getReadResult()) && filterData.isWithContent() &&
-				  pageReader.pageHasContent()));
 		if (ResultType.SUCCESS.equals(pageReader.getReadResult()) && filterData.isWithContent() &&
 			pageReader.pageHasContent() && filterData.getDateTill() != null) {
 			
-			List<ContentData> pageContentData = pageReader.dataPage.getPageContentData().parallelStream()
-																   .filter(content -> getDateInFilterFormat(content)
-																							  .compareTo(filterData
-																												 .getDateTill()) <=
-																					  0).collect(Collectors.toList());
+			List<ContentData> pageContentData = pageReader.dataPage.getPageContentData().parallelStream().filter(
+					content -> getDateInFilterFormat(content).compareTo(filterData.getDateTill()) <= 0).collect(
+					Collectors.toList());
 			
 			pageReader.dataPage.setPageContentData(pageContentData);
 			log.info("Filtered ContentData: " + pageContentData);
@@ -70,9 +65,10 @@ public class ExportData {
 	
 	private Date getDateInFilterFormat(ContentData content) {
 		try {
-			return DateUtils
-					.parseDateToFormat(pageReader.getDataURLDate(content.getDataURL()), filterData.getDateFormat());
-		} catch (ParseException e) {
+			return DateUtils.parseDateToFormat(pageReader.getDataURLDate(content.getDataURL()),
+											   filterData.getDateFormat());
+		}
+		catch (ParseException e) {
 			e.printStackTrace();
 			return null;
 		}

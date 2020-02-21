@@ -65,12 +65,8 @@ public class ProzorroApp extends Application {
 			
 			PropertiesUtils.toString(properties);
 			
-
-            /*String dbName = PropertiesUtils.getPropertyString(properties, "db.type");
-            session = getSessionByDBName(dbName);*/
-			
-		} catch (IOException e) {
-			//            e.printStackTrace();
+		}
+		catch (IOException e) {
 			Dialogs.showErrorDialog(e, new DialogText(messages.getString("error.app.start"),
 													  messages.getString("error.resources.file"),
 													  messages.getString("error.resources.file_cant_find") + " '" +
@@ -101,16 +97,12 @@ public class ProzorroApp extends Application {
 	
 	
 	private void initMainView() throws IOException {
-		/*FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(MainApp.class.getResource("/views/LoginForm.fxml"));*/
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("/views/mainForm.fxml"));
 		root = loader.load();
-		//Parent root = loader.load();
 		
 		primaryStage.setTitle(messages.getString("app.title"));
 		primaryStage.setScene(new Scene(root));
-		//primaryStage.getIcons().add(ImageResources.getAppIcon());
 		primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/prozorro_favicon.png")));
 		
 		MainController controller = loader.getController();
@@ -145,15 +137,17 @@ public class ProzorroApp extends Application {
 			dialogStage.showAndWait();
 			
 			return controller.isOkClicked();
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			e.printStackTrace();
-			
-			Dialogs.showErrorDialog(e, new DialogText(messages.getString("error.app.start"),
-													  messages.getString("error.app.show_dialog"),
-													  messages.getString("error.app.dialog_cant_show") +
-													  " 'SchemaExportDialog'"), logger);
+			Dialogs.showErrorDialog(e, getDialogTextOnShowError("SchemaExportDialog"), logger);
 			return false;
 		}
+	}
+	
+	private DialogText getDialogTextOnShowError(String dialogName) {
+		return new DialogText(messages.getString("error.app.start"), messages.getString("error.app.show_dialog"),
+							  messages.getString("error.app.dialog_cant_show") + " '" + dialogName + "'");
 	}
 	
 	public boolean showParseURLDialog() {
@@ -180,13 +174,10 @@ public class ProzorroApp extends Application {
 			dialogStage.showAndWait();
 			
 			return controller.isOkClicked();
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			e.printStackTrace();
-			
-			Dialogs.showErrorDialog(e, new DialogText(messages.getString("error.app.start"),
-													  messages.getString("error.app.show_dialog"),
-													  messages.getString("error.app.dialog_cant_show") +
-													  " 'ParseURLDialog'"), logger);
+			Dialogs.showErrorDialog(e, getDialogTextOnShowError("ParseURLDialog"), logger);
 			return false;
 		}
 	}
@@ -210,7 +201,7 @@ public class ProzorroApp extends Application {
 	public BorderPane getRoot() {
 		return root;
 	}
-
+	
 	
 	public Properties getProperties() {
 		return properties;

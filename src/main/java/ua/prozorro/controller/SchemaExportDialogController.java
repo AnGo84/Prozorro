@@ -84,7 +84,6 @@ public class SchemaExportDialogController {
 		
 		if (textFieldFileName.getText() != null && !textFieldFileName.getText().equals("")) {
 			File file = new File(textFieldFileName.getText());
-			//if (file.exists() && !file.isDirectory()) {
 			
 			String tempDialectEngine = System.getProperty(HibernateSession.HIBERNATE_DIALECT_STORAGE_ENGINE);
 			if (tempDialectEngine == null || tempDialectEngine.equals("") || !tempDialectEngine.toUpperCase().equals(
@@ -190,7 +189,10 @@ public class SchemaExportDialogController {
 		HibernateDataBaseType dataBaseType = HibernateDataBaseType.valueOf(dbName.toUpperCase());
 		comboBoxDB.getSelectionModel().select(dataBaseType);
 		
-		//TODO
+		initComponentText();
+	}
+	
+	private void initComponentText() {
 		buttonOk.setTooltip(new Tooltip(prozorroApp.getMessages().getString("execute.execute")));
 		buttonCancel.setTooltip(new Tooltip(prozorroApp.getMessages().getString("execute.cancel")));
 		buttonChooseFile.setTooltip(new Tooltip(prozorroApp.getMessages().getString("file.select")));

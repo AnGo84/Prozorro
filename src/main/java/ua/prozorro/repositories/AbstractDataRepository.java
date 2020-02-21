@@ -2,7 +2,6 @@ package ua.prozorro.repositories;
 
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.*;
-import ua.prozorro.entity.nburate.NBURate;
 import ua.prozorro.urlreader.ActionResult;
 
 import java.io.IOException;
@@ -61,9 +60,6 @@ public abstract class AbstractDataRepository<T> implements DataRepository<T> {
 			transaction = session.beginTransaction();
 			actionResults = listOfData.stream().map(data -> saveAndLog(session, data))
 									  .collect(Collectors.toList());
-			/*for (NBURate nbuRate:listOfData) {
-				actionResults.add(getNbuRateActionResultFunction(session, nbuRate));
-			}*/
 			transaction.commit();
 		} catch (HibernateException e) {
 			transaction.rollback();

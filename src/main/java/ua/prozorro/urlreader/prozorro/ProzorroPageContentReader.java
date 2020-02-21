@@ -16,8 +16,6 @@ public class ProzorroPageContentReader extends AbstractProzorroPageReader<Prozor
 	public ProzorroPageContent readPage(ProzorroPage currentPage ) throws IOException {
 		ProzorroPageContent prozorroPageContent = getObjectFromURL(currentPage.getUri());
 		prozorroPageContent.setCurrentPage(currentPage);
-		//TODO
-		log.info("PAGE CONTENT: {}", prozorroPageContent);
 		return prozorroPageContent;
 	}
 	

@@ -27,9 +27,9 @@ public class ContractService implements Service {
 	@Override
 	public List<ActionResult> saveOrUpdate(List<ContentData> data) throws IOException {
 		if (data == null) {
-			log.error("Empty content data list");
+			log.error("Empty Contracts content data list");
 			return Arrays.asList(ActionResult.builder().resultType(ResultType.ERROR)
-											 .resultDescription("Empty content data list").build());
+											 .resultDescription("Empty Contracts content data list").build());
 		}
 		
 		List<ContractJSON> contractList =

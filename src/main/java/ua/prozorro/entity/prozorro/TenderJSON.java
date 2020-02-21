@@ -8,7 +8,6 @@ import javax.persistence.*;
 public class TenderJSON {
 	
 	@Id
-	//@GeneratedValue(strategy= GenerationType.AUTO)
 	@Column(name = "tender_id")
 	private String id;
 	@Id

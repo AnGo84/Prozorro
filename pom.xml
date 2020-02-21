@@ -23,13 +23,6 @@
         <mockito.version>3.1.0</mockito.version>
         <lombok.version>1.18.10</lombok.version>
 
-        <!--
-        <apache.poi.version>3.16</apache.poi.version>
-
-        <ucanaccess.version>4.0.4</ucanaccess.version>
-        <commons.MD5.codec>1.9</commons.MD5.codec>
-        <jasperreports.version>6.6.0</jasperreports.version>
-        -->
     </properties>
 
     <dependencies>
@@ -157,14 +150,6 @@
                     <jfxMainAppJarName>Prozorro.jar</jfxMainAppJarName>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>8</source>
-                    <target>8</target>
-                </configuration>
-            </plugin>
             <!-- Test -->
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -174,9 +159,19 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>2.22.2</version>
             </plugin>
+            <!-- for local-->
+            <!--<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>-->
             <!-- /-->
             <!--for travis-->
-            <!--<plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
@@ -185,14 +180,6 @@
                     <target>8</target>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>-->
         </plugins>
     </build>
 

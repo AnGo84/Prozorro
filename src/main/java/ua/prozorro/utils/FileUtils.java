@@ -151,7 +151,6 @@ public class FileUtils {
 			if (!file.isDirectory()) {
 				file = getDirectory(file);
 			}
-			//            Runtime.getRuntime().exec("explorer.exe /select," + file.getPath());
 			Runtime.getRuntime().exec("explorer.exe " + file.getPath());
 		}
 	}
@@ -171,7 +170,6 @@ public class FileUtils {
 			String inputLine;
 			while ((inputLine = in.readLine()) != null) {
 				stringBuilder.append(inputLine);
-				//                System.out.println(inputLine);
 			}
 		}
 		return stringBuilder.toString();

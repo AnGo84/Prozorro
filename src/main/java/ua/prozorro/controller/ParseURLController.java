@@ -1,10 +1,8 @@
 package ua.prozorro.controller;
-/**
- * import com.sun.deploy.uitoolkit.impl.fx.HostServicesFactory;
- * import com.sun.javafx.application.HostServicesDelegate;
- */
 
 import com.google.gson.Gson;
+import com.sun.deploy.uitoolkit.impl.fx.HostServicesFactory;
+import com.sun.javafx.application.HostServicesDelegate;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -74,7 +72,7 @@ public class ParseURLController {
 	
 	private String urlAPIData;
 	private String urlProzorroData;
-
+	
 	private String getDataFromJSON(SourceType sourceType, String dataJSON) {
 		StringBuilder stringBuilder = new StringBuilder();
 		switch (sourceType) {
@@ -156,8 +154,6 @@ public class ParseURLController {
 	
 	public void setProzorroApp(ProzorroApp prozorroApp) {
 		this.prozorroApp = prozorroApp;
-		/*String dbName = PropertiesUtils.getPropertyString(prozorroApp.getProperties(), "db.type");
-		HibernateDataBaseType dataBaseType = HibernateDataBaseType.valueOf(dbName.toUpperCase());*/
 		
 		initPropertiesMap();
 		initComponentText();
@@ -188,16 +184,20 @@ public class ParseURLController {
 	
 	public void onHyperLinkJsonParserOnline(ActionEvent actionEvent) {
 		logger.info("Show " + propertiesMap.get(ONLINE_JSON_PARSER));
-		/*try {
-			HostServicesDelegate hostServices = HostServicesFactory.getInstance(prozorroApp);
-			hostServices.showDocument(SITE_JSON_PARSER_ONLINE);
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}*/
 		
 		showURL(propertiesMap.get(ONLINE_JSON_PARSER));
-		
 	}
+	
+	private void hostServicesShowDocument(String url) {
+		try {
+			HostServicesDelegate hostServices = HostServicesFactory.getInstance(prozorroApp);
+			hostServices.showDocument(url);
+		}
+		catch (Exception e1) {
+			e1.printStackTrace();
+		}
+	}
+	
 	
 	private void showURL(String url) {
 		logger.info("Show URL:" + url);
@@ -215,12 +215,6 @@ public class ParseURLController {
 				e1.printStackTrace();
 			}
 		}
-		/*try {
-			HostServicesDelegate hostServices = HostServicesFactory.getInstance(prozorroApp);
-			hostServices.showDocument(url);
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}*/
 	}
 	
 	public void onHyperLinkProzorroData(ActionEvent actionEvent) {

@@ -39,23 +39,10 @@ public class ExportDataTask extends Task<TaskResult> {
 		this.service = ServiceFactory.getService(sessionFactory, sourceLink.getType());
 		initDataPage(sourceLink, filterData);
 		
-		maxExportProgress =
-				(DateUtils.daysBetween(filterData.getDateFrom(), filterData.getDateTill()) + 1) * HOURS_IN_DAY;
+		maxExportProgress = (DateUtils.daysBetween(filterData.getDateFrom(), filterData.getDateTill()) + 1) *
+							HOURS_IN_DAY;
 		
 	}
-/*
-	public ExportDataTask(SourceLink sourceLink, FilterData filterData) {
-		this.sourceLink = sourceLink;
-		this.filterData = filterData;
-		initData(sourceLink, filterData);
-	}
-	
-	private static DataURL getDataURL(SourceLink sourceLink, String date) {
-		log.info("SourceLink: {}", sourceLink);
-		log.info("String date: {}", date);
-		return DataURL.builder().url(sourceLink.getURL(date)).date(date).dateFormat(sourceLink.getPageDateFormat())
-					  .type(sourceLink.getType()).build();
-	}*/
 	
 	private void initDataPage(SourceLink sourceLink, FilterData filterData) {
 		String date = DateUtils.parseDateToString(filterData.getDateFrom(), sourceLink.getPageDateFormat());
@@ -77,7 +64,8 @@ public class ExportDataTask extends Task<TaskResult> {
 			if (!filterData.isReadOnly()) {
 				try {
 					results = service.saveOrUpdate(currentDataPage.getPageContentData());
-				} catch (IOException e) {
+				}
+				catch (IOException e) {
 					log.error("Error on Data save: {}", e.getMessage(), e);
 					throw e;
 				}
@@ -90,7 +78,6 @@ public class ExportDataTask extends Task<TaskResult> {
 			String pageResultMessage = getPageResultMessage(exportData, results, timeForPage);
 			logger.info(pageResultMessage);
 			updateMessage(pageResultMessage);
-			//updateMessage(getCurrentExportProgress(exportData.getCurrentDate()) + " of " + maxExportProgress + "\n");
 			updateProgress(getCurrentExportProgress(exportData.getCurrentDate()), maxExportProgress);
 		}
 		Date finish = new Date();
@@ -124,6 +111,5 @@ public class ExportDataTask extends Task<TaskResult> {
 											 time);
 		return resultMessage;
 	}
-	
 	
 }

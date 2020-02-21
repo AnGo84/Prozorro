@@ -15,9 +15,7 @@ public class SourceLink {
 	private String pageDateFormat;
 	
 	public String getURL(String date) {
-		//String url = String.format(urlPatternOnDate, date);
-		String url = urlPatternOnDate.replaceFirst("%s", date);
-		return url;
+		return urlPatternOnDate.replaceFirst("%s", date);
 	}
 	
 	public DataURL getDataURL(SourceLink sourceLink, String date) {

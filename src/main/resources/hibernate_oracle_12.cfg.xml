@@ -5,7 +5,7 @@
 <hibernate-configuration>
     <session-factory>
         <!--ORACLE-->
-        <property name="hibernate.dialect">org.hibernate.dialect.Oracle112gDialect</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.Oracle12gDialect</property>
 
         <property name="hibernate.connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
 

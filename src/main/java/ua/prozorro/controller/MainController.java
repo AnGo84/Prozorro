@@ -8,6 +8,7 @@ import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.util.Strings;
 import org.hibernate.SessionFactory;
 import ua.prozorro.ProzorroApp;
 import ua.prozorro.fx.CallBackFrom;
@@ -23,7 +24,6 @@ import ua.prozorro.source.SourceLinkFactory;
 import ua.prozorro.source.SourceType;
 import ua.prozorro.task.ExportDataTask;
 import ua.prozorro.task.TaskResult;
-import ua.prozorro.temp.TestPropertyFieldsFactory;
 import ua.prozorro.urlreader.FilterData;
 import ua.prozorro.utils.DateUtils;
 import ua.prozorro.utils.FileUtils;
@@ -96,8 +96,6 @@ public class MainController {
 	private void initialize() {
 		textArea.appendText("Start" + "\n");
 		initDatePicker();
-		//comboBoxDataType.getItems().setAll(DataType.values());
-		//comboBoxDataType.setValue(DataType.TENDERS);
 		comboBoxSourceType.getItems().setAll(SourceType.values());
 		comboBoxSourceType.setValue(SourceType.PROZORRO_TENDER);
 		
@@ -141,7 +139,6 @@ public class MainController {
 		if (DateUtils.isValidForPeriod(datePickerFrom.getValue(), datePickerTill.getValue())) {
 			dateFrom = Date.from(datePickerFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 			dateTill = Date.from(datePickerTill.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-			//setWaitingProcess(true);
 			textArea.appendText(checkDataForPeriodMessage());
 			
 			if (Dialogs.showConfirmDialog(prozorroApp.getMessages().getString("confirm"),
@@ -151,9 +148,10 @@ public class MainController {
 							comboBoxSourceType.getValue(), DateUtils.dateToString(dateFrom),
 							DateUtils.dateToString(dateTill)))) {
 				setWaitingProcess(true);
+				
 				progressBar.setProgress(0);
 				progressIndicator.setProgress(0);
-				textArea.appendText(checkDataForPeriodMessage());
+				
 				FilterData filterData = new FilterData(dateFrom, dateTill, true, false);
 				try {
 					SessionFactory sessionFactory = null;
@@ -163,8 +161,7 @@ public class MainController {
 					}
 					
 					SourceLink sourceLink = SourceLinkFactory.getSourceLink(comboBoxSourceType.getValue(),
-																			TestPropertyFieldsFactory
-																					.getStartProperties());
+																			prozorroApp.getProperties());
 					startProcessingTask(sourceLink, filterData, sessionFactory);
 				}
 				catch (ExceptionInInitializerError e) {
@@ -305,9 +302,7 @@ public class MainController {
 	}
 	
 	private SessionFactory getSessionFactoryByDBName(String dbName) throws ExceptionInInitializerError {
-		//logger.info("DBName = " + dbName);
-		//String dbName = PropertiesUtils.getPropertyString(prozorroApp.getProperties(), "db.type");
-		if (dbName == null || dbName.equals("")) {
+		if (Strings.isBlank(dbName)) {
 			return null;
 		}
 		HibernateDataBaseType baseType = HibernateDataBaseType.valueOf(dbName.toUpperCase());
@@ -328,7 +323,6 @@ public class MainController {
 			textArea.appendText("DB connection missing \n");
 		}
 		
-		//SessionFactory factory = HibernateFactory.getHibernateSession(baseType);
 		return factory;
 	}
 	
