@@ -8,7 +8,7 @@ public class TestPropertyFieldsFactory {
 	static String short_date_format = "yyyy-MM-dd";
 	
 	public static Properties getStartProperties() {
-		String start_page = "https://public.api.openprocurement.org/api/2.4/tenders";
+		String start_page = "https://public.api.openprocurement.org/api/2.5/tenders";
 		String page_limit = "limit";
 		String page_limit_value = "100";
 		String page_offset = "offset";
@@ -24,7 +24,7 @@ public class TestPropertyFieldsFactory {
 		properties.setProperty(AppProperty.PROZORRO_DATE_FORMAT.getPropertyName(), date_formate);
 		properties.setProperty(AppProperty.PROZORRO_SHORT_DATE_FORMAT.getPropertyName(), short_date_formate);
 		
-		start_page = "https://public.api.openprocurement.org/api/2.4/plans";
+		start_page = "https://public.api.openprocurement.org/api/2.5/plans";
         /*page_limit = "limit";
         page_limit_value = "100";
         page_offset = "offset";
@@ -40,7 +40,7 @@ public class TestPropertyFieldsFactory {
         /*properties.setProperty(AppProperty.PROZORRO_DATE_FORMAT.getPropertyName(), date_formate);
         properties.setProperty(AppProperty.PROZORRO_SHORT_DATE_FORMAT.getPropertyName(), short_date_formate);*/
 		
-		start_page = "https://public.api.openprocurement.org/api/2.4/contracts";
+		start_page = "https://public.api.openprocurement.org/api/2.5/contracts";
         /*page_limit = "limit";
         page_limit_value = "100";
         page_offset = "offset";

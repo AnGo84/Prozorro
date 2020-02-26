@@ -53,15 +53,18 @@ public abstract class AbstractDataRepository<T> implements DataRepository<T> {
 		if (sessionFactory == null) {
 			throw new SessionException("SessionFactory did not initiated");
 		}
+		if (listOfData == null) {
+			return null;
+		}
 		List<ActionResult> actionResults;
 		Transaction transaction = null;
 		Session session = sessionFactory.openSession();
 		try {
 			transaction = session.beginTransaction();
-			actionResults = listOfData.stream().map(data -> saveAndLog(session, data))
-									  .collect(Collectors.toList());
+			actionResults = listOfData.stream().map(data -> saveAndLog(session, data)).collect(Collectors.toList());
 			transaction.commit();
-		} catch (HibernateException e) {
+		}
+		catch (HibernateException e) {
 			transaction.rollback();
 			throw new IOException("Error on saving list: " + e.getMessage(), e);
 		}

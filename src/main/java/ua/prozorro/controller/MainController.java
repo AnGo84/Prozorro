@@ -314,15 +314,10 @@ public class MainController {
 		textArea.appendText("Path to config files: " + url.getPath() + "\n");
 		
 		SessionFactory factory = HibernateFactory.getHibernateSession(url, baseType);
+		String connectionResult = (factory == null) ? "DB connection missing" : "Connected to DB";
 		
-		if (factory != null) {
-			logger.info("Connected to DB \n");
-			textArea.appendText("Connected to DB \n");
-		} else {
-			logger.info("DB connection missing \n");
-			textArea.appendText("DB connection missing \n");
-		}
-		
+		logger.info(connectionResult + " \n");
+		textArea.appendText(connectionResult + "\n");
 		return factory;
 	}
 	

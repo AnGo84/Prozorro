@@ -16,8 +16,13 @@ public class NBURateRepository extends AbstractDataRepository<NBURate> {
 	
 	@Override
 	public ActionResult getAddActionResult(NBURate data) {
-		return ActionResult.builder().resultType(ResultType.ADD).object(data).date(data.getDate())
-						   .sourceType(SourceType.NBU_RATE).build();
+		ActionResult actionResult = ActionResult.builder().resultType(ResultType.ADD).sourceType(SourceType.NBU_RATE)
+												.build();
+		if (data != null) {
+			actionResult.setObject(data);
+			actionResult.setDate(data.getDate());
+		}
+		return actionResult;
 	}
 	
 }

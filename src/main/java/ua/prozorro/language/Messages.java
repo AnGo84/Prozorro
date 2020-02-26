@@ -27,7 +27,7 @@ public class Messages {
 	}
 	
 	private ResourceBundle getResourceBundle(String language, String country) {
-		Locale currentLocale = new Locale(language, country);
-		return ResourceBundle.getBundle(MESSAGES_BUNDLE_PATH, currentLocale, new UTF8Control());
+		Locale locale = new Locale(language, country);
+		return ResourceBundle.getBundle(MESSAGES_BUNDLE_PATH, locale, new UTF8Control());
 	}
 }

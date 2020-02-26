@@ -15,7 +15,12 @@ public class ContractJSONRepository extends AbstractDataRepository<ContractJSON>
 	
 	@Override
 	public ActionResult getAddActionResult(ContractJSON data) {
-		return ActionResult.builder().resultType(ResultType.ADD).object(data).date(data.getDateModified())
-						   .sourceType(SourceType.NBU_RATE).build();
+		ActionResult actionResult = ActionResult.builder().resultType(ResultType.ADD).sourceType(
+				SourceType.PROZORRO_CONTRACT).build();
+		if (data != null) {
+			actionResult.setObject(data);
+			actionResult.setDate(data.getDateModified());
+		}
+		return actionResult;
 	}
 }

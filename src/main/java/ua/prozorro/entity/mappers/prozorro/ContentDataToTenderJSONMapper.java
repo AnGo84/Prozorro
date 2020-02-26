@@ -7,6 +7,9 @@ import ua.prozorro.source.ContentData;
 public class ContentDataToTenderJSONMapper extends AbstractMapper<ContentData, TenderJSON> {
 	@Override
 	public TenderJSON convertToEntity(ContentData object) {
+		if (object == null) {
+			return null;
+		}
 		TenderJSON tenderJSON = new TenderJSON();
 		tenderJSON.setId(object.getId());
 		tenderJSON.setDateModified(object.getDataURL().getDate());

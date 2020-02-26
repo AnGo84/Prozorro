@@ -26,15 +26,14 @@ public class TenderService implements Service {
 	
 	@Override
 	public List<ActionResult> saveOrUpdate(List<ContentData> data) throws IOException {
-		if (data == null) {
+		if (data == null || data.isEmpty()) {
 			log.error("Empty Tenders content data list");
 			return Arrays.asList(ActionResult.builder().resultType(ResultType.ERROR)
 											 .resultDescription("Empty Tenders content data list").build());
 		}
 		
-		List<TenderJSON> tenderJSONS =
-				data.parallelStream().map(contentData -> contentDataToTenderJSONMapper.convertToEntity(contentData))
-					.collect(Collectors.toList());
+		List<TenderJSON> tenderJSONS = data.parallelStream().map(
+				contentData -> contentDataToTenderJSONMapper.convertToEntity(contentData)).collect(Collectors.toList());
 		
 		List<ActionResult> actionResults = tenderJSONRepository.saveOrUpdateAll(tenderJSONS);
 		

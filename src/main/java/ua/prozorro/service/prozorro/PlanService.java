@@ -26,7 +26,7 @@ public class PlanService implements Service {
 	
 	@Override
 	public List<ActionResult> saveOrUpdate(List<ContentData> data) throws IOException {
-		if (data == null) {
+		if (data == null || data.isEmpty()) {
 			log.error("Empty Plans content data list");
 			return Arrays.asList(ActionResult.builder().resultType(ResultType.ERROR)
 											 .resultDescription("Empty Plans content data list").build());

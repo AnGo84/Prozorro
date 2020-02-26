@@ -19,6 +19,7 @@ import java.util.List;
 
 @Log4j2
 public class NBURateService implements Service {
+	public static final String NOT_FOUND_DATA_FOR_SAVING = "Not found data for saving";
 	private NBURateRepository nbuRateRepository;
 	private NBURateParser nbuRateParser = new NBURateParser();
 	private NBURateDTOListToNBURateListMapper mapper = new NBURateDTOListToNBURateListMapper();
@@ -38,9 +39,9 @@ public class NBURateService implements Service {
 		ContentData contentData = data.stream().filter(content -> (content != null && !Strings.isBlank(
 				content.getDataJSON()))).findFirst().orElse(null);
 		if (contentData == null || ResultType.ERROR.equals(contentData.getReadResult().getResultType())) {
-			log.error("Not found data for saving {}", data);
+			log.error(NOT_FOUND_DATA_FOR_SAVING + ": {}", data);
 			return Arrays.asList(ActionResult.builder().resultType(ResultType.ERROR)
-											 .resultDescription("Not found data for saving").build());
+											 .resultDescription(NOT_FOUND_DATA_FOR_SAVING).build());
 		}
 		List<NBURateDTO> nbuRateDTOList = nbuRateParser.parse(contentData.getDataJSON());
 		List<NBURate> nbuRatesList = mapper.convertToEntity(nbuRateDTOList);

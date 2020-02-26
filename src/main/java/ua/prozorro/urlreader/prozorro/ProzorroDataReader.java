@@ -51,12 +51,6 @@ public class ProzorroDataReader extends AbstractPageReader {
 	@Override
 	public void readPageContent() throws IOException {
 		dataPage.getPageContentData().parallelStream().forEach(contentData -> {
-			try {
-				Thread.sleep(50);
-			}
-			catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 			contentData.getDataURL().setUrl(sourceLink.getStartPage() + "/" + contentData.getId());
 			String genreJson = null;
 			try {

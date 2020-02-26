@@ -26,15 +26,15 @@ public class ContractService implements Service {
 	
 	@Override
 	public List<ActionResult> saveOrUpdate(List<ContentData> data) throws IOException {
-		if (data == null) {
+		if (data == null || data.isEmpty()) {
 			log.error("Empty Contracts content data list");
 			return Arrays.asList(ActionResult.builder().resultType(ResultType.ERROR)
 											 .resultDescription("Empty Contracts content data list").build());
 		}
 		
-		List<ContractJSON> contractList =
-				data.parallelStream().map(contentData -> contentDataToContractJSONMapper.convertToEntity(contentData))
-					.collect(Collectors.toList());
+		List<ContractJSON> contractList = data.parallelStream().map(
+				contentData -> contentDataToContractJSONMapper.convertToEntity(contentData)).collect(
+				Collectors.toList());
 		
 		List<ActionResult> actionResults = contractJSONRepository.saveOrUpdateAll(contractList);
 		

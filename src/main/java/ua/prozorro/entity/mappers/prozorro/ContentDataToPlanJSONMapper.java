@@ -7,6 +7,9 @@ import ua.prozorro.source.ContentData;
 public class ContentDataToPlanJSONMapper extends AbstractMapper<ContentData, PlanJSON> {
 	@Override
 	public PlanJSON convertToEntity(ContentData object) {
+		if (object == null) {
+			return null;
+		}
 		PlanJSON planJSON = new PlanJSON();
 		planJSON.setId(object.getId());
 		planJSON.setDateModified(object.getDataURL().getDate());

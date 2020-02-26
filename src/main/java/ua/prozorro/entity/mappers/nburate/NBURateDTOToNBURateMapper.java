@@ -16,6 +16,7 @@ public class NBURateDTOToNBURateMapper extends AbstractMapper<NBURateDTO, NBURat
 		nbuRateDTO.setCurrencyCode(nbuRate.getCurrencyCode());
 		nbuRateDTO.setCurrencyCodeL(nbuRate.getCurrencyCodeL());
 		nbuRateDTO.setAmount(nbuRate.getAmount());
+		nbuRateDTO.setUnits(nbuRate.getUnits());
 		nbuRateDTO.setTimeSign(nbuRate.getTimeSign());
 		
 		return nbuRateDTO;
@@ -31,6 +32,7 @@ public class NBURateDTOToNBURateMapper extends AbstractMapper<NBURateDTO, NBURat
 		nbuRate.setCurrencyCode(entity.getCurrencyCode());
 		nbuRate.setCurrencyCodeL(entity.getCurrencyCodeL());
 		nbuRate.setAmount(entity.getAmount());
+		nbuRate.setUnits(entity.getUnits());
 		nbuRate.setTimeSign(entity.getTimeSign());
 		
 		return nbuRate;
