@@ -48,7 +48,8 @@ For getting information from beginning use start pages:
 
 Information about the tender can be obtained by reference https://public.api.openprocurement.org/api/API_VERSION/tenders/Tender_ID
 
-For example, information for tender with id **'55e20be09f3544deace53f5a9019f800'** can be gettin by link [https://public.api.openprocurement.org/api/2.4/tenders/55e20be09f3544deace53f5a9019f800](https://public.api.openprocurement.org/api/2.4/tenders/55e20be09f3544deace53f5a9019f800)
+For example, information for tender with id **'55e20be09f3544deace53f5a9019f800'** can be taken by link [https://public
+.api.openprocurement.org/api/2.5/tenders/55e20be09f3544deace53f5a9019f800](https://public.api.openprocurement.org/api/2.5/tenders/55e20be09f3544deace53f5a9019f800)
 
 ## Currency rates source
 

@@ -20,7 +20,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Prozorro" target="1.8" />
+      <module name="Prozorro" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>

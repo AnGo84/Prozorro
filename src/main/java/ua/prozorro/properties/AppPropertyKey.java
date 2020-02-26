@@ -1,6 +1,6 @@
 package ua.prozorro.properties;
 
-public enum AppProperty {
+public enum AppPropertyKey {
 	DB_TYPE("db.type"), //
 	TENDER_START_PAGE("prozorro.tender.start_page"), TENDER_PAGE_LIMIT("prozorro.tender.page_limit"),
 	TENDER_PAGE_LIMIT_VALUE("prozorro.tender.page_limit_value"), TENDER_PAGE_OFFSET("prozorro.tender.page_offset"),
@@ -19,7 +19,7 @@ public enum AppProperty {
 	
 	private String propertyName;
 	
-	AppProperty(String propertyName) {
+	AppPropertyKey(String propertyName) {
 		this.propertyName = propertyName;
 	}
 	

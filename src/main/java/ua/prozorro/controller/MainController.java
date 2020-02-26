@@ -42,7 +42,6 @@ public class MainController {
 	private Date dateFrom;
 	private Date dateTill;
 	
-	private Boolean urlConnection = false;
 	private ProzorroApp prozorroApp;
 	
 	private TaskResult taskResult;
