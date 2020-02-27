@@ -9,9 +9,7 @@ import ua.prozorro.entity.nburate.NBURate;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class HibrnateTest {
 	private static SessionFactory sessionFactory;

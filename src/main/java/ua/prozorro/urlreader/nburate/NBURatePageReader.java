@@ -5,7 +5,6 @@ import ua.prozorro.service.ResultType;
 import ua.prozorro.source.*;
 import ua.prozorro.urlreader.AbstractPageReader;
 import ua.prozorro.utils.DateUtils;
-import ua.prozorro.utils.FileUtils;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -33,7 +32,8 @@ public class NBURatePageReader extends AbstractPageReader {
 			for (ContentData contentData : dataPage.getPageContentData()) {
 				String genreJson = "";
 				try {
-					genreJson = FileUtils.getStringFromURL(contentData.getDataURL().getUrl());
+					log.info("Content URl: {}", contentData.getDataURL().getUrl());
+					genreJson = urlSourceReader.read(contentData.getDataURL().getUrl());
 					contentData.setReadResult(new ReadResult(ResultType.SUCCESS));
 				} catch (IOException e) {
 					log.error("NBURatePageReader: ", dataPage);

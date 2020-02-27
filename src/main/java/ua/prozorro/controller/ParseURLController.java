@@ -22,7 +22,7 @@ import ua.prozorro.source.SourceType;
 import ua.prozorro.source.SourceTypeFactory;
 import ua.prozorro.source.nburate.NBURateDTO;
 import ua.prozorro.source.prozorro.ProzorroPageContent;
-import ua.prozorro.utils.FileUtils;
+import ua.prozorro.urlreader.URLSourceReader;
 
 import java.awt.*;
 import java.io.IOException;
@@ -60,6 +60,8 @@ public class ParseURLController {
 	private Label labelURLData;
 	@FXML
 	private Label labelProcessedData;
+	
+	private URLSourceReader urlSourceReader = new URLSourceReader();
 	
 	private Map<String, String> propertiesMap = new HashMap<>();
 	private String dataJSONFromURL;
@@ -118,8 +120,9 @@ public class ParseURLController {
 		textAreaObjectData.clear();
 		
 		SourceType sourceType = SourceTypeFactory.getSourceType(textFieldURL.getText());
+		
 		try {
-			dataJSONFromURL = FileUtils.getStringFromURL(textFieldURL.getText());
+			dataJSONFromURL = urlSourceReader.read(textFieldURL.getText());
 			urlAPIData = textFieldURL.getText();
 			
 			showURLData(textAreaURLData, dataJSONFromURL);

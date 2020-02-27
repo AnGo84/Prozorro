@@ -1,12 +1,9 @@
 package ua.prozorro.utils;
 
-import org.apache.commons.io.IOUtils;
-
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -191,10 +188,6 @@ public class FileUtils {
         bw.write(context);
         bw.newLine();
         bw.close();
-    }
-
-    public static String getStringFromURL(String url) throws IOException {
-        return IOUtils.toString(new URL(url), StandardCharsets.UTF_8);
     }
 
     public static String readFile(String filePath) throws IOException {

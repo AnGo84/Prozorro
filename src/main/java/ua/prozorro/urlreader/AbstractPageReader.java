@@ -21,10 +21,16 @@ import java.util.stream.Collectors;
 public abstract class AbstractPageReader {
 	protected DataPage dataPage;
 	protected SourceLink sourceLink;
+	protected URLSourceReader urlSourceReader;
 	
 	public AbstractPageReader(SourceLink sourceLink, DataPage dataPage) {
 		this.sourceLink = sourceLink;
 		this.dataPage = dataPage;
+		this.urlSourceReader = new URLSourceReader();
+	}
+	
+	public void setUrlSourceReader(URLSourceReader urlSourceReader) {
+		this.urlSourceReader = urlSourceReader;
 	}
 	
 	public abstract void readDataPage() throws IOException;

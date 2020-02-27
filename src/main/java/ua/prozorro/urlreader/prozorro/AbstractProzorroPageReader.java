@@ -3,8 +3,8 @@ package ua.prozorro.urlreader.prozorro;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import ua.prozorro.source.SourceLink;
+import ua.prozorro.urlreader.URLSourceReader;
 import ua.prozorro.utils.DateUtils;
-import ua.prozorro.utils.FileUtils;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -13,6 +13,11 @@ import java.util.Date;
 public abstract class AbstractProzorroPageReader<T> {
 	protected Class<? extends T> theClass;
 	protected SourceLink sourceLink;
+	protected URLSourceReader urlSourceReader = new URLSourceReader();
+	
+	public void setUrlSourceReader(URLSourceReader urlSourceReader) {
+		this.urlSourceReader = urlSourceReader;
+	}
 	
 	public AbstractProzorroPageReader(Class<? extends T> theClass, SourceLink sourceLink) {
 		this.theClass = theClass;
@@ -25,7 +30,7 @@ public abstract class AbstractProzorroPageReader<T> {
 	}
 	
 	public T getObjectFromURL(String url) throws JsonParseException, IOException {
-		String genreJson = FileUtils.getStringFromURL(url);
+		String genreJson = urlSourceReader.read(url);
 		return getObjectFromStringJSON(genreJson);
 	}
 	

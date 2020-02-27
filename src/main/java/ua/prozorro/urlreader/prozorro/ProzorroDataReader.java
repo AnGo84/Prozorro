@@ -11,7 +11,6 @@ import ua.prozorro.source.SourceLink;
 import ua.prozorro.source.prozorro.ProzorroPage;
 import ua.prozorro.source.prozorro.ProzorroPageContent;
 import ua.prozorro.urlreader.AbstractPageReader;
-import ua.prozorro.utils.FileUtils;
 
 import java.io.IOException;
 import java.util.Comparator;
@@ -54,7 +53,7 @@ public class ProzorroDataReader extends AbstractPageReader {
 			contentData.getDataURL().setUrl(sourceLink.getStartPage() + "/" + contentData.getId());
 			String genreJson = null;
 			try {
-				genreJson = FileUtils.getStringFromURL(contentData.getDataURL().getUrl());
+				genreJson = urlSourceReader.read(contentData.getDataURL().getUrl());
 				contentData.setReadResult(new ReadResult(ResultType.SUCCESS));
 			}
 			catch (IOException e) {
