@@ -11,7 +11,10 @@ class MessagesTest {
 	
 	@Test
 	void getResourceBundle() {
-		Locale locale = (Locale.getDefault() == null ? new Locale("en", "EN") : Locale.getDefault());
+		if (Locale.getDefault() == null) {
+			Locale.setDefault(new Locale("en", "EN"));
+		}
+		Locale locale = Locale.getDefault();
 		assertEquals(locale.getLanguage(), messages.getResourceBundle(null).getLocale().getLanguage());
 		assertEquals(locale.getLanguage(), messages.getResourceBundle("").getLocale().getLanguage());
 		assertEquals(locale.getLanguage(), messages.getResourceBundle("enEn").getLocale().getLanguage());

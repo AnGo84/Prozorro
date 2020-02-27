@@ -77,6 +77,7 @@
             <!--for travis-->
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/ojdbc6.jar</systemPath>
+            <!--/for travis-->
 
         </dependency>
         <!-- h2database driver -->
@@ -188,6 +189,7 @@
                     <target>8</target>
                 </configuration>
             </plugin>
+            <!--/for travis-->
         </plugins>
     </build>
 
