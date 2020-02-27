@@ -32,9 +32,9 @@ public class ProzorroDataReader extends AbstractPageReader {
 	@Override
 	public void readDataPage() throws IOException {
 		try {
-			ProzorroPage currentProzorroPage =
-					prozorroPageToDataURLMapper.convertToObject(dataPage.getCurrentDataURL());
-			log.info(currentProzorroPage);
+			ProzorroPage currentProzorroPage = prozorroPageToDataURLMapper.convertToObject(
+					dataPage.getCurrentDataURL());
+			log.info("Read: {}", currentProzorroPage);
 			ProzorroPageContent pageContent = prozorroPageContentReader.readPage(currentProzorroPage);
 			dataPage = prozorroPageContentToDataPageMapper.convertToEntity(pageContent);
 			updateDataPageTypes();

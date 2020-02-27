@@ -244,8 +244,8 @@ public class MainController {
 			textArea.appendText(mess + "\n");
 			setWaitingProcess(false);
 		});
-		Thread th = new Thread(task);
-		th.start();
+		Thread thread = new Thread(task);
+		thread.start();
 	}
 	
 	public void onCleanLog(ActionEvent actionEvent) {

@@ -53,6 +53,7 @@ public class ExportDataTask extends Task<TaskResult> {
 	@Override
 	protected TaskResult call() throws Exception {
 		ExportData exportData = new ExportData(pageReader, filterData);
+		log.info("Start parse: {}", exportData);
 		
 		Date start = new Date();
 		while (exportData.hasData()) {
