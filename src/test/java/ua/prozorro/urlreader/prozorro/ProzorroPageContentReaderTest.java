@@ -27,23 +27,23 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class ProzorroPageContentReaderTest {
-	public static final String TESTING_DATE = "20.02.2020";
-	public static final String NEXT_DATE = "21.02.2020";
-	private static String dateTxt;
-	private static SourceLink sourceLink;
-	private String fileContent;
-	private URLSourceReader mockURLSourceReader;
-	private ProzorroPageContentReader prozorroPageContentReader;
-	private ProzorroPageToDataURLMapper prozorroPageToDataURLMapper = new ProzorroPageToDataURLMapper();
-	
-	@BeforeAll
-	public static void before() throws ParseException {
-		sourceLink = SourceLinkFactory.getSourceLink(SourceType.PROZORRO_TENDER,
-													 TestPropertyFieldsFactory.getStartProperties());
-		
-		Date date = DateUtils.parseDateFromString(TESTING_DATE, "dd.MM.yyyy");
-		dateTxt = DateUtils.parseDateToString(date, sourceLink.getPageDateFormat());
-	}
+    public static final String TESTING_DATE = "20.02.2020";
+    public static final String NEXT_DATE = "21.02.2020";
+    private static String dateTxt;
+    private static SourceLink sourceLink;
+    private String fileContent;
+    private URLSourceReader mockURLSourceReader;
+    private ProzorroContentReader prozorroPageContentReader;
+    private ProzorroPageToDataURLMapper prozorroPageToDataURLMapper = new ProzorroPageToDataURLMapper();
+
+    @BeforeAll
+    public static void before() throws ParseException {
+        sourceLink = SourceLinkFactory.getSourceLink(SourceType.PROZORRO_TENDER,
+                TestPropertyFieldsFactory.getStartProperties());
+
+        Date date = DateUtils.parseDateFromString(TESTING_DATE, "dd.MM.yyyy");
+        dateTxt = DateUtils.parseDateToString(date, sourceLink.getPageDateFormat());
+    }
 	
 	@BeforeEach
 	public void beforeEach() throws IOException {
@@ -54,54 +54,54 @@ class ProzorroPageContentReaderTest {
 	
 	@Test
 	public void readPage() throws IOException {
-		when(mockURLSourceReader.read(anyString())).thenReturn(fileContent);
-		
-		DataPage dataPage = DataPage.builder().currentDataURL(sourceLink.getDataURL(sourceLink, dateTxt)).build();
-		ProzorroPage prozorroPage = prozorroPageToDataURLMapper.convertToObject(dataPage.getCurrentDataURL());
-		prozorroPageContentReader = new ProzorroPageContentReader(ProzorroPageContent.class, sourceLink);
-		prozorroPageContentReader.setUrlSourceReader(mockURLSourceReader);
-		
-		ProzorroPageContent prozorroPageContent = prozorroPageContentReader.readPage(prozorroPage);
-		assertNotNull(prozorroPageContent);
-		assertFalse(prozorroPageContent.getPageElementList().isEmpty());
-		assertEquals(100, prozorroPageContent.getPageElementList().size());
-		assertEquals(dataPage.getCurrentDataURL().getUrl(), prozorroPageContent.getCurrentPage().getUri());
-	}
+        when(mockURLSourceReader.read(anyString())).thenReturn(fileContent);
+
+        DataPage dataPage = DataPage.builder().currentDataURL(sourceLink.getDataURL(sourceLink, dateTxt)).build();
+        ProzorroPage prozorroPage = prozorroPageToDataURLMapper.convertToObject(dataPage.getCurrentDataURL());
+        prozorroPageContentReader = new ProzorroContentReader(ProzorroPageContent.class, sourceLink);
+        prozorroPageContentReader.setUrlSourceReader(mockURLSourceReader);
+
+        ProzorroPageContent prozorroPageContent = prozorroPageContentReader.readPage(prozorroPage);
+        assertNotNull(prozorroPageContent);
+        assertFalse(prozorroPageContent.getPageElementList().isEmpty());
+        assertEquals(100, prozorroPageContent.getPageElementList().size());
+        assertEquals(dataPage.getCurrentDataURL().getUrl(), prozorroPageContent.getCurrentPage().getUri());
+    }
 	
 	@Test
 	public void whenReadPage_throw_NPE() throws IOException {
-		when(mockURLSourceReader.read(anyString())).thenReturn(null);
-		
-		DataPage dataPage = DataPage.builder().currentDataURL(sourceLink.getDataURL(sourceLink, dateTxt)).build();
-		ProzorroPage prozorroPage = prozorroPageToDataURLMapper.convertToObject(dataPage.getCurrentDataURL());
-		prozorroPageContentReader = new ProzorroPageContentReader(ProzorroPageContent.class, sourceLink);
-		prozorroPageContentReader.setUrlSourceReader(mockURLSourceReader);
-		assertThrows(NullPointerException.class, () -> {
-			prozorroPageContentReader.readPage(prozorroPage);
-		});
-	}
+        when(mockURLSourceReader.read(anyString())).thenReturn(null);
+
+        DataPage dataPage = DataPage.builder().currentDataURL(sourceLink.getDataURL(sourceLink, dateTxt)).build();
+        ProzorroPage prozorroPage = prozorroPageToDataURLMapper.convertToObject(dataPage.getCurrentDataURL());
+        prozorroPageContentReader = new ProzorroContentReader(ProzorroPageContent.class, sourceLink);
+        prozorroPageContentReader.setUrlSourceReader(mockURLSourceReader);
+        assertThrows(NullPointerException.class, () -> {
+            prozorroPageContentReader.readPage(prozorroPage);
+        });
+    }
 	
 	@Test
 	public void whenReadPage_empty_throw_NPE() throws IOException {
-		when(mockURLSourceReader.read(anyString())).thenReturn("");
-		DataPage dataPage = DataPage.builder().currentDataURL(sourceLink.getDataURL(sourceLink, dateTxt)).build();
-		ProzorroPage prozorroPage = prozorroPageToDataURLMapper.convertToObject(dataPage.getCurrentDataURL());
-		prozorroPageContentReader = new ProzorroPageContentReader(ProzorroPageContent.class, sourceLink);
-		prozorroPageContentReader.setUrlSourceReader(mockURLSourceReader);
-		assertThrows(NullPointerException.class, () -> {
-			prozorroPageContentReader.readPage(prozorroPage);
-		});
-	}
+        when(mockURLSourceReader.read(anyString())).thenReturn("");
+        DataPage dataPage = DataPage.builder().currentDataURL(sourceLink.getDataURL(sourceLink, dateTxt)).build();
+        ProzorroPage prozorroPage = prozorroPageToDataURLMapper.convertToObject(dataPage.getCurrentDataURL());
+        prozorroPageContentReader = new ProzorroContentReader(ProzorroPageContent.class, sourceLink);
+        prozorroPageContentReader.setUrlSourceReader(mockURLSourceReader);
+        assertThrows(NullPointerException.class, () -> {
+            prozorroPageContentReader.readPage(prozorroPage);
+        });
+    }
 	
 	@Test
 	public void whenReadPage_wrong_JSON() throws IOException {
-		when(mockURLSourceReader.read(anyString())).thenReturn("Wrong JSON");
-		DataPage dataPage = DataPage.builder().currentDataURL(sourceLink.getDataURL(sourceLink, dateTxt)).build();
-		ProzorroPage prozorroPage = prozorroPageToDataURLMapper.convertToObject(dataPage.getCurrentDataURL());
-		prozorroPageContentReader = new ProzorroPageContentReader(ProzorroPageContent.class, sourceLink);
-		prozorroPageContentReader.setUrlSourceReader(mockURLSourceReader);
-		assertThrows(JsonSyntaxException.class, () -> {
-			prozorroPageContentReader.readPage(prozorroPage);
-		});
-	}
+        when(mockURLSourceReader.read(anyString())).thenReturn("Wrong JSON");
+        DataPage dataPage = DataPage.builder().currentDataURL(sourceLink.getDataURL(sourceLink, dateTxt)).build();
+        ProzorroPage prozorroPage = prozorroPageToDataURLMapper.convertToObject(dataPage.getCurrentDataURL());
+        prozorroPageContentReader = new ProzorroContentReader(ProzorroPageContent.class, sourceLink);
+        prozorroPageContentReader.setUrlSourceReader(mockURLSourceReader);
+        assertThrows(JsonSyntaxException.class, () -> {
+            prozorroPageContentReader.readPage(prozorroPage);
+        });
+    }
 }

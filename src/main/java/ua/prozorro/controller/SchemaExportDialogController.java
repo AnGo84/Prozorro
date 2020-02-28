@@ -18,6 +18,7 @@ import ua.prozorro.fx.DialogText;
 import ua.prozorro.fx.Dialogs;
 import ua.prozorro.hibernate.HibernateDataBaseType;
 import ua.prozorro.hibernate.HibernateSession;
+import ua.prozorro.properties.AppResources;
 import ua.prozorro.properties.PropertiesUtils;
 
 import java.io.File;
@@ -42,17 +43,18 @@ public class SchemaExportDialogController {
 	private Label labelDataBase;
 	@FXML
 	private Label labelFile;
-	
+
 	private ProzorroApp prozorroApp;
-	
+	private AppResources appResources;
+
 	private Stage dialogStage;
-	
+
 	private boolean okClicked = false;
-	
+
 	public Stage getDialogStage() {
 		return dialogStage;
 	}
-	
+
 	public void setDialogStage(Stage dialogStage) {
 		this.dialogStage = dialogStage;
 	}
@@ -101,21 +103,21 @@ public class SchemaExportDialogController {
 			catch (Exception e) {
 				e.printStackTrace();
 				Dialogs.showErrorDialog(e.getCause(),
-										new DialogText(prozorroApp.getMessages().getString("error.exporting"),
-													   e.getMessage(), String.format(
-												prozorroApp.getMessages().getString("error" + ".export.DB"),
-												comboBoxDB.getValue(), comboBoxDB.getValue().getConfigFileName())),
-										logger);
+						new DialogText(appResources.getMessages().getString("error.exporting"),
+								e.getMessage(), String.format(
+								appResources.getMessages().getString("error" + ".export.DB"),
+								comboBoxDB.getValue(), comboBoxDB.getValue().getConfigFileName())),
+						logger);
 			}
 			
 			okClicked = true;
 			dialogStage.close();
 		} else {
 			Dialogs.showMessage(Alert.AlertType.WARNING,
-								new DialogText(prozorroApp.getMessages().getString("error.file"),
-											   prozorroApp.getMessages().getString("error.file.verification"),
-											   prozorroApp.getMessages().getString("error.file.wrong_name_or_path") +
-											   " '" + textFieldFileName.getText() + "'"), logger);
+					new DialogText(appResources.getMessages().getString("error.file"),
+							appResources.getMessages().getString("error.file.verification"),
+							appResources.getMessages().getString("error.file.wrong_name_or_path") +
+									" '" + textFieldFileName.getText() + "'"), logger);
 		}
 		
 	}
@@ -126,48 +128,48 @@ public class SchemaExportDialogController {
 			metadata = HibernateSession.getMetaData(comboBoxDB.getValue().getConfigFileName());
 			DialogText dialogText = null;
 			if (checkBoxSaveScheme.isSelected()) {
-				if (Dialogs.showConfirmDialog(new DialogText(prozorroApp.getMessages().getString("schema.DB.create"),
-															 prozorroApp.getMessages().getString("schema.DB.create") +
-															 " " + comboBoxDB.getValue(), prozorroApp.getMessages()
-																									 .getString(
-																											 "message.all_data_will_be_delete")))) {
+				if (Dialogs.showConfirmDialog(new DialogText(appResources.getMessages().getString("schema.DB.create"),
+						appResources.getMessages().getString("schema.DB.create") +
+								" " + comboBoxDB.getValue(), appResources.getMessages()
+						.getString(
+								"message.all_data_will_be_delete")))) {
 					SchemaExport schemaExport = HibernateSession.getSchemaExport(file.getAbsolutePath());
 					logger.info("Drop Database...");
 					// Drop Database
 					HibernateSession.dropDataBase(schemaExport, metadata);
-					
+
 					logger.info("Create Database...");
 					// Create tables
 					HibernateSession.createDataBase(schemaExport, metadata);
-					
-					dialogText = new DialogText(prozorroApp.getMessages().getString("schema.DB.create"),
-												prozorroApp.getMessages().getString("schema.DB.create") + " " +
-												comboBoxDB.getValue(),
-												prozorroApp.getMessages().getString("schema.DB.created"));
+
+					dialogText = new DialogText(appResources.getMessages().getString("schema.DB.create"),
+							appResources.getMessages().getString("schema.DB.create") + " " +
+									comboBoxDB.getValue(),
+							appResources.getMessages().getString("schema.DB.created"));
 				}
 				
 			} else {
 				new SchemaExport().setOutputFile(file.getAbsolutePath()).setFormat(false).createOnly(
 						EnumSet.of(TargetType.SCRIPT), metadata);
 				logger.info("Schema was export to file: " + file.getAbsolutePath());
-				
-				dialogText = new DialogText(prozorroApp.getMessages().getString("schema.DB.export"),
-											prozorroApp.getMessages().getString("schema.DB.saved_to_file"),
-											comboBoxDB.getValue() +
-											prozorroApp.getMessages().getString("schema.DB" + ".saved_to_file") + " '" +
-											file.getAbsolutePath() + "'");
+
+				dialogText = new DialogText(appResources.getMessages().getString("schema.DB.export"),
+						appResources.getMessages().getString("schema.DB.saved_to_file"),
+						comboBoxDB.getValue() +
+								appResources.getMessages().getString("schema.DB" + ".saved_to_file") + " '" +
+								file.getAbsolutePath() + "'");
 			}
 			Dialogs.showMessage(Alert.AlertType.INFORMATION, dialogText, logger);
 			
 		}
 		catch (ExceptionInInitializerError | ServiceException | ClassLoadingException e) {
-			throw new Exception(prozorroApp.getMessages().getString("error.file.configuration"), e);
+			throw new Exception(appResources.getMessages().getString("error.file.configuration"), e);
 		}
 		catch (RuntimeException e) {
-			throw new Exception(prozorroApp.getMessages().getString("error.export.processing"), e);
+			throw new Exception(appResources.getMessages().getString("error.export.processing"), e);
 		}
 		catch (Exception e) {
-			throw new Exception(prozorroApp.getMessages().getString("error.export.DB"), e);
+			throw new Exception(appResources.getMessages().getString("error.export.DB"), e);
 		}
 		finally {
 			logger.info("Close connection");
@@ -184,22 +186,23 @@ public class SchemaExportDialogController {
 	
 	public void setProzorroApp(ProzorroApp prozorroApp) {
 		this.prozorroApp = prozorroApp;
-		
-		String dbName = PropertiesUtils.getPropertyString(prozorroApp.getProperties(), "db.type");
+		this.appResources = prozorroApp.getAppResources();
+
+		String dbName = PropertiesUtils.getPropertyString(appResources.getProperties(), "db.type");
 		HibernateDataBaseType dataBaseType = HibernateDataBaseType.valueOf(dbName.toUpperCase());
 		comboBoxDB.getSelectionModel().select(dataBaseType);
-		
+
 		initComponentText();
 	}
 	
 	private void initComponentText() {
-		buttonOk.setTooltip(new Tooltip(prozorroApp.getMessages().getString("execute.execute")));
-		buttonCancel.setTooltip(new Tooltip(prozorroApp.getMessages().getString("execute.cancel")));
-		buttonChooseFile.setTooltip(new Tooltip(prozorroApp.getMessages().getString("file.select")));
-		
-		labelDataBase.setText(prozorroApp.getMessages().getString("label.data_base"));
-		labelFile.setText(prozorroApp.getMessages().getString("label.file"));
-		checkBoxSaveScheme.setText(prozorroApp.getMessages().getString("message.DB.create.schema_from_settings_file"));
+		buttonOk.setTooltip(new Tooltip(appResources.getMessages().getString("execute.execute")));
+		buttonCancel.setTooltip(new Tooltip(appResources.getMessages().getString("execute.cancel")));
+		buttonChooseFile.setTooltip(new Tooltip(appResources.getMessages().getString("file.select")));
+
+		labelDataBase.setText(appResources.getMessages().getString("label.data_base"));
+		labelFile.setText(appResources.getMessages().getString("label.file"));
+		checkBoxSaveScheme.setText(appResources.getMessages().getString("message.DB.create.schema_from_settings_file"));
 	}
 	
 	public boolean isOkClicked() {

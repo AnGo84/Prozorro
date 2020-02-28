@@ -6,7 +6,6 @@ import ua.prozorro.source.*;
 import ua.prozorro.urlreader.AbstractPageReader;
 import ua.prozorro.utils.DateUtils;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Date;
@@ -25,29 +24,8 @@ public class NBURatePageReader extends AbstractPageReader {
 		dataPage.setPageContentData(Arrays.asList(contentData));
 		dataPage.setReadResult(new ReadResult(ResultType.SUCCESS));
 	}
-	
-	@Override
-	public void readPageContent() throws IOException {
-		if (dataPage.hasPageContentData()) {
-			for (ContentData contentData : dataPage.getPageContentData()) {
-				String genreJson = "";
-				try {
-					log.info("Content URl: {}", contentData.getDataURL().getUrl());
-					genreJson = urlSourceReader.read(contentData.getDataURL().getUrl());
-					contentData.setReadResult(new ReadResult(ResultType.SUCCESS));
-				} catch (IOException e) {
-					log.error("NBURatePageReader: ", dataPage);
-					log.error("Error message: {}", e.getMessage(), e);
-					contentData.setReadResult(new ReadResult(ResultType.ERROR, e.getMessage()));
-					throw e;
-				}
-				contentData.setDataJSON(genreJson);
-			}
-			checkContentReadErrors();
-		}
-	}
-	
-	@Override
+
+    @Override
 	public DataPage nextPage() throws ParseException {
 		DataURL prevDataURL = dataPage.getCurrentDataURL();
 		Date nextDate = null;
