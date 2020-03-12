@@ -1,7 +1,7 @@
 # Prozorro
 Build status: [![build_status](https://travis-ci.com/AnGo84/Prozorro.svg?branch=master)](https://travis-ci.com/AnGo84/Prozorro.svg) [![BCH compliance](https://bettercodehub.com/edge/badge/AnGo84/Prozorro?branch=master)](https://bettercodehub.com/)
 - - -
-Desktop application for reading data from the site Prozorro.ua for importing into the database.
+Desktop application for reading data from API Prozorro.ua for importing into the database.
 
 **To using necessary:**
 
@@ -11,9 +11,9 @@ Desktop application for reading data from the site Prozorro.ua for importing int
 - Oracle(11.2.0 or more) or MySQL database
 
 ### Warning
-First of all, you need to install oracle lib to your maven repository.
-In the project used library for working with Oracle 11.0.2- ojdbc6.jar( from app root **'lib/ojdbc6.jar'**).
-For instaling it to Maven:
+To work with Oracle 11.0.2, you need to install oracle lib in your maven repository.
+The project uses the library **ojdbc6.jar**, which is located on the path from the root of the application **'lib/ojdbc6.jar'**.
+For installing it to Maven:
 `mvn install:install-file -Dfile='YOUR_PATH'/ojdbc6.jar -DgroupId=com.cmabreu -DartifactId=mylocal-lib -Dversion=1.5 -Dpackaging=jar -DgeneratePom=true`
 
 If you do not going to work with Oracle DB, you can remove oracle dependency from **pom.xml**:
@@ -34,7 +34,7 @@ Right **jar** file will be in directory **'Project_name/target/jfx/app/'**
 
 ## Information and data sources
 
-Prozorro tutorial with API:
+Prozorro provides an API tutorial:
 
 - [Tenders' information](http://api-docs.openprocurement.org/uk_UA/latest/standard/index.html)
 - [Contracts' information](http://contracting.api-docs.openprocurement.org/uk/latest/tutorial.html)
@@ -48,7 +48,8 @@ For getting information from beginning use start pages:
 
 Information about the tender can be obtained by reference https://public.api.openprocurement.org/api/API_VERSION/tenders/Tender_ID
 
-For example, information for tender with id **'55e20be09f3544deace53f5a9019f800'** can be taken by link [https://public
+For example, information about tender with id **'55e20be09f3544deace53f5a9019f800'** can be taken by link [https
+://public
 .api.openprocurement.org/api/2.5/tenders/55e20be09f3544deace53f5a9019f800](https://public.api.openprocurement.org/api/2.5/tenders/55e20be09f3544deace53f5a9019f800)
 
 ## Currency rates source
@@ -59,19 +60,16 @@ For getting currencies rates' information used NBU API [https://bank.gov.ua/cont
 
 During developing the project was implemented three different realisations of importing data from Prozorro. Each realisation represent in separate branch:
 
-|  Realise    | Descreaption |
+|  Realise    | Description |
 | ----------- | ------ |
 | realise-1.0 | First version. Without maven, VCS. Work with the database implemented  with JDBC. Imported                   data have restrictions on length and content. Import working very slow. Supports only MySQL                 database. Import only Tenders|
 | realise-2.0 | Added support maven, git, Hibernate. Import only Tenders |
-| realise-3.0 | Import  tenders, plans, contracts, NBU rates. Added supporl Oracle 11|
-|  current    | Import  tenders, plans, contracts as JSON only. Added supporl Oracle 12|
+| realise-3.0 | Import  tenders, plans, contracts, NBU rates. Added support Oracle 11|
+|  current    | Import  tenders, plans, contracts as JSON only. Added support Oracle 12|
 
-## Todos
-
- - Cower code with tests
 
 ## Helpful information
-For work with JSON was used some online resources
+For working with JSON was used some online resources
 
 ###### Create classes from JSON:
 - http://www.jsonschema2pojo.org/
