@@ -19,8 +19,6 @@ import ua.prozorro.fx.Dialogs;
 import ua.prozorro.properties.AppResources;
 
 import java.io.IOException;
-import java.util.Properties;
-import java.util.ResourceBundle;
 
 
 public class ProzorroApp extends Application {
@@ -67,11 +65,11 @@ public class ProzorroApp extends Application {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("/views/mainForm.fxml"));
 		root = loader.load();
-		
-		primaryStage.setTitle(getMessages().getString("app.title"));
+
+		primaryStage.setTitle(appResources.getMessages().getString("app.title"));
 		primaryStage.setScene(new Scene(root));
 		primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/prozorro_favicon.png")));
-		
+
 		MainController controller = loader.getController();
 		controller.setProzorroApp(this);
 		primaryStage.show();
@@ -81,18 +79,18 @@ public class ProzorroApp extends Application {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/views/SchemaExportDialog.fxml"));
-			
+
 			AnchorPane page = loader.load();
-			
+
 			// Создаём диалоговое окно Stage.
 			Stage dialogStage = new Stage();
-			dialogStage.setTitle(getMessages().getString("app.forms.scheme_dialog.title"));
+			dialogStage.setTitle(appResources.getMessages().getString("app.forms.scheme_dialog.title"));
 			dialogStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/prozorro_favicon.png")));
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.initOwner(primaryStage);
 			Scene scene = new Scene(page);
 			dialogStage.setScene(scene);
-			
+
 			SchemaExportDialogController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
 			controller.setProzorroApp(this);
@@ -112,18 +110,18 @@ public class ProzorroApp extends Application {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/views/ParseURLDialog.fxml"));
-			
+
 			AnchorPane page = loader.load();
-			
+
 			// Создаём диалоговое окно Stage.
 			Stage dialogStage = new Stage();
-			dialogStage.setTitle(getMessages().getString("app.forms.parse_URL_dialog.title"));
+			dialogStage.setTitle(appResources.getMessages().getString("app.forms.parse_URL_dialog.title"));
 			dialogStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/prozorro_favicon.png")));
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.initOwner(primaryStage);
 			Scene scene = new Scene(page);
 			dialogStage.setScene(scene);
-			
+
 			ParseURLController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
 			controller.setProzorroApp(this);
@@ -140,9 +138,9 @@ public class ProzorroApp extends Application {
 	}
 	
 	private DialogText getDialogTextOnShowError(String dialogName) {
-		return new DialogText(getMessages().getString("error.app.start"),
-							  getMessages().getString("error.app.show_dialog"),
-							  getMessages().getString("error.app.dialog_cant_show") + " '" + dialogName + "'");
+		return new DialogText(appResources.getMessages().getString("error.app.start"),
+				appResources.getMessages().getString("error.app.show_dialog"),
+				appResources.getMessages().getString("error.app.dialog_cant_show") + " '" + dialogName + "'");
 	}
 	
 	public boolean shutDown() {
@@ -153,23 +151,19 @@ public class ProzorroApp extends Application {
 		}
 		return false;
 	}
-	
+
 	public boolean isConfirmShutDown() {
 		return Dialogs.showConfirmDialog(
-				new DialogText(getMessages().getString("app.close.title"), getMessages().getString("app.close.info"),
-							   getMessages().getString("confirm") + "?"));
+				new DialogText(appResources.getMessages().getString("app.close.title"), appResources.getMessages().getString("app.close.info"),
+						appResources.getMessages().getString("confirm") + "?"));
 	}
-	
+
 	public BorderPane getRoot() {
 		return root;
 	}
-	
-	public Properties getProperties() {
-		return appResources.getProperties();
+
+	public AppResources getAppResources() {
+		return appResources;
 	}
-	
-	public ResourceBundle getMessages() {
-		return appResources.getMessages();
-	}
-	
+
 }

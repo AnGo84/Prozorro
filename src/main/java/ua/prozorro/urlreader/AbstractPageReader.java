@@ -4,14 +4,12 @@ import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.util.Strings;
 import ua.prozorro.service.ResultType;
-import ua.prozorro.source.ContentData;
-import ua.prozorro.source.DataPage;
-import ua.prozorro.source.DataURL;
-import ua.prozorro.source.SourceLink;
+import ua.prozorro.source.*;
 import ua.prozorro.utils.DateUtils;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,8 +33,6 @@ public abstract class AbstractPageReader {
 	
 	public abstract void readDataPage() throws IOException;
 	
-	public abstract void readPageContent() throws IOException;
-	
 	public abstract DataPage nextPage() throws ParseException;
 	
 	public void readPageContent(Date dateTill) throws IOException {
@@ -54,40 +50,48 @@ public abstract class AbstractPageReader {
 			throw e;
 		}
 	}
-	
-	public void updateDataPageTypes() {
-		dataPage.getCurrentDataURL().setType(sourceLink.getType());
-		dataPage.getCurrentDataURL().setDateFormat(sourceLink.getPageDateFormat());
-		dataPage.getPrevDataURL().setType(sourceLink.getType());
-		dataPage.getPrevDataURL().setDateFormat(sourceLink.getPageDateFormat());
-		dataPage.getNextDataURL().setType(sourceLink.getType());
-		dataPage.getNextDataURL().setDateFormat(sourceLink.getPageDateFormat());
-		if (pageHasContent()) {
-			dataPage.getPageContentData().parallelStream().forEach(contentData -> {
-				contentData.getDataURL().setType(sourceLink.getType());
-				contentData.getDataURL().setDateFormat(sourceLink.getPageDateFormat());
-			});
-		}
-	}
-	
+
 	public ResultType getReadResult() {
 		if (dataPage == null || dataPage.getReadResult() == null || dataPage.getReadResult().getResultType() == null) {
 			return null;
 		}
 		return dataPage.getReadResult().getResultType();
 	}
-	
+
+	public void readPageContent() throws IOException {
+		dataPage.getPageContentData().parallelStream().forEach(contentData -> {
+			String genreJson = null;
+			try {
+				genreJson = urlSourceReader.read(contentData.getDataURL().getUrl());
+				contentData.setReadResult(new ReadResult(ResultType.SUCCESS));
+			} catch (IOException e) {
+				contentData.setReadResult(new ReadResult(ResultType.ERROR, e.getMessage()));
+				log.error("Error message: {}", e.getMessage(), e);
+				throw new RuntimeException("Error on read content " + e.getMessage(), e);
+			}
+			contentData.setDataJSON(genreJson);
+		});
+
+		checkContentReadErrors();
+
+		List<ContentData> sortedList =
+				dataPage.getPageContentData().stream().sorted(Comparator.comparing(p -> p.getDataURL().getDate()))
+						.collect(Collectors.toList());
+		dataPage.setPageContentData(sortedList);
+	}
+
 	public boolean pageHasContent() {
 		return dataPage.getPageContentData() != null && !dataPage.getPageContentData().isEmpty();
 	}
-	
+
 	public void checkContentReadErrors() throws IOException {
 		List<ContentData> errors = dataPage.getPageContentData().stream()
-										   .filter((data)-> data.getReadResult().getResultType().equals(ResultType.ERROR)).collect(
+				.filter((data) -> data.getReadResult().getResultType().equals(ResultType.ERROR)).collect(
 						Collectors.toList());
-		if(errors!=null && !errors.isEmpty()){
-			errors.stream().forEach((data)->log.error("Error Content Data: {}", data));
+		if (errors != null && !errors.isEmpty()) {
+			errors.stream().forEach((data) -> log.error("Error Content Data: {}", data));
 			throw new IOException("Content Data read error");
 		}
 	}
+
 }

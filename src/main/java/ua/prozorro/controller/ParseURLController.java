@@ -17,6 +17,7 @@ import ua.prozorro.ProzorroApp;
 import ua.prozorro.fx.DialogText;
 import ua.prozorro.fx.Dialogs;
 import ua.prozorro.gson.nburate.NBURateParser;
+import ua.prozorro.properties.AppResources;
 import ua.prozorro.properties.PropertiesUtils;
 import ua.prozorro.source.SourceType;
 import ua.prozorro.source.SourceTypeFactory;
@@ -39,7 +40,7 @@ public class ParseURLController {
 	private static final String PROZORRO_SITE = "prozorro.site";
 	private static final String PROZORRO_API_LINK = "prozorro.api.link";
 	private static final String NBU_RATES_API_LINK = "nburates.api.link";
-	
+
 	@FXML
 	private Button buttonReadURL;
 	@FXML
@@ -60,21 +61,22 @@ public class ParseURLController {
 	private Label labelURLData;
 	@FXML
 	private Label labelProcessedData;
-	
+
 	private URLSourceReader urlSourceReader = new URLSourceReader();
-	
+
 	private Map<String, String> propertiesMap = new HashMap<>();
 	private String dataJSONFromURL;
-	
+
 	private ProzorroApp prozorroApp;
-	
+	private AppResources appResources;
+
 	private Stage dialogStage;
-	
+
 	private boolean okClicked = false;
-	
+
 	private String urlAPIData;
 	private String urlProzorroData;
-	
+
 	private String getDataFromJSON(SourceType sourceType, String dataJSON) {
 		StringBuilder stringBuilder = new StringBuilder();
 		switch (sourceType) {
@@ -88,22 +90,22 @@ public class ParseURLController {
 			case PROZORRO_PLAN:
 				Gson gson = new Gson();
 				ProzorroPageContent prozorroPageContent = gson.fromJson(dataJSON, ProzorroPageContent.class);
-				
+
 				String getJson = prozorroPageContent.toString().replaceAll("\\(", "\\(\\\\n").replaceAll("\\)",
-																										 "\\)\\\\n");
-				
+						"\\)\\\\n");
+
 				Arrays.asList(getJson.split("\\\\n")).forEach(line -> stringBuilder.append(line).append("\n"));
 				return stringBuilder.toString();
 		}
-		
+
 		return null;
 	}
-	
-	
+
+
 	public void setDialogStage(Stage dialogStage) {
 		this.dialogStage = dialogStage;
 	}
-	
+
 	@FXML
 	private void initialize() {
 		textAreaURLData.clear();
@@ -111,120 +113,117 @@ public class ParseURLController {
 		textFieldURL.clear();
 		textFieldURL.requestFocus();
 		labelURLDataType.setText("");
-		
+
 	}
-	
+
 	public void onButtonReadURL(ActionEvent actionEvent) {
 		logger.info("Choosed URL: " + textFieldURL.getText());
 		textAreaURLData.clear();
 		textAreaObjectData.clear();
-		
+
 		SourceType sourceType = SourceTypeFactory.getSourceType(textFieldURL.getText());
-		
+
 		try {
 			dataJSONFromURL = urlSourceReader.read(textFieldURL.getText());
 			urlAPIData = textFieldURL.getText();
-			
+
 			showURLData(textAreaURLData, dataJSONFromURL);
 			if (sourceType != null) {
 				textAreaObjectData.appendText(getDataFromJSON(sourceType, dataJSONFromURL));
-				labelURLDataType.setText(SourceTypeFactory.getSourceTypeMessage(sourceType, prozorroApp.getMessages()));
+				labelURLDataType.setText(SourceTypeFactory.getSourceTypeMessage(sourceType, appResources.getMessages()));
 			}
+		} catch (IOException e) {
+			Dialogs.showErrorDialog(e, new DialogText(appResources.getMessages().getString("error.read"),
+					appResources.getMessages().getString("error.on_url_read") + ": " +
+							textFieldURL.getText(),
+					appResources.getMessages().getString("error.error") + ": " +
+							e.getMessage()), logger);
 		}
-		catch (IOException e) {
-			Dialogs.showErrorDialog(e, new DialogText(prozorroApp.getMessages().getString("error.read"),
-													  prozorroApp.getMessages().getString("error.on_url_read") + ": " +
-													  textFieldURL.getText(),
-													  prozorroApp.getMessages().getString("error.error") + ": " +
-													  e.getMessage()), logger);
-		}
-		
+
 	}
-	
+
 	private void showURLData(TextArea textArea, String dataFromURL) {
 		String[] dataLines = getStringsFromURLData(dataFromURL);
-		
+
 		for (String line : dataLines) {
 			textArea.appendText(line + "\n");
 		}
 	}
-	
+
 	private String[] getStringsFromURLData(String dataFromURL) {
 		String getJson = dataFromURL.replaceAll("\\{", "\\\\n\\{\\\\n").replaceAll("}", "\\\\n\\}\\\\n");
 		return getJson.split("\\\\n");
 	}
-	
-	
+
+
 	public void setProzorroApp(ProzorroApp prozorroApp) {
 		this.prozorroApp = prozorroApp;
-		
+		this.appResources = prozorroApp.getAppResources();
+
 		initPropertiesMap();
 		initComponentText();
 	}
-	
+
 	private void initComponentText() {
-		labelURLData.setText(prozorroApp.getMessages().getString("label.URL_data"));
-		labelProcessedData.setText(prozorroApp.getMessages().getString("label.processed_data"));
-		buttonReadURL.setText(prozorroApp.getMessages().getString("read.URL"));
+		labelURLData.setText(appResources.getMessages().getString("label.URL_data"));
+		labelProcessedData.setText(appResources.getMessages().getString("label.processed_data"));
+		buttonReadURL.setText(appResources.getMessages().getString("read.URL"));
 	}
-	
+
 	private void initPropertiesMap() {
 		propertiesMap.put(ONLINE_JSON_PARSER,
-						  PropertiesUtils.getPropertyString(prozorroApp.getProperties(), ONLINE_JSON_PARSER));
-		propertiesMap.put(PROZORRO_SITE, PropertiesUtils.getPropertyString(prozorroApp.getProperties(), PROZORRO_SITE));
+				PropertiesUtils.getPropertyString(appResources.getProperties(), ONLINE_JSON_PARSER));
+		propertiesMap.put(PROZORRO_SITE, PropertiesUtils.getPropertyString(appResources.getProperties(), PROZORRO_SITE));
 		propertiesMap.put(PROZORRO_API_LINK,
-						  PropertiesUtils.getPropertyString(prozorroApp.getProperties(), PROZORRO_API_LINK));
+				PropertiesUtils.getPropertyString(appResources.getProperties(), PROZORRO_API_LINK));
 		propertiesMap.put(NBU_RATES_API_LINK,
-						  PropertiesUtils.getPropertyString(prozorroApp.getProperties(), NBU_RATES_API_LINK));
-		
+				PropertiesUtils.getPropertyString(appResources.getProperties(), NBU_RATES_API_LINK));
+
 		urlAPIData = propertiesMap.get(PROZORRO_API_LINK);
 		urlProzorroData = propertiesMap.get(PROZORRO_SITE);
 	}
-	
+
 	public boolean isOkClicked() {
 		return okClicked;
 	}
-	
+
 	public void onHyperLinkJsonParserOnline(ActionEvent actionEvent) {
 		logger.info("Show " + propertiesMap.get(ONLINE_JSON_PARSER));
-		
+
 		showURL(propertiesMap.get(ONLINE_JSON_PARSER));
 	}
-	
+
 	private void hostServicesShowDocument(String url) {
 		try {
 			HostServicesDelegate hostServices = HostServicesFactory.getInstance(prozorroApp);
 			hostServices.showDocument(url);
-		}
-		catch (Exception e1) {
+		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 	}
-	
-	
+
+
 	private void showURL(String url) {
 		logger.info("Show URL:" + url);
 		if (Desktop.isDesktopSupported()) {
 			logger.info("DesktopSupported");
 			try {
 				Desktop.getDesktop().browse(new URL(url).toURI());
-			}
-			catch (URISyntaxException | IOException e1) {
+			} catch (URISyntaxException | IOException e1) {
 				logger.error("Error: " + e1.getMessage());
 				e1.printStackTrace();
-			}
-			catch (Exception e1) {
+			} catch (Exception e1) {
 				logger.error("Error: " + e1.getMessage());
 				e1.printStackTrace();
 			}
 		}
 	}
-	
+
 	public void onHyperLinkProzorroData(ActionEvent actionEvent) {
 		logger.info("Show " + urlProzorroData);
 		showURL(urlProzorroData);
 	}
-	
+
 	public void onHyperLinkAPIData(ActionEvent actionEvent) {
 		logger.info("Show " + urlAPIData);
 		showURL(urlAPIData);

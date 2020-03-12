@@ -21,9 +21,9 @@ public class TestExportData {
 	
 	public static void main(String[] args) {
 		SourceLink sourceLink =
-				//SourceLinkFactory.getSourceLink(SourceType.NBU_RATE, TestPropertyFieldsFactory.getStartProperties());
-				SourceLinkFactory.getSourceLink(SourceType.PROZORRO_CONTRACT,
-												TestPropertyFieldsFactory.getStartProperties());
+                //SourceLinkFactory.getSourceLink(SourceType.NBU_RATE, TestPropertyFieldsFactory.getStartProperties());
+                SourceLinkFactory.getSourceLink(SourceType.NBU_RATE,
+                        TestPropertyFieldsFactory.getStartProperties());
 		
 		Date nextDate = DateUtils.addDaysToDate(new Date(), -2);
 		
@@ -47,27 +47,27 @@ public class TestExportData {
 		catch (ParseException e) {
 			dateTill = null;
 			e.printStackTrace();
-		}
-		FilterData filterData = new FilterData(nextDate, dateTill, true, true);
-		System.out.println("Filter data: " + filterData);
-		ExportData exportData = null;
-		try {
-			exportData = new ExportData(pageReader, filterData);
-		}
-		catch (ParseException e) {
-			e.printStackTrace();
-		}
-		SessionFactory sessionFactory = TestSession.getSessionFactoryByDBName("mysql");
-		Service service = ServiceFactory.getService(sessionFactory, sourceLink.getType());
-		
-		Date start = new Date();
-		try {
-			while (exportData.hasData()) {
-				Date localStart = new Date();
-				exportData.read();
-				
-				DataPage currentDataPage = exportData.getCurrentURLData();
-				List<ActionResult> results = null;
+        }
+        FilterData filterData = new FilterData(nextDate, dateTill, true, true);
+        System.out.println("Filter data: " + filterData);
+        ExportData exportData = null;
+        try {
+            exportData = new ExportData(pageReader, filterData);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        //SessionFactory sessionFactory = TestSession.getSessionFactoryByDBName("mysql");
+        SessionFactory sessionFactory = TestSession.getSessionFactoryByDBName("default");
+        Service service = ServiceFactory.getService(sessionFactory, sourceLink.getType());
+
+        Date start = new Date();
+        try {
+            while (exportData.hasData()) {
+                Date localStart = new Date();
+                exportData.read();
+
+                DataPage currentDataPage = exportData.getCurrentURLData();
+                List<ActionResult> results = null;
 				if (!filterData.isReadOnly()) {
 					try {
 						results = service.saveOrUpdate(currentDataPage.getPageContentData());
